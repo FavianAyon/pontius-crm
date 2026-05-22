@@ -57,34 +57,19 @@ class Lead extends Model
     protected static function booted(): void
     {
         static::saving(function (Lead $lead) {
-            $lead->normalized_email = self::normalizeEmail($lead->email);
-            $lead->normalized_phone = self::normalizePhone($lead->phone);
-            $lead->normalized_whatsapp = self::normalizePhone($lead->whatsapp);
-
             $lead->full_name = trim(
-                collect([
-                    $lead->first_name,
-                    $lead->last_name,
-                ])->filter()->implode(' ')
+                collect([$lead->first_name, $lead->last_name])
+                    ->filter()
+                    ->implode(' ')
             );
+
+            $lead->refreshDuplicateStatus();
         });
 
         static::creating(function (Lead $lead) {
             if (auth()->check()) {
                 $lead->registered_by_user_id ??= auth()->id();
                 $lead->assigned_to_user_id ??= auth()->id();
-            }
-
-            $lead->normalized_email = self::normalizeEmail($lead->email);
-            $lead->normalized_phone = self::normalizePhone($lead->phone);
-            $lead->normalized_whatsapp = self::normalizePhone($lead->whatsapp);
-
-            $duplicate = $lead->findPossibleDuplicate();
-
-            if ($duplicate) {
-                $lead->is_duplicate = true;
-                $lead->duplicate_of_lead_id = $duplicate->id;
-                $lead->duplicate_match_fields = $lead->getDuplicateMatchFields($duplicate);
             }
         });
     }
@@ -192,6 +177,26 @@ class Lead extends Model
         }
 
         return $matches;
+    }
+
+    public function refreshDuplicateStatus(): void
+    {
+        $this->normalized_email = self::normalizeEmail($this->email);
+        $this->normalized_phone = self::normalizePhone($this->phone);
+        $this->normalized_whatsapp = self::normalizePhone($this->whatsapp);
+
+        $duplicate = $this->findPossibleDuplicate();
+
+        if ($duplicate) {
+            $this->is_duplicate = true;
+            $this->duplicate_of_lead_id = $duplicate->id;
+            $this->duplicate_match_fields = $this->getDuplicateMatchFields($duplicate);
+            return;
+        }
+
+        $this->is_duplicate = false;
+        $this->duplicate_of_lead_id = null;
+        $this->duplicate_match_fields = null;
     }
 
 }

@@ -11,6 +11,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Filament\Forms\Components\Placeholder;
 
 class LeadForm
 {
@@ -142,6 +143,17 @@ class LeadForm
                             ->searchable()
                             ->preload()
                             ->disabled(),
+                        Placeholder::make('duplicate_warning')
+                            ->label('Alerta de duplicado')
+                            ->content(function ($record) {
+                                if (! $record?->is_duplicate) {
+                                    return null;
+                                }
+
+                                return 'Este lead está marcado como duplicado. Coincidencia: '
+                                    . implode(', ', $record->duplicate_match_fields ?? []);
+                            })
+                            ->visible(fn ($record) => (bool) $record?->is_duplicate),
                     ]),
 
                 Section::make(__('leads.notes'))
