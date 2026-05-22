@@ -38,6 +38,12 @@ class Lead extends Model
         'interest_target_type',
         'development_id',
         'listing_id',
+        'normalized_email',
+        'normalized_phone',
+        'normalized_whatsapp',
+        'is_duplicate',
+        'duplicate_of_lead_id',
+        'duplicate_match_fields',
     ];
     protected $casts = [
         'budget_min' => 'decimal:2',
@@ -45,24 +51,41 @@ class Lead extends Model
         'last_contacted_at' => 'datetime',
         'next_follow_up_at' => 'datetime',
         'metadata' => 'array',
+        'duplicate_match_fields' => 'array',
     ];
 
     protected static function booted(): void
     {
-        static::creating(function (Lead $lead) {
-            if (auth()->check()) {
-                $lead->registered_by_user_id ??= auth()->id();
-                $lead->assigned_to_user_id ??= auth()->id();
-            }
-        });
-
         static::saving(function (Lead $lead) {
+            $lead->normalized_email = self::normalizeEmail($lead->email);
+            $lead->normalized_phone = self::normalizePhone($lead->phone);
+            $lead->normalized_whatsapp = self::normalizePhone($lead->whatsapp);
+
             $lead->full_name = trim(
                 collect([
                     $lead->first_name,
                     $lead->last_name,
                 ])->filter()->implode(' ')
             );
+        });
+
+        static::creating(function (Lead $lead) {
+            if (auth()->check()) {
+                $lead->registered_by_user_id ??= auth()->id();
+                $lead->assigned_to_user_id ??= auth()->id();
+            }
+
+            $lead->normalized_email = self::normalizeEmail($lead->email);
+            $lead->normalized_phone = self::normalizePhone($lead->phone);
+            $lead->normalized_whatsapp = self::normalizePhone($lead->whatsapp);
+
+            $duplicate = $lead->findPossibleDuplicate();
+
+            if ($duplicate) {
+                $lead->is_duplicate = true;
+                $lead->duplicate_of_lead_id = $duplicate->id;
+                $lead->duplicate_match_fields = $lead->getDuplicateMatchFields($duplicate);
+            }
         });
     }
 
@@ -106,6 +129,69 @@ class Lead extends Model
     public function leadActivities()
     {
         return $this->hasMany(LeadActivity::class)->latest();
+    }
+
+    public function duplicateOf()
+    {
+        return $this->belongsTo(Lead::class, 'duplicate_of_lead_id');
+    }
+
+    public static function normalizeEmail(?string $email): ?string
+    {
+        return $email ? strtolower(trim($email)) : null;
+    }
+
+    public static function normalizePhone(?string $phone): ?string
+    {
+        if (! $phone) {
+            return null;
+        }
+
+        $digits = preg_replace('/\D+/', '', $phone);
+
+        if (strlen($digits) === 10) {
+            return '52' . $digits;
+        }
+
+        return $digits;
+    }
+
+    public function findPossibleDuplicate(): ?Lead
+    {
+        return self::query()
+            ->where('id', '!=', $this->id ?? 0)
+            ->where(function ($query) {
+                if ($this->normalized_email) {
+                    $query->orWhere('normalized_email', $this->normalized_email);
+                }
+
+                if ($this->normalized_phone) {
+                    $query->orWhere('normalized_phone', $this->normalized_phone);
+                }
+
+                if ($this->normalized_whatsapp) {
+                    $query->orWhere('normalized_whatsapp', $this->normalized_whatsapp);
+                }
+            })
+            ->first();
+    }
+    public function getDuplicateMatchFields(Lead $duplicate): array
+    {
+        $matches = [];
+
+        if ($this->normalized_email && $this->normalized_email === $duplicate->normalized_email) {
+            $matches[] = 'email';
+        }
+
+        if ($this->normalized_phone && $this->normalized_phone === $duplicate->normalized_phone) {
+            $matches[] = 'phone';
+        }
+
+        if ($this->normalized_whatsapp && $this->normalized_whatsapp === $duplicate->normalized_whatsapp) {
+            $matches[] = 'whatsapp';
+        }
+
+        return $matches;
     }
 
 }

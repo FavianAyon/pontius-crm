@@ -6,8 +6,10 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 
 class LeadsTable
@@ -16,6 +18,11 @@ class LeadsTable
     {
         return $table
             ->columns([
+                IconColumn::make('is_duplicate')
+
+                    ->label('Duplicado')
+
+                    ->boolean(),
                 TextColumn::make('full_name')
                     ->label(__('leads.full_name'))
                     ->searchable()
@@ -57,6 +64,11 @@ class LeadsTable
                     ->label(__('leads.next_follow_up_at'))
                     ->dateTime()
                     ->sortable(),
+                TextColumn::make('duplicate_match_fields')
+                    ->label('Coincidencia')
+                    ->badge()
+                    ->separator(',')
+                    ->visible(fn () => auth()->user()?->can('view_all_leads')),
             ])
             ->filters([
                 SelectFilter::make('intent')
@@ -78,6 +90,9 @@ class LeadsTable
                         'won' => __('leads.status_won'),
                         'lost' => __('leads.status_lost'),
                     ]),
+                TernaryFilter::make('is_duplicate')
+
+                    ->label('Duplicados'),
             ])
             ->recordActions([
                 ViewAction::make(),

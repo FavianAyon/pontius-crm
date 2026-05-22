@@ -136,6 +136,12 @@ class LeadForm
                             ->default(fn () => auth()->id())
                             ->disabled(fn () => ! auth()->user()?->can('assign', \App\Models\Lead::class))
                             ->dehydrated(true),
+                        Select::make('duplicate_of_lead_id')
+                            ->label('Duplicado de')
+                            ->relationship('duplicateOf', 'full_name')
+                            ->searchable()
+                            ->preload()
+                            ->disabled(),
                     ]),
 
                 Section::make(__('leads.notes'))
