@@ -63,4 +63,14 @@ class LeadResource extends Resource
                 SoftDeletingScope::class,
             ]);
     }
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+
+        if (auth()->user()?->hasAnyRole(['admin', 'supervisor'])) {
+            return $query;
+        }
+
+        return $query->where('assigned_to_user_id', auth()->id());
+    }
 }
