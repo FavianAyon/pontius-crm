@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class Lead extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, LogsActivity;
 
     protected $fillable = [
         'first_name',
@@ -30,6 +32,12 @@ class Lead extends Model
         'next_follow_up_at',
         'notes',
         'metadata',
+        'registered_by_user_id',
+        'assigned_to_user_id',
+        'intent',
+        'interest_target_type',
+        'development_id',
+        'listing_id',
     ];
     protected $casts = [
         'budget_min' => 'decimal:2',
@@ -41,6 +49,13 @@ class Lead extends Model
 
     protected static function booted(): void
     {
+        static::creating(function (Lead $lead) {
+            if (auth()->check()) {
+                $lead->registered_by_user_id ??= auth()->id();
+                $lead->assigned_to_user_id ??= auth()->id();
+            }
+        });
+
         static::saving(function (Lead $lead) {
             $lead->full_name = trim(
                 collect([
@@ -49,5 +64,39 @@ class Lead extends Model
                 ])->filter()->implode(' ')
             );
         });
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly([
+                'first_name',
+                'last_name',
+                'full_name',
+                'email',
+                'phone',
+                'whatsapp',
+                'source',
+                'intent',
+                'interest_target_type',
+                'development_id',
+                'listing_id',
+                'status',
+                'priority',
+                'assigned_to_user_id',
+                'notes',
+            ])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
+    }
+
+    public function registeredBy()
+    {
+        return $this->belongsTo(User::class, 'registered_by_user_id');
+    }
+
+    public function assignedTo()
+    {
+        return $this->belongsTo(User::class, 'assigned_to_user_id');
     }
 }

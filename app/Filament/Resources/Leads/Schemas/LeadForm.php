@@ -2,13 +2,10 @@
 
 namespace App\Filament\Resources\Leads\Schemas;
 
-use Filament\Schemas\Components\Grid;
-use Filament\Schemas\Components\Section;
-use Filament\Schemas\Schema;
 use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Textarea;
+use Filament\Schemas\Schema;
 
 class LeadForm
 {
@@ -16,114 +13,52 @@ class LeadForm
     {
         return $schema
             ->components([
-                Section::make('Información principal')
-                    ->schema([
-                        Grid::make(2)->schema([
-                            TextInput::make('first_name')
-                                ->label('Nombre'),
-
-                            TextInput::make('last_name')
-                                ->label('Apellido'),
-
-                            TextInput::make('email')
-                                ->label('Correo')
-                                ->email(),
-
-                            TextInput::make('phone')
-                                ->label('Teléfono'),
-
-                            TextInput::make('whatsapp')
-                                ->label('WhatsApp'),
-                        ]),
-                    ]),
-
-                Section::make('Origen e interés')
-                    ->schema([
-                        Grid::make(3)->schema([
-                            Select::make('source')
-                                ->label('Fuente')
-                                ->options([
-                                    'website' => 'Sitio web',
-                                    'facebook' => 'Facebook',
-                                    'instagram' => 'Instagram',
-                                    'whatsapp' => 'WhatsApp',
-                                    'referral' => 'Referido',
-                                    'walk_in' => 'Visita directa',
-                                    'other' => 'Otro',
-                                ]),
-
-                            Select::make('interest_type')
-                                ->label('Interés')
-                                ->options([
-                                    'buy' => 'Comprar',
-                                    'rent' => 'Rentar',
-                                    'sell' => 'Vender',
-                                    'property_management' => 'Property Management',
-                                    'storage' => 'Bodega / Storage',
-                                    'other' => 'Otro',
-                                ]),
-
-                            Select::make('preferred_language')
-                                ->label('Idioma')
-                                ->options([
-                                    'es' => 'Español',
-                                    'en' => 'Inglés',
-                                ])
-                                ->default('es'),
-                        ]),
-
-                        Grid::make(2)->schema([
-                            TextInput::make('budget_min')
-                                ->label('Presupuesto mínimo')
-                                ->numeric(),
-
-                            TextInput::make('budget_max')
-                                ->label('Presupuesto máximo')
-                                ->numeric(),
-                        ]),
-
-                        TextInput::make('preferred_location')
-                            ->label('Zona de interés'),
-                    ]),
-
-                Section::make('Pipeline')
-                    ->schema([
-                        Grid::make(3)->schema([
-                            Select::make('status')
-                                ->label('Estado')
-                                ->options([
-                                    'new' => 'Nuevo',
-                                    'contacted' => 'Contactado',
-                                    'qualified' => 'Calificado',
-                                    'proposal' => 'Propuesta',
-                                    'negotiation' => 'Negociación',
-                                    'won' => 'Ganado',
-                                    'lost' => 'Perdido',
-                                ])
-                                ->default('new'),
-
-                            Select::make('priority')
-                                ->label('Prioridad')
-                                ->options([
-                                    'low' => 'Baja',
-                                    'normal' => 'Normal',
-                                    'high' => 'Alta',
-                                    'urgent' => 'Urgente',
-                                ])
-                                ->default('normal'),
-
-                            DateTimePicker::make('next_follow_up_at')
-                                ->label('Próximo seguimiento'),
-                        ]),
-                    ]),
-
-                Section::make('Notas')
-                    ->schema([
-                        Textarea::make('notes')
-                            ->label('Notas')
-                            ->rows(4)
-                            ->columnSpanFull(),
-                    ]),
+                TextInput::make('registered_by_user_id')
+                    ->numeric(),
+                TextInput::make('assigned_to_user_id')
+                    ->numeric(),
+                TextInput::make('first_name'),
+                TextInput::make('last_name'),
+                TextInput::make('full_name'),
+                TextInput::make('email')
+                    ->label('Email address')
+                    ->email(),
+                TextInput::make('phone')
+                    ->tel(),
+                TextInput::make('whatsapp'),
+                TextInput::make('source'),
+                TextInput::make('campaign'),
+                TextInput::make('medium'),
+                TextInput::make('interest_type'),
+                TextInput::make('intent')
+                    ->required()
+                    ->default('buy'),
+                TextInput::make('interest_target_type')
+                    ->required()
+                    ->default('general'),
+                TextInput::make('development_id')
+                    ->numeric(),
+                TextInput::make('listing_id')
+                    ->numeric(),
+                TextInput::make('budget_min')
+                    ->numeric(),
+                TextInput::make('budget_max')
+                    ->numeric(),
+                TextInput::make('preferred_location'),
+                TextInput::make('preferred_language')
+                    ->required()
+                    ->default('es'),
+                TextInput::make('status')
+                    ->required()
+                    ->default('new'),
+                TextInput::make('priority')
+                    ->required()
+                    ->default('normal'),
+                DateTimePicker::make('last_contacted_at'),
+                DateTimePicker::make('next_follow_up_at'),
+                Textarea::make('notes')
+                    ->columnSpanFull(),
+                TextInput::make('metadata'),
             ]);
     }
 }

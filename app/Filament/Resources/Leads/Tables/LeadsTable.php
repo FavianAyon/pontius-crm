@@ -5,10 +5,12 @@ namespace App\Filament\Resources\Leads\Tables;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ForceDeleteBulkAction;
+use Filament\Actions\RestoreBulkAction;
 use Filament\Actions\ViewAction;
-use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TrashedFilter;
+use Filament\Tables\Table;
 
 class LeadsTable
 {
@@ -16,66 +18,89 @@ class LeadsTable
     {
         return $table
             ->columns([
+                TextColumn::make('registered_by_user_id')
+                    ->numeric()
+                    ->sortable(),
+                TextColumn::make('assigned_to_user_id')
+                    ->numeric()
+                    ->sortable(),
+                TextColumn::make('first_name')
+                    ->searchable(),
+                TextColumn::make('last_name')
+                    ->searchable(),
                 TextColumn::make('full_name')
-                    ->label('Nombre')
-                    ->searchable()
-                    ->sortable(),
-
+                    ->searchable(),
                 TextColumn::make('email')
-                    ->label('Correo')
+                    ->label('Email address')
                     ->searchable(),
-
                 TextColumn::make('phone')
-                    ->label('Teléfono')
                     ->searchable(),
-
+                TextColumn::make('whatsapp')
+                    ->searchable(),
                 TextColumn::make('source')
-                    ->label('Fuente')
-                    ->badge(),
-
+                    ->searchable(),
+                TextColumn::make('campaign')
+                    ->searchable(),
+                TextColumn::make('medium')
+                    ->searchable(),
                 TextColumn::make('interest_type')
-                    ->label('Interés')
-                    ->badge(),
-
+                    ->searchable(),
+                TextColumn::make('intent')
+                    ->searchable(),
+                TextColumn::make('interest_target_type')
+                    ->searchable(),
+                TextColumn::make('development_id')
+                    ->numeric()
+                    ->sortable(),
+                TextColumn::make('listing_id')
+                    ->numeric()
+                    ->sortable(),
+                TextColumn::make('budget_min')
+                    ->numeric()
+                    ->sortable(),
+                TextColumn::make('budget_max')
+                    ->numeric()
+                    ->sortable(),
+                TextColumn::make('preferred_location')
+                    ->searchable(),
+                TextColumn::make('preferred_language')
+                    ->searchable(),
                 TextColumn::make('status')
-                    ->label('Estado')
-                    ->badge()
-                    ->sortable(),
-
+                    ->searchable(),
                 TextColumn::make('priority')
-                    ->label('Prioridad')
-                    ->badge()
-                    ->sortable(),
-
-                TextColumn::make('next_follow_up_at')
-                    ->label('Seguimiento')
+                    ->searchable(),
+                TextColumn::make('last_contacted_at')
                     ->dateTime()
                     ->sortable(),
+                TextColumn::make('next_follow_up_at')
+                    ->dateTime()
+                    ->sortable(),
+                TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('deleted_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                SelectFilter::make('status')
-                    ->label('Estado')
-                    ->options([
-                        'new' => 'Nuevo',
-                        'contacted' => 'Contactado',
-                        'qualified' => 'Calificado',
-                        'proposal' => 'Propuesta',
-                        'negotiation' => 'Negociación',
-                        'won' => 'Ganado',
-                        'lost' => 'Perdido',
-                    ]),
-
-                SelectFilter::make('source')
-                    ->label('Fuente')
-                    ->options([
-                        'website' => 'Sitio web',
-                        'facebook' => 'Facebook',
-                        'instagram' => 'Instagram',
-                        'whatsapp' => 'WhatsApp',
-                        'referral' => 'Referido',
-                        'walk_in' => 'Visita directa',
-                        'other' => 'Otro',
-                    ]),
+                TrashedFilter::make(),
+            ])
+            ->recordActions([
+                ViewAction::make(),
+                EditAction::make(),
+            ])
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
+                    ForceDeleteBulkAction::make(),
+                    RestoreBulkAction::make(),
+                ]),
             ]);
     }
 }
