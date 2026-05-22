@@ -34,8 +34,10 @@ class EditLead extends EditRecord
 
         Notification::make()
             ->warning()
-            ->title('Lead marcado como duplicado')
-            ->body('Después de guardar, este lead coincide con otro registro por: ' . implode(', ', $this->record->duplicate_match_fields ?? []))
+            ->title(__('leads.duplicate_updated_title'))
+            ->body(__('leads.duplicate_updated_body', [
+                'fields' => implode(', ', $this->record->duplicate_match_fields ?? []),
+            ]))
             ->persistent()
             ->send();
     }

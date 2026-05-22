@@ -11,6 +11,8 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
+use Filament\Actions\Action;
+use Filament\Notifications\Notification;
 
 class LeadsTable
 {
@@ -97,6 +99,29 @@ class LeadsTable
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
+                Action::make('mergeDuplicate')
+                    ->label(__('leads.merge_duplicate'))
+                    ->icon('heroicon-o-arrows-right-left')
+                    ->color('warning')
+                    ->requiresConfirmation()
+                    ->modalHeading(__('leads.merge_duplicate_heading'))
+                    ->modalDescription(__('leads.merge_duplicate_description'))
+                    ->visible(fn ($record) => $record->is_duplicate && $record->duplicate_of_lead_id)
+                    ->action(function ($record) {
+                        $mainLead = $record->duplicateOf;
+
+                        if (! $mainLead) {
+                            return;
+                        }
+
+                        $record->mergeInto($mainLead);
+
+                        Notification::make()
+                            ->success()
+                            ->title(__('leads.merge_success_title'))
+                            ->body(__('leads.merge_success_body'))
+                            ->send();
+                    }),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

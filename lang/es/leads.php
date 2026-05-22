@@ -37,4 +37,20 @@ return [
     'priority_high' => 'Alta',
     'priority_urgent' => 'Urgente',
     'next_follow_up_at' => 'Próximo seguimiento',
+
+    'status' => 'Status',
+    'priority' => 'Prioridad',
+    'notes' => 'Notas',
+    'duplicate_registered_title' => 'Lead duplicado registrado',
+    'duplicate_registered_body' => 'El lead fue guardado, pero coincide con otro registro por: :fields',
+    'duplicate_updated_title' => 'Lead marcado como duplicado',
+    'duplicate_updated_body' => 'Después de guardar, este lead coincide con otro registro por: :fields',
+
+    'merge_duplicate' => 'Fusionar duplicado',
+    'merge_duplicate_heading' => 'Fusionar este lead con el principal',
+    'merge_duplicate_description' => 'Las actividades se moverán al lead principal y este lead quedará eliminado.',
+    'merge_success_title' => 'Leads fusionados',
+    'merge_success_body' => 'El lead duplicado fue fusionado correctamente.',
+    'duplicate_warning' => 'Alerta de duplicado',
+    'duplicate_warning_body' => 'Este lead está marcado como duplicado. Coincidencia: :fields',
 ];

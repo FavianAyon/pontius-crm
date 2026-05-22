@@ -17,8 +17,10 @@ class CreateLead extends CreateRecord
 
         Notification::make()
             ->warning()
-            ->title('Lead duplicado registrado')
-            ->body('El lead fue guardado, pero coincide con otro registro por: ' . implode(', ', $this->record->duplicate_match_fields ?? []))
+            ->title(__('leads.duplicate_registered_title'))
+            ->body(__('leads.duplicate_registered_body', [
+                'fields' => implode(', ', $this->record->duplicate_match_fields ?? []),
+            ]))
             ->persistent()
             ->send();
     }

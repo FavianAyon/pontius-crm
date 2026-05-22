@@ -144,15 +144,10 @@ class LeadForm
                             ->preload()
                             ->disabled(),
                         Placeholder::make('duplicate_warning')
-                            ->label('Alerta de duplicado')
-                            ->content(function ($record) {
-                                if (! $record?->is_duplicate) {
-                                    return null;
-                                }
-
-                                return 'Este lead está marcado como duplicado. Coincidencia: '
-                                    . implode(', ', $record->duplicate_match_fields ?? []);
-                            })
+                            ->label(__('leads.duplicate_warning'))
+                            ->content(fn ($record) => __('leads.duplicate_warning_body', [
+                                'fields' => implode(', ', $record?->duplicate_match_fields ?? []),
+                            ]))
                             ->visible(fn ($record) => (bool) $record?->is_duplicate),
                     ]),
 

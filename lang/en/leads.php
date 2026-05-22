@@ -40,4 +40,16 @@ return [
     'status' => 'Status',
     'priority' => 'Priority',
     'notes' => 'Notes',
+    'duplicate_registered_title' => 'Duplicate lead registered',
+    'duplicate_registered_body' => 'The lead was saved, but it matches another record by: :fields',
+    'duplicate_updated_title' => 'Lead marked as duplicate',
+    'duplicate_updated_body' => 'After saving, this lead matches another record by: :fields',
+
+    'merge_duplicate' => 'Merge duplicate',
+    'merge_duplicate_heading' => 'Merge this lead into the main lead',
+    'merge_duplicate_description' => 'Activities will be moved to the main lead and this lead will be deleted.',
+    'merge_success_title' => 'Leads merged',
+    'merge_success_body' => 'The duplicate lead was merged successfully.',
+    'duplicate_warning' => 'Duplicate warning',
+    'duplicate_warning_body' => 'This lead is marked as duplicate. Match: :fields',
 ];

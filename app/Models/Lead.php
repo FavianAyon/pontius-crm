@@ -199,4 +199,22 @@ class Lead extends Model
         $this->duplicate_match_fields = null;
     }
 
+    public function mergeInto(Lead $mainLead): void
+    {
+        $this->leadActivities()->update([
+            'lead_id' => $mainLead->id,
+        ]);
+
+        activity()
+            ->performedOn($mainLead)
+            ->causedBy(auth()->user())
+            ->withProperties([
+                'merged_lead_id' => $this->id,
+                'merged_lead_name' => $this->full_name,
+            ])
+            ->log('lead_merged');
+
+        $this->delete();
+    }
+
 }
