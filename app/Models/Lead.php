@@ -103,5 +103,9 @@ class Lead extends Model
         return $this->morphMany(Activity::class, 'subject')
             ->latest();
     }
+    public function leadActivities()
+    {
+        return $this->hasMany(LeadActivity::class)->latest();
+    }
 
 }
