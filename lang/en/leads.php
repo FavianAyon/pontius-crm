@@ -37,4 +37,7 @@ return [
     'priority_high' => 'High',
     'priority_urgent' => 'Urgent',
     'next_follow_up_at' => 'Next follow-up',
+    'status' => 'Status',
+    'priority' => 'Priority',
+    'notes' => 'Notes',
 ];

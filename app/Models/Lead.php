@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
-
+use Spatie\Activitylog\Models\Activity;
 class Lead extends Model
 {
     use SoftDeletes, LogsActivity;
@@ -69,9 +69,8 @@ class Lead extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
+            ->useLogName('lead')
             ->logOnly([
-                'first_name',
-                'last_name',
                 'full_name',
                 'email',
                 'phone',
@@ -79,11 +78,10 @@ class Lead extends Model
                 'source',
                 'intent',
                 'interest_target_type',
-                'development_id',
-                'listing_id',
                 'status',
                 'priority',
                 'assigned_to_user_id',
+                'next_follow_up_at',
                 'notes',
             ])
             ->logOnlyDirty()
@@ -99,4 +97,11 @@ class Lead extends Model
     {
         return $this->belongsTo(User::class, 'assigned_to_user_id');
     }
+
+    public function activities()
+    {
+        return $this->morphMany(Activity::class, 'subject')
+            ->latest();
+    }
+
 }

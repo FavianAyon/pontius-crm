@@ -134,7 +134,7 @@ class LeadForm
                             ->searchable()
                             ->preload()
                             ->default(fn () => auth()->id())
-                            ->disabled(fn () => ! auth()->user()?->hasAnyRole(['admin', 'supervisor']))
+                            ->disabled(fn () => ! auth()->user()?->can('assign', \App\Models\Lead::class))
                             ->dehydrated(true),
                     ]),
 

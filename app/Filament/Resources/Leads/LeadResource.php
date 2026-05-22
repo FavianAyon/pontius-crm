@@ -42,9 +42,10 @@ class LeadResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\ActivitiesRelationManager::class,
         ];
     }
+
 
     public static function getPages(): array
     {
@@ -67,7 +68,7 @@ class LeadResource extends Resource
     {
         $query = parent::getEloquentQuery();
 
-        if (auth()->user()?->hasAnyRole(['admin', 'supervisor'])) {
+        if (auth()->user()?->can('view_all_leads')) {
             return $query;
         }
 
