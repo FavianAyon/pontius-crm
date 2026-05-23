@@ -82,4 +82,12 @@ return [
     'my_followups' => 'My follow-ups',
     'overdue_followups' => 'Overdue follow-ups',
     'today_followups' => 'Today follow-ups',
+    'open_lead' => 'Open lead',
+    'complete_followup' => 'Complete follow-up',
+    'complete_followup_heading' => 'Complete follow-up',
+    'complete_followup_notes' => 'Follow-up notes',
+    'schedule_next_followup' => 'Schedule next follow-up',
+    'followup_completed' => 'Follow-up completed',
+    'followup_completed_body' => 'The follow-up was registered successfully.',
+    'next_followup' => 'Next follow-up',
 ];

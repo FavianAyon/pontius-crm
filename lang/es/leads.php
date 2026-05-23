@@ -83,4 +83,12 @@ return [
     'my_followups' => 'Mis seguimientos',
     'overdue_followups' => 'Seguimientos vencidos',
     'today_followups' => 'Seguimientos de hoy',
+    'open_lead' => 'Abrir lead',
+    'complete_followup' => 'Completar seguimiento',
+    'complete_followup_heading' => 'Completar seguimiento',
+    'complete_followup_notes' => 'Notas del seguimiento',
+    'schedule_next_followup' => 'Programar siguiente seguimiento',
+    'followup_completed' => 'Seguimiento completado',
+    'followup_completed_body' => 'El seguimiento fue registrado correctamente.',
+    'next_followup' => 'Siguiente seguimiento',
 ];
