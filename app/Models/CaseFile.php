@@ -128,5 +128,31 @@ class CaseFile extends Model
                 : 0,
             'pending_documents_count' => $pending,
         ]);
+        $this->refreshStatusFromDocuments();
+    }
+    public function refreshStatusFromDocuments(): void
+    {
+        $total = $this->documents()->count();
+
+        if ($total === 0) {
+            return;
+        }
+
+        $approved = $this->documents()->where('status', 'approved')->count();
+        $uploadedOrReview = $this->documents()
+            ->whereIn('status', ['uploaded', 'in_review'])
+            ->count();
+
+        if ($approved === $total) {
+            $this->updateQuietly(['status' => 'approved']);
+            return;
+        }
+
+        if ($uploadedOrReview > 0) {
+            $this->updateQuietly(['status' => 'in_review']);
+            return;
+        }
+
+        $this->updateQuietly(['status' => 'open']);
     }
 }
