@@ -306,4 +306,8 @@ class Lead extends Model
             'due_at' => now()->addMinutes(config('crm.initial_contact_due_minutes', 60)),
         ]);
     }
+    public function caseFiles()
+    {
+        return $this->hasMany(CaseFile::class)->latest();
+    }
 }

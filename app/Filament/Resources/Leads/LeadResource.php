@@ -70,6 +70,7 @@ class LeadResource extends Resource
         return [
             RelationManagers\ActivitiesRelationManager::class,
             RelationManagers\TasksRelationManager::class,
+            RelationManagers\CaseFilesRelationManager::class,
             RelationManagers\LeadActivitiesRelationManager::class,
         ];
     }
