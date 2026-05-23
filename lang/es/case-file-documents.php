@@ -27,4 +27,6 @@ return [
     'property_deed' => 'Escritura',
     'bank_statement' => 'Estado de cuenta',
     'other' => 'Otro',
+    'approve' => 'Aprobar',
+    'reject' => 'Rechazar',
 ];

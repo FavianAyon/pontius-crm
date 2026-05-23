@@ -42,4 +42,17 @@ class CaseFileDocument extends Model
     {
         return $this->belongsTo(User::class, 'uploaded_by_user_id');
     }
+    protected static function booted(): void
+    {
+        static::saving(function (CaseFileDocument $document) {
+            if ($document->isDirty('file_path') && $document->file_path) {
+                $document->uploaded_by_user_id ??= auth()->id();
+                $document->uploaded_at ??= now();
+
+                if (in_array($document->status, ['pending', 'requested'], true)) {
+                    $document->status = 'uploaded';
+                }
+            }
+        });
+    }
 }

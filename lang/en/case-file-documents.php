@@ -27,4 +27,6 @@ return [
     'property_deed' => 'Property deed',
     'bank_statement' => 'Bank statement',
     'other' => 'Other',
+    'approve' => 'Approve',
+    'reject' => 'Reject',
 ];
