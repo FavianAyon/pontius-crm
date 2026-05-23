@@ -42,4 +42,6 @@ return [
     'task_assigned_body' => 'Se te asignó la tarea: :title',
     'overdue_task_title' => 'Tarea vencida',
     'overdue_task_body' => 'La tarea está vencida: :title',
+    'due_soon_task_title' => 'Tarea próxima a vencer',
+    'due_soon_task_body' => 'La tarea está próxima a vencer: :title',
 ];

@@ -9,5 +9,7 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Schedule::command('crm:notify-overdue-tasks')
-
     ->hourly();
+
+Schedule::command('crm:notify-due-soon-tasks')
+    ->everyFifteenMinutes();

@@ -42,4 +42,6 @@ return [
     'task_assigned_body' => 'You were assigned the task: :title',
     'overdue_task_title' => 'Overdue task',
     'overdue_task_body' => 'The task is overdue: :title',
+    'due_soon_task_title' => 'Task due soon',
+    'due_soon_task_body' => 'The task is due soon: :title',
 ];

@@ -27,6 +27,7 @@ class Task extends Model
         'completed_at',
         'metadata',
         'overdue_notified_at',
+        'due_soon_notified_at',
     ];
 
     protected $casts = [
@@ -34,6 +35,7 @@ class Task extends Model
         'completed_at' => 'datetime',
         'metadata' => 'array',
         'overdue_notified_at' => 'datetime',
+        'due_soon_notified_at' => 'datetime',
     ];
 
     protected static function booted(): void
@@ -56,6 +58,7 @@ class Task extends Model
         static::saving(function (Task $task) {
             if ($task->isDirty('due_at')) {
                 $task->overdue_notified_at = null;
+                $task->due_soon_notified_at = null;
             }
         });
     }
