@@ -37,6 +37,8 @@ return [
     'priority_high' => 'Alta',
     'priority_urgent' => 'Urgente',
     'next_follow_up_at' => 'Próximo seguimiento',
+    'is_duplicate' => 'Duplicado',
+    'duplicate_of_lead' => 'Lead duplicado:',
 
     'status' => 'Status',
     'priority' => 'Prioridad',
@@ -53,4 +55,6 @@ return [
     'merge_success_body' => 'El lead duplicado fue fusionado correctamente.',
     'duplicate_warning' => 'Alerta de duplicado',
     'duplicate_warning_body' => 'Este lead está marcado como duplicado. Coincidencia: :fields',
+    'duplicate_match_fields' => 'Campos de coincidencia de duplicados',
+
 ];

@@ -72,6 +72,7 @@ class LeadForm
                                     'listing' => __('leads.listing'),
                                 ])
                                 ->default('general')
+                                ->live()
                                 ->required(),
 
                             Select::make('preferred_language')
@@ -83,6 +84,19 @@ class LeadForm
                                 ->default('es')
                                 ->required(),
                         ]),
+                        Select::make('development_id')
+                            ->label(__('leads.development'))
+                            ->relationship('development', 'name')
+                            ->searchable()
+                            ->preload()
+                            ->visible(fn ($get) => in_array($get('interest_target_type'), ['development'])),
+
+                        Select::make('listing_id')
+                            ->label(__('leads.listing'))
+                            ->relationship('listing', 'title')
+                            ->searchable()
+                            ->preload()
+                            ->visible(fn ($get) => in_array($get('interest_target_type'), ['listing'])),
 
                         Grid::make(2)->schema([
                             TextInput::make('budget_min')
@@ -138,7 +152,7 @@ class LeadForm
                             ->disabled(fn () => ! auth()->user()?->can('assign', \App\Models\Lead::class))
                             ->dehydrated(true),
                         Select::make('duplicate_of_lead_id')
-                            ->label('Duplicado de')
+                            ->label(__('leads.duplicate_of_lead'))
                             ->relationship('duplicateOf', 'full_name')
                             ->searchable()
                             ->preload()

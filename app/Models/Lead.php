@@ -217,4 +217,13 @@ class Lead extends Model
         $this->delete();
     }
 
+    public function development()
+    {
+        return $this->belongsTo(Development::class);
+    }
+
+    public function listing()
+    {
+        return $this->belongsTo(Listing::class);
+    }
 }

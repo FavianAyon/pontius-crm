@@ -22,8 +22,7 @@ class LeadsTable
             ->columns([
                 IconColumn::make('is_duplicate')
 
-                    ->label('Duplicado')
-
+                    ->label(__('leads.is_duplicate'))
                     ->boolean(),
                 TextColumn::make('full_name')
                     ->label(__('leads.full_name'))
@@ -67,7 +66,7 @@ class LeadsTable
                     ->dateTime()
                     ->sortable(),
                 TextColumn::make('duplicate_match_fields')
-                    ->label('Coincidencia')
+                    ->label(__('leads.duplicate_match_fields'))
                     ->badge()
                     ->separator(',')
                     ->visible(fn () => auth()->user()?->can('view_all_leads')),
