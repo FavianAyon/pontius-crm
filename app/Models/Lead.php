@@ -265,4 +265,8 @@ class Lead extends Model
 
         return "mailto:{$this->email}";
     }
+    public function tasks()
+    {
+        return $this->hasMany(Task::class)->latest();
+    }
 }
