@@ -18,6 +18,7 @@ class NotifyOverdueTasks extends Command
             ->whereNotIn('status', ['completed', 'cancelled'])
             ->whereNotNull('due_at')
             ->where('due_at', '<', now())
+            ->whereNull('overdue_notified_at')
             ->with('assignedTo')
             ->get()
             ->each(function (Task $task) {
@@ -32,6 +33,9 @@ class NotifyOverdueTasks extends Command
                         'title' => $task->title,
                     ]))
                     ->sendToDatabase($task->assignedTo);
+                $task->update([
+                    'overdue_notified_at' => now(),
+                ]);
             });
 
         $this->info('Overdue task notifications sent.');

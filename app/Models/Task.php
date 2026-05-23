@@ -26,12 +26,14 @@ class Task extends Model
         'due_at',
         'completed_at',
         'metadata',
+        'overdue_notified_at',
     ];
 
     protected $casts = [
         'due_at' => 'datetime',
         'completed_at' => 'datetime',
         'metadata' => 'array',
+        'overdue_notified_at' => 'datetime',
     ];
 
     protected static function booted(): void
@@ -49,6 +51,11 @@ class Task extends Model
                     ]))
                     ->success()
                     ->sendToDatabase($task->assignedTo);
+            }
+        });
+        static::saving(function (Task $task) {
+            if ($task->isDirty('due_at')) {
+                $task->overdue_notified_at = null;
             }
         });
     }
