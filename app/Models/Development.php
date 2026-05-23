@@ -40,4 +40,13 @@ class Development extends Model
             $development->slug = Str::slug($development->name);
         });
     }
+    public function recalculateInventory(): void
+    {
+        $this->updateQuietly([
+            'total_units' => $this->units()->count(),
+            'available_units' => $this->units()
+                ->where('status', 'available')
+                ->count(),
+        ]);
+    }
 }

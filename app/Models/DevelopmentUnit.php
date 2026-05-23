@@ -38,7 +38,21 @@ class DevelopmentUnit extends Model
         static::saving(function (DevelopmentUnit $unit) {
             $developmentSlug = $unit->development?->slug ?? 'development';
 
-            $unit->slug = Str::slug($developmentSlug . '-' . $unit->unit_number);
+            $unit->slug = \Illuminate\Support\Str::slug(
+                $developmentSlug . '-' . $unit->unit_number
+            );
+        });
+
+        static::saved(function (DevelopmentUnit $unit) {
+            $unit->development?->recalculateInventory();
+        });
+
+        static::deleted(function (DevelopmentUnit $unit) {
+            $unit->development?->recalculateInventory();
+        });
+
+        static::restored(function (DevelopmentUnit $unit) {
+            $unit->development?->recalculateInventory();
         });
     }
 

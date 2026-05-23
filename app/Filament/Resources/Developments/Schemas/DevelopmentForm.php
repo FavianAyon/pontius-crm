@@ -57,10 +57,12 @@ class DevelopmentForm
 
                         TextInput::make('total_units')
                             ->label(__('developments.total_units'))
+                            ->disabled()
                             ->numeric(),
 
                         TextInput::make('available_units')
                             ->label(__('developments.available_units'))
+                            ->disabled()
                             ->numeric(),
                     ]),
 

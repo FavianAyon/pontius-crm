@@ -21,4 +21,5 @@ return [
     'sold' => 'Sold',
     'blocked' => 'Blocked',
     'inactive' => 'Inactive',
+    'inventory_updated' => 'Inventory updated',
 ];
