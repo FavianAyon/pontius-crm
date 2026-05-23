@@ -14,7 +14,7 @@ use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
-use Filament\Tables\Table;
+use Filament\Tables\Table;use Illuminate\Database\Eloquent\Builder;
 
 class TaskResource extends Resource
 {
@@ -52,5 +52,15 @@ class TaskResource extends Resource
             'view' => ViewTask::route('/{record}'),
             'edit' => EditTask::route('/{record}/edit'),
         ];
+    }
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+
+        if (auth()->user()?->can('view_all_leads')) {
+            return $query;
+        }
+
+        return $query->where('assigned_to_user_id', auth()->id());
     }
 }
