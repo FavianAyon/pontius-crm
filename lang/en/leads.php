@@ -79,4 +79,7 @@ return [
     'referral' => 'Referral',
     'walk_in' => 'Walk-in',
     'other' => 'Other',
+    'my_followups' => 'My follow-ups',
+    'overdue_followups' => 'Overdue follow-ups',
+    'today_followups' => 'Today follow-ups',
 ];

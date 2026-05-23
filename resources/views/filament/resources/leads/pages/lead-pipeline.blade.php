@@ -1,16 +1,222 @@
 <x-filament-panels::page>
-    <div class="mb-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-800 dark:bg-gray-900">
-        <div class="mb-3 text-sm font-semibold">
+    <style>
+        .pipeline-filters {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 18px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, .04);
+        }
+
+        .pipeline-filters-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .pipeline-filters-grid {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(160px, 1fr));
+            gap: 12px;
+        }
+
+        .pipeline-field label {
+            display: block;
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 4px;
+        }
+
+        .pipeline-field select,
+        .pipeline-select {
+            width: 100%;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 13px;
+            padding: 7px 9px;
+            background: #ffffff;
+        }
+
+        .pipeline-clear-button {
+            margin-top: 12px;
+            border-radius: 8px;
+            background: #f3f4f6;
+            padding: 7px 11px;
+            font-size: 12px;
+        }
+
+        .pipeline-grid {
+            display: grid;
+            grid-template-columns: repeat(7, minmax(230px, 1fr));
+            gap: 14px;
+            overflow-x: auto;
+            padding-bottom: 12px;
+        }
+
+        .pipeline-column {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 12px;
+            min-height: 300px;
+        }
+
+        .pipeline-column-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .pipeline-count {
+            background: #ffffff;
+            border-radius: 999px;
+            padding: 3px 8px;
+            font-size: 12px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .pipeline-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 10px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, .04);
+        }
+
+        .pipeline-card-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            align-items: flex-start;
+        }
+
+        .pipeline-card-title {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .pipeline-card-meta {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 4px;
+            word-break: break-word;
+        }
+
+        .pipeline-priority {
+            border-radius: 999px;
+            background: #f3f4f6;
+            padding: 3px 7px;
+            font-size: 10px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .pipeline-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        .pipeline-action {
+            font-size: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            padding: 5px 8px;
+            background: #ffffff;
+            text-decoration: none;
+            color: #111827;
+        }
+
+        .pipeline-action-primary {
+            background: #111827;
+            color: #ffffff;
+            border-color: #111827;
+        }
+
+        .pipeline-status-label {
+            display: block;
+            margin-top: 10px;
+            margin-bottom: 4px;
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .pipeline-empty {
+            border: 1px dashed #d1d5db;
+            border-radius: 10px;
+            padding: 14px;
+            text-align: center;
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        @media (max-width: 1280px) {
+            .pipeline-grid {
+                grid-template-columns: repeat(7, minmax(250px, 250px));
+            }
+
+            .pipeline-filters-grid {
+                grid-template-columns: repeat(2, minmax(160px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .pipeline-filters-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .dark .pipeline-filters,
+        .dark .pipeline-card,
+        .dark .pipeline-field select,
+        .dark .pipeline-select,
+        .dark .pipeline-action,
+        .dark .pipeline-count {
+            background: #111827;
+            border-color: #374151;
+            color: #f9fafb;
+        }
+
+        .dark .pipeline-column {
+            background: #0f172a;
+            border-color: #374151;
+        }
+
+        .dark .pipeline-card-meta,
+        .dark .pipeline-field label,
+        .dark .pipeline-status-label {
+            color: #9ca3af;
+        }
+
+        .dark .pipeline-priority,
+        .dark .pipeline-clear-button {
+            background: #1f2937;
+            color: #f9fafb;
+        }
+
+        .dark .pipeline-action-primary {
+            background: #f9fafb;
+            color: #111827;
+            border-color: #f9fafb;
+        }
+    </style>
+
+    <div class="pipeline-filters">
+        <div class="pipeline-filters-title">
             {{ __('leads.filters') }}
         </div>
 
-        <div class="grid gap-3 md:grid-cols-2 xl:grid-cols-5">
+        <div class="pipeline-filters-grid">
             @if (auth()->user()?->can('view_all_leads'))
-                <div>
-                    <label class="mb-1 block text-xs text-gray-500">
-                        {{ __('leads.agent') }}
-                    </label>
-                    <select wire:model.live="assignedToUserId" class="w-full rounded-md border-gray-300 text-sm dark:border-gray-700 dark:bg-gray-900">
+                <div class="pipeline-field">
+                    <label>{{ __('leads.agent') }}</label>
+                    <select wire:model.live="assignedToUserId">
                         <option value="">{{ __('leads.all') }}</option>
                         @foreach ($this->users as $userId => $userName)
                             <option value="{{ $userId }}">{{ $userName }}</option>
@@ -19,11 +225,9 @@
                 </div>
             @endif
 
-            <div>
-                <label class="mb-1 block text-xs text-gray-500">
-                    {{ __('leads.source') }}
-                </label>
-                <select wire:model.live="source" class="w-full rounded-md border-gray-300 text-sm dark:border-gray-700 dark:bg-gray-900">
+            <div class="pipeline-field">
+                <label>{{ __('leads.source') }}</label>
+                <select wire:model.live="source">
                     <option value="">{{ __('leads.all') }}</option>
                     <option value="website">{{ __('leads.website') }}</option>
                     <option value="facebook">Facebook</option>
@@ -35,11 +239,9 @@
                 </select>
             </div>
 
-            <div>
-                <label class="mb-1 block text-xs text-gray-500">
-                    {{ __('leads.intent') }}
-                </label>
-                <select wire:model.live="intent" class="w-full rounded-md border-gray-300 text-sm dark:border-gray-700 dark:bg-gray-900">
+            <div class="pipeline-field">
+                <label>{{ __('leads.intent') }}</label>
+                <select wire:model.live="intent">
                     <option value="">{{ __('leads.all') }}</option>
                     <option value="buy">{{ __('leads.buy') }}</option>
                     <option value="sell">{{ __('leads.sell') }}</option>
@@ -47,11 +249,9 @@
                 </select>
             </div>
 
-            <div>
-                <label class="mb-1 block text-xs text-gray-500">
-                    {{ __('leads.interest_target_type') }}
-                </label>
-                <select wire:model.live="interestTargetType" class="w-full rounded-md border-gray-300 text-sm dark:border-gray-700 dark:bg-gray-900">
+            <div class="pipeline-field">
+                <label>{{ __('leads.interest_target_type') }}</label>
+                <select wire:model.live="interestTargetType">
                     <option value="">{{ __('leads.all') }}</option>
                     <option value="general">{{ __('leads.general') }}</option>
                     <option value="development">{{ __('leads.development') }}</option>
@@ -60,11 +260,9 @@
                 </select>
             </div>
 
-            <div>
-                <label class="mb-1 block text-xs text-gray-500">
-                    {{ __('leads.priority') }}
-                </label>
-                <select wire:model.live="priority" class="w-full rounded-md border-gray-300 text-sm dark:border-gray-700 dark:bg-gray-900">
+            <div class="pipeline-field">
+                <label>{{ __('leads.priority') }}</label>
+                <select wire:model.live="priority">
                     <option value="">{{ __('leads.all') }}</option>
                     <option value="low">{{ __('leads.priority_low') }}</option>
                     <option value="normal">{{ __('leads.priority_normal') }}</option>
@@ -74,105 +272,96 @@
             </div>
         </div>
 
-        <div class="mt-3">
-            <button
-                type="button"
-                wire:click="clearFilters"
-                class="rounded-md bg-gray-100 px-3 py-2 text-xs hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700"
-            >
-                {{ __('leads.clear_filters') }}
-            </button>
-        </div>
+        <button type="button" wire:click="clearFilters" class="pipeline-clear-button">
+            {{ __('leads.clear_filters') }}
+        </button>
     </div>
-    <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-7">
-        @foreach ($this->statuses as $status)
-            <div class="rounded-xl border border-gray-200 bg-white p-3 shadow-sm dark:border-gray-800 dark:bg-gray-900">
-                <div class="mb-3 flex items-center justify-between">
-                    <h3 class="text-sm font-semibold">
-                        {{ __("leads.status_{$status}") }}
-                    </h3>
 
-                    <span class="rounded-full bg-gray-100 px-2 py-1 text-xs dark:bg-gray-800">
+    <div class="pipeline-grid">
+        @foreach ($this->statuses as $status)
+            <div class="pipeline-column">
+                <div class="pipeline-column-header">
+                    <h3>{{ __("leads.status_{$status}") }}</h3>
+
+                    <span class="pipeline-count">
                         {{ ($this->leads[$status] ?? collect())->count() }}
                     </span>
                 </div>
 
-                <div class="space-y-3">
+                <div>
                     @forelse (($this->leads[$status] ?? collect()) as $lead)
-                        <div class="rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-800 dark:bg-gray-950">
-                            <div class="flex items-start justify-between gap-2">
+                        <div class="pipeline-card">
+                            <div class="pipeline-card-top">
                                 <div>
-                                    <div class="font-medium">
+                                    <div class="pipeline-card-title">
                                         {{ $lead->full_name ?: $lead->phone ?: $lead->email }}
                                     </div>
 
-                                    <div class="mt-1 text-xs text-gray-500">
+                                    <div class="pipeline-card-meta">
                                         {{ $lead->primary_contact ?: __('leads.no_contact_data') }}
                                     </div>
                                 </div>
 
                                 @if ($lead->priority)
-                                    <span class="rounded-full bg-gray-200 px-2 py-1 text-[10px] uppercase dark:bg-gray-800">
+                                    <span class="pipeline-priority">
                                         {{ __("leads.priority_{$lead->priority}") }}
                                     </span>
                                 @endif
                             </div>
 
-                            <div class="mt-3 flex flex-wrap gap-2 text-xs">
+                            <div class="pipeline-actions">
                                 @if ($lead->call_url)
-                                    <a href="{{ $lead->call_url }}" class="rounded-md bg-white px-2 py-1 ring-1 ring-gray-200 hover:bg-gray-100 dark:bg-gray-900 dark:ring-gray-700">
+                                    <a href="{{ $lead->call_url }}" class="pipeline-action">
                                         {{ __('leads.call') }}
                                     </a>
                                 @endif
 
                                 @if ($lead->whatsapp_url)
-                                    <a href="{{ $lead->whatsapp_url }}" target="_blank" class="rounded-md bg-white px-2 py-1 ring-1 ring-gray-200 hover:bg-gray-100 dark:bg-gray-900 dark:ring-gray-700">
+                                    <a href="{{ $lead->whatsapp_url }}" target="_blank" class="pipeline-action">
                                         {{ __('leads.open_whatsapp') }}
                                     </a>
                                 @endif
 
                                 @if ($lead->email_url)
-                                    <a href="{{ $lead->email_url }}" class="rounded-md bg-white px-2 py-1 ring-1 ring-gray-200 hover:bg-gray-100 dark:bg-gray-900 dark:ring-gray-700">
+                                    <a href="{{ $lead->email_url }}" class="pipeline-action">
                                         {{ __('leads.send_email') }}
                                     </a>
                                 @endif
                             </div>
 
-                            <div class="mt-3 flex flex-wrap gap-2 text-xs">
+                            <div class="pipeline-actions">
                                 <a
                                     href="{{ \App\Filament\Resources\Leads\LeadResource::getUrl('view', ['record' => $lead]) }}"
-                                    class="rounded-md bg-gray-900 px-2 py-1 text-white hover:bg-gray-700 dark:bg-white dark:text-gray-900"
+                                    class="pipeline-action pipeline-action-primary"
                                 >
                                     {{ __('leads.view_lead') }}
                                 </a>
 
                                 <a
                                     href="{{ \App\Filament\Resources\Leads\LeadResource::getUrl('edit', ['record' => $lead]) }}"
-                                    class="rounded-md bg-gray-100 px-2 py-1 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700"
+                                    class="pipeline-action"
                                 >
                                     {{ __('leads.edit_lead') }}
                                 </a>
                             </div>
 
-                            <div class="mt-3">
-                                <label class="mb-1 block text-xs text-gray-500">
-                                    {{ __('leads.change_status') }}
-                                </label>
+                            <label class="pipeline-status-label">
+                                {{ __('leads.change_status') }}
+                            </label>
 
-                                <select
-                                    wire:change="moveLead({{ $lead->id }}, $event.target.value)"
-                                    class="w-full rounded-md border-gray-300 text-xs dark:border-gray-700 dark:bg-gray-900"
-                                >
-                                    @foreach ($this->statuses as $targetStatus)
-                                        <option value="{{ $targetStatus }}" @selected($targetStatus === $status)>
-                                            {{ __("leads.status_{$targetStatus}") }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
+                            <select
+                                wire:change="moveLead({{ $lead->id }}, $event.target.value)"
+                                class="pipeline-select"
+                            >
+                                @foreach ($this->statuses as $targetStatus)
+                                    <option value="{{ $targetStatus }}" @selected($targetStatus === $status)>
+                                        {{ __("leads.status_{$targetStatus}") }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
                     @empty
-                        <div class="rounded-lg border border-dashed border-gray-200 p-4 text-center text-xs text-gray-400 dark:border-gray-800">
+                        <div class="pipeline-empty">
                             —
                         </div>
                     @endforelse

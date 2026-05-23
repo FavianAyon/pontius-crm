@@ -80,4 +80,7 @@ return [
     'referral' => 'Referido',
     'walk_in' => 'Visita directa',
     'other' => 'Otro',
+    'my_followups' => 'Mis seguimientos',
+    'overdue_followups' => 'Seguimientos vencidos',
+    'today_followups' => 'Seguimientos de hoy',
 ];
