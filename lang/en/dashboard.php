@@ -1,0 +1,12 @@
+<?php
+
+return [
+    'total_leads' => 'Total leads',
+    'new_leads' => 'New leads',
+    'duplicates' => 'Duplicates',
+    'pending_followups' => 'Pending follow-ups',
+    'developments' => 'Developments',
+    'available_units' => 'Available units',
+    'reserved_units' => 'Reserved units',
+    'available_listings' => 'Available listings',
+];

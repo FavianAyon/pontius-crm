@@ -2,6 +2,9 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Widgets\InventoryStatsOverview;
+use App\Filament\Widgets\LeadStatsOverview;
+use App\Filament\Widgets\PendingFollowUpsTable;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -36,10 +39,15 @@ class AdminPanelProvider extends PanelProvider
             ->pages([
                 Dashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
+            //->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
+            ->discoverWidgets(in: app_path('Livewire'), for: 'App\Livewire')
+
             ->widgets([
                 AccountWidget::class,
                 FilamentInfoWidget::class,
+                InventoryStatsOverview::class,
+                LeadStatsOverview::class,
+                PendingFollowUpsTable::class,
             ])
             ->middleware([
                 EncryptCookies::class,
