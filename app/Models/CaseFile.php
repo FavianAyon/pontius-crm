@@ -86,4 +86,25 @@ class CaseFile extends Model
             );
         }
     }
+    public function getDocumentsProgressPercentAttribute(): int
+    {
+        $total = $this->documents()->count();
+
+        if ($total === 0) {
+            return 0;
+        }
+
+        $approved = $this->documents()
+            ->where('status', 'approved')
+            ->count();
+
+        return (int) round(($approved / $total) * 100);
+    }
+
+    public function getPendingDocumentsCountAttribute(): int
+    {
+        return $this->documents()
+            ->whereIn('status', ['pending', 'requested', 'rejected'])
+            ->count();
+    }
 }

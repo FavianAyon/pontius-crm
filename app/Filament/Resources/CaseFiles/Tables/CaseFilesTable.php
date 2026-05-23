@@ -52,6 +52,14 @@ class CaseFilesTable
                 TextColumn::make('assignedTo.name')
                     ->label(__('case-files.assigned_to'))
                     ->sortable(),
+                TextColumn::make('documents_progress_percent')
+                    ->label(__('case-files.progress'))
+                    ->suffix('%')
+                    ->sortable(false),
+
+                TextColumn::make('pending_documents_count')
+                    ->label(__('case-files.pending_documents'))
+                    ->sortable(false),
             ])
             ->filters([
                 SelectFilter::make('type')

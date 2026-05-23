@@ -24,4 +24,6 @@ return [
     'cancelled' => 'Cancelled',
     'generate_checklist' => 'Generate checklist',
     'checklist_generated' => 'Checklist generated',
+    'progress' => 'Progress',
+    'pending_documents' => 'Pending documents',
 ];
