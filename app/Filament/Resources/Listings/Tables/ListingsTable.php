@@ -6,6 +6,8 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
 class ListingsTable
@@ -14,10 +16,68 @@ class ListingsTable
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('title')
+                    ->label(__('listings.title'))
+                    ->searchable()
+                    ->sortable(),
+
+                TextColumn::make('development.name')
+                    ->label(__('listings.development'))
+                    ->searchable()
+                    ->sortable(),
+
+                TextColumn::make('status')
+                    ->label(__('listings.status'))
+                    ->badge()
+                    ->sortable(),
+
+                TextColumn::make('listing_type')
+                    ->label(__('listings.listing_type'))
+                    ->badge()
+                    ->sortable(),
+
+                TextColumn::make('property_type')
+                    ->label(__('listings.property_type'))
+                    ->badge()
+                    ->sortable(),
+
+                TextColumn::make('price')
+                    ->label(__('listings.price'))
+                    ->money(fn ($record) => $record->currency ?? 'USD')
+                    ->sortable(),
+
+                TextColumn::make('location')
+                    ->label(__('listings.location'))
+                    ->searchable(),
+
+                TextColumn::make('bedrooms')
+                    ->label(__('listings.bedrooms'))
+                    ->sortable(),
+
+                TextColumn::make('bathrooms')
+                    ->label(__('listings.bathrooms'))
+                    ->sortable(),
             ])
             ->filters([
-                //
+                SelectFilter::make('status')
+                    ->label(__('listings.status'))
+                    ->options([
+                        'available' => __('listings.available'),
+                        'reserved' => __('listings.reserved'),
+                        'sold' => __('listings.sold'),
+                        'inactive' => __('listings.inactive'),
+                    ]),
+
+                SelectFilter::make('listing_type')
+                    ->label(__('listings.listing_type'))
+                    ->options([
+                        'sale' => __('listings.sale'),
+                        'rent' => __('listings.rent'),
+                    ]),
+
+                SelectFilter::make('development_id')
+                    ->label(__('listings.development'))
+                    ->relationship('development', 'name'),
             ])
             ->recordActions([
                 ViewAction::make(),
