@@ -9,4 +9,7 @@ return [
     'available_units' => 'Available units',
     'reserved_units' => 'Reserved units',
     'available_listings' => 'Available listings',
+    'open_tasks' => 'Open tasks',
+    'overdue_tasks' => 'Overdue tasks',
+    'today_tasks' => 'Today tasks',
 ];
