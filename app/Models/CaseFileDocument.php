@@ -54,5 +54,16 @@ class CaseFileDocument extends Model
                 }
             }
         });
+        static::saved(function (CaseFileDocument $document) {
+            $document->caseFile?->recalculateDocumentProgress();
+        });
+
+        static::deleted(function (CaseFileDocument $document) {
+            $document->caseFile?->recalculateDocumentProgress();
+        });
+
+        static::restored(function (CaseFileDocument $document) {
+            $document->caseFile?->recalculateDocumentProgress();
+        });
     }
 }

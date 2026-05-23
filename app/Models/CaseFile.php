@@ -21,6 +21,8 @@ class CaseFile extends Model
         'title',
         'description',
         'metadata',
+        'documents_progress_percent',
+        'pending_documents_count',
     ];
 
     protected $casts = [
@@ -106,5 +108,25 @@ class CaseFile extends Model
         return $this->documents()
             ->whereIn('status', ['pending', 'requested', 'rejected'])
             ->count();
+    }
+
+    public function recalculateDocumentProgress(): void
+    {
+        $total = $this->documents()->count();
+
+        $approved = $this->documents()
+            ->where('status', 'approved')
+            ->count();
+
+        $pending = $this->documents()
+            ->whereIn('status', ['pending', 'requested', 'rejected'])
+            ->count();
+
+        $this->updateQuietly([
+            'documents_progress_percent' => $total > 0
+                ? (int) round(($approved / $total) * 100)
+                : 0,
+            'pending_documents_count' => $pending,
+        ]);
     }
 }
