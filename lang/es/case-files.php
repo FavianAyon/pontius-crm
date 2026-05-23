@@ -22,4 +22,6 @@ return [
     'approved' => 'Aprobado',
     'closed' => 'Cerrado',
     'cancelled' => 'Cancelado',
+    'generate_checklist' => 'Generar checklist',
+    'checklist_generated' => 'Checklist generado',
 ];

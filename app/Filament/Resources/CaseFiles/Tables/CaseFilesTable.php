@@ -8,7 +8,8 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
-use Filament\Tables\Table;
+use Filament\Tables\Table;use Filament\Actions\Action;
+use Filament\Notifications\Notification;
 
 class CaseFilesTable
 {
@@ -73,6 +74,18 @@ class CaseFilesTable
                     ]),
             ])
             ->recordActions([
+                Action::make('generateChecklist')
+                    ->label(__('case-files.generate_checklist'))
+                    ->icon('heroicon-o-document-check')
+                    ->color('info')
+                    ->action(function ($record) {
+                        $record->createDocumentChecklist();
+
+                        Notification::make()
+                            ->success()
+                            ->title(__('case-files.checklist_generated'))
+                            ->send();
+                    }),
                 ViewAction::make(),
                 EditAction::make(),
             ])

@@ -36,7 +36,9 @@ class CaseFile extends Model
             if (! $caseFile->folio) {
                 $caseFile->folio = 'EXP-' . now()->format('Ymd') . '-' . str_pad((string) (self::query()->count() + 1), 5, '0', STR_PAD_LEFT);
             }
+            $caseFile->createDocumentChecklist();
         });
+
     }
 
     public function lead()
@@ -66,5 +68,22 @@ class CaseFile extends Model
     public function documents()
     {
         return $this->hasMany(CaseFileDocument::class)->latest();
+    }
+    public function createDocumentChecklist(): void
+    {
+        $templates = config("crm.case_file_document_templates.{$this->type}", []);
+
+        foreach ($templates as $template) {
+            $this->documents()->firstOrCreate(
+                [
+                    'document_type' => $template['document_type'],
+                ],
+                [
+                    'name' => $template['name'],
+                    'status' => 'pending',
+                    'requested_at' => now(),
+                ]
+            );
+        }
     }
 }
