@@ -33,4 +33,6 @@ return [
     'event' => 'Event',
     'user' => 'User',
     'event_type' => 'Type',
+    'my_tasks' => 'My tasks',
+    'open_tasks' => 'Open tasks',
 ];
