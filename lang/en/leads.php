@@ -56,4 +56,8 @@ return [
     'duplicate_warning_body' => 'This lead is marked as duplicate. Match: :fields',
     'duplicate_match_fields' => 'Duplicate match fields',
     'development_unit' => 'Development unit',
+    'pipeline_board' => 'Pipeline',
+    'move_to' => 'Move to',
+    'lead_moved' => 'Lead updated',
+    'lead_moved_body' => 'The lead was moved to: :status',
 ];

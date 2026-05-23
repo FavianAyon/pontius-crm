@@ -55,6 +55,7 @@ class LeadResource extends Resource
             'create' => CreateLead::route('/create'),
             'view' => ViewLead::route('/{record}'),
             'edit' => EditLead::route('/{record}/edit'),
+            'pipeline' => Pages\LeadPipeline::route('/pipeline'),
         ];
     }
 

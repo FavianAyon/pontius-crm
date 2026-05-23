@@ -57,4 +57,8 @@ return [
     'duplicate_warning_body' => 'Este lead está marcado como duplicado. Coincidencia: :fields',
     'duplicate_match_fields' => 'Campos de coincidencia de duplicados',
     'development_unit' => 'Unidad de desarrollo',
+    'pipeline_board' => 'Pipeline',
+    'move_to' => 'Mover a',
+    'lead_moved' => 'Lead actualizado',
+    'lead_moved_body' => 'El lead fue movido a: :status',
 ];
