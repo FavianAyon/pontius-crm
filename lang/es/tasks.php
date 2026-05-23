@@ -40,4 +40,6 @@ return [
     'initial_contact' => 'Contacto inicial',
     'task_assigned_title' => 'Nueva tarea asignada',
     'task_assigned_body' => 'Se te asignó la tarea: :title',
+    'overdue_task_title' => 'Tarea vencida',
+    'overdue_task_body' => 'La tarea está vencida: :title',
 ];

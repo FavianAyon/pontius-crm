@@ -40,4 +40,6 @@ return [
     'initial_contact' => 'Initial contact',
     'task_assigned_title' => 'New task assigned',
     'task_assigned_body' => 'You were assigned the task: :title',
+    'overdue_task_title' => 'Overdue task',
+    'overdue_task_body' => 'The task is overdue: :title',
 ];
