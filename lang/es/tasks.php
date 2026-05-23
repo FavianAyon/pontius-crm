@@ -28,4 +28,9 @@ return [
     'urgent' => 'Urgente',
     'complete' => 'Completar',
     'completed_successfully' => 'Tarea completada correctamente',
+    'activity' => 'Actividad',
+    'date' => 'Fecha',
+    'event' => 'Evento',
+    'user' => 'Usuario',
+    'event_type' => 'Tipo',
 ];

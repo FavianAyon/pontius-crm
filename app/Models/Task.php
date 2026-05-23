@@ -4,10 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Models\Activity;
 
 class Task extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, LogsActivity;
 
     protected $fillable = [
         'lead_id',
@@ -58,5 +61,43 @@ class Task extends Model
             'status' => 'completed',
             'completed_at' => now(),
         ]);
+
+        if ($this->lead) {
+            $this->lead->leadActivities()->create([
+                'user_id' => auth()->id(),
+                'type' => 'task',
+                'status' => 'completed',
+                'title' => $this->title,
+                'description' => $this->description,
+                'completed_at' => now(),
+                'metadata' => [
+                    'task_id' => $this->id,
+                ],
+            ]);
+        }
+    }
+    public function activities()
+    {
+        return $this->morphMany(Activity::class, 'subject')->latest();
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->useLogName('task')
+            ->logOnly([
+                'lead_id',
+                'assigned_to_user_id',
+                'created_by_user_id',
+                'title',
+                'description',
+                'type',
+                'status',
+                'priority',
+                'due_at',
+                'completed_at',
+            ])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
     }
 }
