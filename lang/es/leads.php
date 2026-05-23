@@ -91,4 +91,6 @@ return [
     'followup_completed' => 'Seguimiento completado',
     'followup_completed_body' => 'El seguimiento fue registrado correctamente.',
     'next_followup' => 'Siguiente seguimiento',
+    'lead_assigned_title' => 'Nuevo lead asignado',
+    'lead_assigned_body' => 'Se te asignó el lead: :name',
 ];

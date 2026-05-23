@@ -38,4 +38,6 @@ return [
     'initial_contact_title' => 'Contactar nuevo lead',
     'initial_contact_description' => 'Dar primer seguimiento al lead registrado.',
     'initial_contact' => 'Contacto inicial',
+    'task_assigned_title' => 'Nueva tarea asignada',
+    'task_assigned_body' => 'Se te asignó la tarea: :title',
 ];

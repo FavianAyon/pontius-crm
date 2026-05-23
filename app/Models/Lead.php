@@ -72,13 +72,22 @@ class Lead extends Model
                 $lead->registered_by_user_id ??= auth()->id();
                 $lead->assigned_to_user_id ??= auth()->id();
             }
-        });
-        static::created(function (Lead $lead) {
 
+        });
+
+        static::created(function (Lead $lead) {
             $lead->createInitialContactTask();
 
+            if ($lead->assignedTo) {
+                \Filament\Notifications\Notification::make()
+                    ->title(__('leads.lead_assigned_title'))
+                    ->body(__('leads.lead_assigned_body', [
+                        'name' => $lead->full_name ?: $lead->phone ?: $lead->email,
+                    ]))
+                    ->success()
+                    ->sendToDatabase($lead->assignedTo);
+            }
         });
-
     }
 
     public function getActivitylogOptions(): LogOptions
@@ -277,6 +286,10 @@ class Lead extends Model
     }
     public function createInitialContactTask(): void
     {
+        if (! $this->email && ! $this->phone && ! $this->whatsapp) {
+            return;
+        }
+
         if ($this->tasks()->where('type', 'initial_contact')->exists()) {
             return;
         }
@@ -289,7 +302,7 @@ class Lead extends Model
             'type' => 'initial_contact',
             'status' => 'open',
             'priority' => $this->priority ?? 'normal',
-            'due_at' => now()->addHour(),
+            'due_at' => now()->addMinutes(config('crm.initial_contact_due_minutes', 60)),
         ]);
     }
 }

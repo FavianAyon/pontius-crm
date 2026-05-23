@@ -90,4 +90,6 @@ return [
     'followup_completed' => 'Follow-up completed',
     'followup_completed_body' => 'The follow-up was registered successfully.',
     'next_followup' => 'Next follow-up',
+    'lead_assigned_title' => 'New lead assigned',
+    'lead_assigned_body' => 'You were assigned the lead: :name',
 ];

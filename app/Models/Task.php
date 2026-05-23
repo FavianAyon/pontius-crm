@@ -38,6 +38,17 @@ class Task extends Model
             $task->created_by_user_id ??= auth()->id();
             $task->assigned_to_user_id ??= auth()->id();
         });
+        static::created(function (Task $task) {
+            if ($task->assignedTo) {
+                \Filament\Notifications\Notification::make()
+                    ->title(__('tasks.task_assigned_title'))
+                    ->body(__('tasks.task_assigned_body', [
+                        'title' => $task->title,
+                    ]))
+                    ->success()
+                    ->sendToDatabase($task->assignedTo);
+            }
+        });
     }
 
     public function lead()
