@@ -73,6 +73,12 @@ class Lead extends Model
                 $lead->assigned_to_user_id ??= auth()->id();
             }
         });
+        static::created(function (Lead $lead) {
+
+            $lead->createInitialContactTask();
+
+        });
+
     }
 
     public function getActivitylogOptions(): LogOptions
@@ -268,5 +274,22 @@ class Lead extends Model
     public function tasks()
     {
         return $this->hasMany(Task::class)->latest();
+    }
+    public function createInitialContactTask(): void
+    {
+        if ($this->tasks()->where('type', 'initial_contact')->exists()) {
+            return;
+        }
+
+        $this->tasks()->create([
+            'assigned_to_user_id' => $this->assigned_to_user_id,
+            'created_by_user_id' => $this->registered_by_user_id,
+            'title' => __('tasks.initial_contact_title'),
+            'description' => __('tasks.initial_contact_description'),
+            'type' => 'initial_contact',
+            'status' => 'open',
+            'priority' => $this->priority ?? 'normal',
+            'due_at' => now()->addHour(),
+        ]);
     }
 }

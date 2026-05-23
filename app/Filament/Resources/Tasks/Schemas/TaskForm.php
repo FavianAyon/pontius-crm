@@ -50,6 +50,7 @@ class TaskForm
                                 'documents' => __('tasks.documents'),
                                 'listing' => __('tasks.listing'),
                                 'contract' => __('tasks.contract'),
+                                'initial_contact' => __('tasks.initial_contact'),
                             ])
                             ->default('general')
                             ->required(),

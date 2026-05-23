@@ -35,4 +35,7 @@ return [
     'event_type' => 'Type',
     'my_tasks' => 'My tasks',
     'open_tasks' => 'Open tasks',
+    'initial_contact_title' => 'Contact new lead',
+    'initial_contact_description' => 'Give first follow-up to the registered lead.',
+    'initial_contact' => 'Initial contact',
 ];
