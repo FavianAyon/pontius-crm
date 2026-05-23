@@ -26,4 +26,9 @@ return [
     'house' => 'Casa',
     'land' => 'Terreno',
     'commercial' => 'Comercial',
+    'activity' => 'Actividad',
+    'date' => 'Fecha',
+    'event' => 'Evento',
+    'user' => 'Usuario',
+    'type' => 'Tipo',
 ];

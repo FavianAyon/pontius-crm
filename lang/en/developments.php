@@ -16,4 +16,9 @@ return [
     'pre_sale' => 'Pre-sale',
     'selling' => 'Selling',
     'sold_out' => 'Sold out',
+    'activity' => 'Activity',
+    'date' => 'Date',
+    'event' => 'Event',
+    'user' => 'User',
+    'type' => 'Type',
 ];

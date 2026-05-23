@@ -16,4 +16,9 @@ return [
     'pre_sale' => 'Preventa',
     'selling' => 'En venta',
     'sold_out' => 'Vendido',
+    'activity' => 'Actividad',
+    'date' => 'Fecha',
+    'event' => 'Evento',
+    'user' => 'Usuario',
+    'type' => 'Tipo',
 ];
