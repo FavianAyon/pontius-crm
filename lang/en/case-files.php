@@ -26,4 +26,9 @@ return [
     'checklist_generated' => 'Checklist generated',
     'progress' => 'Progress',
     'pending_documents' => 'Pending documents',
+    'activity' => 'Activity',
+    'date' => 'Date',
+    'event' => 'Event',
+    'user' => 'User',
+    'event_type' => 'Type',
 ];

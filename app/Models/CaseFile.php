@@ -4,10 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Models\Activity;
 
 class CaseFile extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, LogsActivity;
 
     protected $fillable = [
         'folio',
@@ -154,5 +157,30 @@ class CaseFile extends Model
         }
 
         $this->updateQuietly(['status' => 'open']);
+    }
+    public function activities()
+    {
+        return $this->morphMany(Activity::class, 'subject')->latest();
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->useLogName('case_file')
+            ->logOnly([
+                'folio',
+                'type',
+                'status',
+                'lead_id',
+                'listing_id',
+                'development_unit_id',
+                'assigned_to_user_id',
+                'title',
+                'description',
+                'documents_progress_percent',
+                'pending_documents_count',
+            ])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
     }
 }

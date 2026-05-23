@@ -4,10 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Models\Activity;
 
 class CaseFileDocument extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, LogsActivity;
 
     protected $fillable = [
         'case_file_id',
@@ -65,5 +68,29 @@ class CaseFileDocument extends Model
         static::restored(function (CaseFileDocument $document) {
             $document->caseFile?->recalculateDocumentProgress();
         });
+    }
+    public function activities()
+    {
+        return $this->morphMany(Activity::class, 'subject')->latest();
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->useLogName('case_file_document')
+            ->logOnly([
+                'case_file_id',
+                'name',
+                'document_type',
+                'status',
+                'file_path',
+                'uploaded_by_user_id',
+                'requested_at',
+                'uploaded_at',
+                'validated_at',
+                'notes',
+            ])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
     }
 }

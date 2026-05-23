@@ -26,4 +26,9 @@ return [
     'checklist_generated' => 'Checklist generado',
     'progress' => 'Progreso',
     'pending_documents' => 'Documentos pendientes',
+    'activity' => 'Actividad',
+    'date' => 'Fecha',
+    'event' => 'Evento',
+    'user' => 'Usuario',
+    'event_type' => 'Tipo',
 ];
