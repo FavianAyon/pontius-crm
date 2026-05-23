@@ -14,7 +14,7 @@ use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
-use Filament\Tables\Table;
+use Filament\Tables\Table;use App\Filament\Resources\DevelopmentUnits\RelationManagers;
 
 class DevelopmentUnitResource extends Resource
 {
@@ -40,7 +40,7 @@ class DevelopmentUnitResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\ActivitiesRelationManager::class,
         ];
     }
 

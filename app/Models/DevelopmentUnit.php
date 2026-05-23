@@ -5,10 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Models\Activity;
 
 class DevelopmentUnit extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, LogsActivity;
 
     protected $fillable = [
         'development_id',
@@ -59,5 +62,37 @@ class DevelopmentUnit extends Model
     public function development()
     {
         return $this->belongsTo(Development::class);
+    }
+
+    public function changeStatus(string $status): void
+    {
+        $this->update([
+            'status' => $status,
+        ]);
+    }
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->useLogName('development_unit')
+            ->logOnly([
+                'development_id',
+                'unit_number',
+                'slug',
+                'flexmls_id',
+                'status',
+                'price',
+                'currency',
+                'bedrooms',
+                'bathrooms',
+                'area_m2',
+                'floor',
+                'view_type',
+            ])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
+    }
+    public function activities()
+    {
+        return $this->morphMany(Activity::class, 'subject')->latest();
     }
 }

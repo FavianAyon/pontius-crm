@@ -8,7 +8,8 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
-use Filament\Tables\Table;
+use Filament\Tables\Table;use Filament\Actions\Action;
+use Filament\Notifications\Notification;
 
 class DevelopmentUnitsTable
 {
@@ -70,6 +71,94 @@ class DevelopmentUnitsTable
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
+                Action::make('markAvailable')
+                    ->label(__('development-units.mark_available'))
+                    ->icon('heroicon-o-check-circle')
+                    ->color('success')
+                    ->visible(fn ($record) => $record->status !== 'available')
+                    ->action(function ($record) {
+                        $record->changeStatus('available');
+
+                        Notification::make()
+                            ->success()
+                            ->title(__('development-units.status_updated'))
+                            ->body(__('development-units.status_updated_body', [
+                                'status' => __('development-units.available'),
+                            ]))
+                            ->send();
+                    }),
+
+                Action::make('markReserved')
+                    ->label(__('development-units.mark_reserved'))
+                    ->icon('heroicon-o-clock')
+                    ->color('warning')
+                    ->visible(fn ($record) => $record->status !== 'reserved')
+                    ->action(function ($record) {
+                        $record->changeStatus('reserved');
+
+                        Notification::make()
+                            ->success()
+                            ->title(__('development-units.status_updated'))
+                            ->body(__('development-units.status_updated_body', [
+                                'status' => __('development-units.reserved'),
+                            ]))
+                            ->send();
+                    }),
+
+                Action::make('markSold')
+                    ->label(__('development-units.mark_sold'))
+                    ->icon('heroicon-o-currency-dollar')
+                    ->color('danger')
+                    ->requiresConfirmation()
+                    ->visible(fn ($record) => $record->status !== 'sold')
+                    ->action(function ($record) {
+                        $record->changeStatus('sold');
+
+                        Notification::make()
+                            ->success()
+                            ->title(__('development-units.status_updated'))
+                            ->body(__('development-units.status_updated_body', [
+                                'status' => __('development-units.sold'),
+                            ]))
+                            ->send();
+                    }),
+
+                Action::make('markBlocked')
+                    ->label(__('development-units.mark_blocked'))
+                    ->icon('heroicon-o-lock-closed')
+                    ->color('gray')
+                    ->visible(fn ($record) => $record->status !== 'blocked')
+                    ->action(function ($record) {
+                        $record->changeStatus('blocked');
+
+                        Notification::make()
+                            ->success()
+                            ->title(__('development-units.status_updated'))
+                            ->body(__('development-units.status_updated_body', [
+                                'status' => __('development-units.blocked'),
+                            ]))
+                            ->send();
+                    }),
+
+                Action::make('markInactive')
+                    ->label(__('development-units.mark_inactive'))
+                    ->icon('heroicon-o-eye-slash')
+                    ->color('gray')
+                    ->visible(fn ($record) => $record->status !== 'inactive')
+                    ->action(function ($record) {
+                        $record->changeStatus('inactive');
+
+                        Notification::make()
+                            ->success()
+                            ->title(__('development-units.status_updated'))
+                            ->body(__('development-units.status_updated_body', [
+                                'status' => __('development-units.inactive'),
+                            ]))
+                            ->send();
+                    }),
+
+                EditAction::make(),
+                ViewAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
