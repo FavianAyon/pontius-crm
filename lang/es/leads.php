@@ -56,5 +56,5 @@ return [
     'duplicate_warning' => 'Alerta de duplicado',
     'duplicate_warning_body' => 'Este lead está marcado como duplicado. Coincidencia: :fields',
     'duplicate_match_fields' => 'Campos de coincidencia de duplicados',
-
+    'development_unit' => 'Unidad de desarrollo',
 ];

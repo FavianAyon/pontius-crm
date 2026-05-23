@@ -44,6 +44,7 @@ class Lead extends Model
         'is_duplicate',
         'duplicate_of_lead_id',
         'duplicate_match_fields',
+        'development_unit_id',
     ];
     protected $casts = [
         'budget_min' => 'decimal:2',
@@ -220,6 +221,10 @@ class Lead extends Model
     public function development()
     {
         return $this->belongsTo(Development::class);
+    }
+    public function developmentUnit()
+    {
+        return $this->belongsTo(DevelopmentUnit::class);
     }
 
     public function listing()

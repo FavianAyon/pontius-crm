@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+use Illuminate\Support\Str;
 class Development extends Model
 {
     use SoftDeletes;
@@ -28,5 +28,16 @@ class Development extends Model
     public function listings()
     {
         return $this->hasMany(Listing::class);
+    }
+
+    public function units()
+    {
+        return $this->hasMany(DevelopmentUnit::class);
+    }
+    protected static function booted(): void
+    {
+        static::saving(function (Development $development) {
+            $development->slug = Str::slug($development->name);
+        });
     }
 }

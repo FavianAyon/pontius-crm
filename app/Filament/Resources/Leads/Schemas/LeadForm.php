@@ -69,10 +69,24 @@ class LeadForm
                                 ->options([
                                     'general' => __('leads.general'),
                                     'development' => __('leads.development'),
+                                    'development_unit' => __('leads.development_unit'),
                                     'listing' => __('leads.listing'),
                                 ])
                                 ->default('general')
                                 ->live()
+                                ->afterStateUpdated(function ($state, $set) {
+                                    if ($state !== 'development') {
+                                        $set('development_id', null);
+                                    }
+
+                                    if ($state !== 'development_unit') {
+                                        $set('development_unit_id', null);
+                                    }
+
+                                    if ($state !== 'listing') {
+                                        $set('listing_id', null);
+                                    }
+                                })
                                 ->required(),
 
                             Select::make('preferred_language')
@@ -88,14 +102,28 @@ class LeadForm
                             ->label(__('leads.development'))
                             ->relationship('development', 'name')
                             ->searchable()
-                            ->preload()
+                            ->preload()->live()
                             ->visible(fn ($get) => in_array($get('interest_target_type'), ['development'])),
+
+                        Select::make('development_unit_id')
+                            ->label(__('leads.development_unit'))
+                            ->relationship(
+                                name: 'developmentUnit',
+                                titleAttribute: 'unit_number',
+                                modifyQueryUsing: fn ($query) => $query->with('development')
+                            )
+                            ->getOptionLabelFromRecordUsing(fn ($record) =>
+                            "{$record->development?->name} - {$record->unit_number}"
+                            )
+                            ->searchable(['unit_number', 'slug', 'flexmls_id'])
+                            ->preload()->live()
+                            ->visible(fn ($get) => $get('interest_target_type') === 'development_unit'),
 
                         Select::make('listing_id')
                             ->label(__('leads.listing'))
                             ->relationship('listing', 'title')
                             ->searchable()
-                            ->preload()
+                            ->preload()->live()
                             ->visible(fn ($get) => in_array($get('interest_target_type'), ['listing'])),
 
                         Grid::make(2)->schema([

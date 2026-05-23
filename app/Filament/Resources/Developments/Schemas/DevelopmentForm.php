@@ -29,9 +29,8 @@ class DevelopmentForm
 
                         TextInput::make('slug')
                             ->label(__('developments.slug'))
-                            ->required()
-                            ->unique(ignoreRecord: true)
-                            ->maxLength(255),
+                            ->disabled()
+                            ->dehydrated(false),
 
                         Select::make('status')
                             ->label(__('developments.status'))

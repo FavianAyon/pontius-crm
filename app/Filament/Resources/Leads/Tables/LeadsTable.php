@@ -70,6 +70,10 @@ class LeadsTable
                     ->badge()
                     ->separator(',')
                     ->visible(fn () => auth()->user()?->can('view_all_leads')),
+                TextColumn::make('developmentUnit.unit_number')
+                    ->label(__('leads.development_unit'))
+                    ->searchable()
+                    ->toggleable(),
             ])
             ->filters([
                 SelectFilter::make('intent')

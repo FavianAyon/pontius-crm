@@ -1,0 +1,24 @@
+<?php
+
+return [
+    'unit' => 'Unidad',
+    'units' => 'Unidades',
+    'development' => 'Desarrollo',
+    'unit_number' => 'Número de unidad',
+    'slug' => 'Slug',
+    'flexmls_id' => 'ID FlexMLS',
+    'status' => 'Estado',
+    'price' => 'Precio',
+    'currency' => 'Moneda',
+    'bedrooms' => 'Recámaras',
+    'bathrooms' => 'Baños',
+    'area_m2' => 'Área m²',
+    'floor' => 'Piso',
+    'view_type' => 'Tipo de vista',
+    'description' => 'Descripción',
+    'available' => 'Disponible',
+    'reserved' => 'Reservada',
+    'sold' => 'Vendida',
+    'blocked' => 'Bloqueada',
+    'inactive' => 'Inactiva',
+];

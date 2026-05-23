@@ -1,0 +1,24 @@
+<?php
+
+return [
+    'unit' => 'Unit',
+    'units' => 'Units',
+    'development' => 'Development',
+    'unit_number' => 'Unit number',
+    'slug' => 'Slug',
+    'flexmls_id' => 'FlexMLS ID',
+    'status' => 'Status',
+    'price' => 'Price',
+    'currency' => 'Currency',
+    'bedrooms' => 'Bedrooms',
+    'bathrooms' => 'Bathrooms',
+    'area_m2' => 'Area m²',
+    'floor' => 'Floor',
+    'view_type' => 'View type',
+    'description' => 'Description',
+    'available' => 'Available',
+    'reserved' => 'Reserved',
+    'sold' => 'Sold',
+    'blocked' => 'Blocked',
+    'inactive' => 'Inactive',
+];

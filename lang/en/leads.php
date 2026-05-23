@@ -55,4 +55,5 @@ return [
     'duplicate_warning' => 'Duplicate warning',
     'duplicate_warning_body' => 'This lead is marked as duplicate. Match: :fields',
     'duplicate_match_fields' => 'Duplicate match fields',
+    'development_unit' => 'Development unit',
 ];
