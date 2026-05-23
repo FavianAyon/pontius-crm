@@ -12,4 +12,6 @@ return [
     'open_tasks' => 'Tareas abiertas',
     'overdue_tasks' => 'Tareas vencidas',
     'today_tasks' => 'Tareas de hoy',
+    'work_center' => 'Centro de trabajo',
+    'new_assigned_leads' => 'Leads nuevos asignados',
 ];

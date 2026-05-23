@@ -12,4 +12,6 @@ return [
     'open_tasks' => 'Open tasks',
     'overdue_tasks' => 'Overdue tasks',
     'today_tasks' => 'Today tasks',
+    'work_center' => 'Work center',
+    'new_assigned_leads' => 'New assigned leads',
 ];
