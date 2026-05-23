@@ -59,38 +59,12 @@ class CaseFileDocumentsTable
             ])
             ->recordActions([
                 Action::make('approve')
-                    ->label(__('case-file-documents.approved'))
-                    ->icon('heroicon-o-check-circle')
-                    ->color('success')
-                    ->visible(fn ($record) => $record->status !== 'approved')
-                    ->action(function ($record) {
-                        $record->update([
-                            'status' => 'approved',
-                            'validated_at' => now(),
-                        ]);
-
-                        Notification::make()
-                            ->success()
-                            ->title(__('case-file-documents.approved'))
-                            ->send();
-                    }),
+                    ->label(__('case-file-documents.approve'))
+                    ->visible(fn ($record) => auth()->user()?->can('approve', $record)),
 
                 Action::make('reject')
-                    ->label(__('case-file-documents.rejected'))
-                    ->icon('heroicon-o-x-circle')
-                    ->color('danger')
-                    ->visible(fn ($record) => $record->status !== 'rejected')
-                    ->action(function ($record) {
-                        $record->update([
-                            'status' => 'rejected',
-                            'validated_at' => null,
-                        ]);
-
-                        Notification::make()
-                            ->warning()
-                            ->title(__('case-file-documents.rejected'))
-                            ->send();
-                    }),
+                    ->label(__('case-file-documents.reject'))
+                    ->visible(fn ($record) => auth()->user()?->can('reject', $record)),
 
                 ViewAction::make(),
                 EditAction::make(),

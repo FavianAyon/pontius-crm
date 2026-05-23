@@ -12,7 +12,10 @@ use App\Models\DevelopmentUnit;
 use App\Policies\DevelopmentPolicy;
 use App\Policies\ListingPolicy;
 use App\Policies\DevelopmentUnitPolicy;
-
+use App\Models\CaseFile;
+use App\Models\CaseFileDocument;
+use App\Policies\CaseFilePolicy;
+use App\Policies\CaseFileDocumentPolicy;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -33,5 +36,8 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Development::class, DevelopmentPolicy::class);
         Gate::policy(Listing::class, ListingPolicy::class);
         Gate::policy(DevelopmentUnit::class, DevelopmentUnitPolicy::class);
+        Gate::policy(CaseFile::class, CaseFilePolicy::class);
+        Gate::policy(CaseFileDocument::class, CaseFileDocumentPolicy::class);
+
     }
 }

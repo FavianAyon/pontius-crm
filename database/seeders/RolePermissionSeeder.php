@@ -37,6 +37,19 @@ class RolePermissionSeeder extends Seeder
             'update_development_unit',
             'delete_development_unit',
             'change_development_unit_status',
+            'view_any_case_file',
+            'view_case_file',
+            'create_case_file',
+            'update_case_file',
+            'delete_case_file',
+
+            'view_any_case_file_document',
+            'view_case_file_document',
+            'create_case_file_document',
+            'update_case_file_document',
+            'delete_case_file_document',
+            'approve_case_file_document',
+            'reject_case_file_document',
         ];
 
         foreach ($permissions as $permission) {
@@ -74,6 +87,17 @@ class RolePermissionSeeder extends Seeder
             'create_development_unit',
             'update_development_unit',
             'change_development_unit_status',
+            'view_any_case_file',
+            'view_case_file',
+            'create_case_file',
+            'update_case_file',
+
+            'view_any_case_file_document',
+            'view_case_file_document',
+            'create_case_file_document',
+            'update_case_file_document',
+            'approve_case_file_document',
+            'reject_case_file_document',
         ]);
 
         $agent->syncPermissions([
@@ -87,6 +111,15 @@ class RolePermissionSeeder extends Seeder
             'view_listing',
             'view_any_development_unit',
             'view_development_unit',
+            'view_any_case_file',
+            'view_case_file',
+            'create_case_file',
+            'update_case_file',
+
+            'view_any_case_file_document',
+            'view_case_file_document',
+            'create_case_file_document',
+            'update_case_file_document',
         ]);
 
         $firstUser = User::query()->first();
