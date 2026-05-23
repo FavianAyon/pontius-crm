@@ -1,11 +1,14 @@
 <?php
 
-namespace App\Filament\Widgets;
+namespace App\Livewire;
 
 use App\Models\Task;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget;
+use App\Filament\Resources\Tasks\TaskResource;
+use Filament\Actions\Action;
+use Filament\Notifications\Notification;
 
 class OpenTasksTable extends TableWidget
 {
@@ -37,6 +40,25 @@ class OpenTasksTable extends TableWidget
                 TextColumn::make('due_at')
                     ->label(__('tasks.due_at'))
                     ->dateTime(),
+            ])
+            ->recordActions([
+                Action::make('openTask')
+                    ->label(__('tasks.task'))
+                    ->icon('heroicon-o-eye')
+                    ->url(fn ($record) => TaskResource::getUrl('view', ['record' => $record])),
+
+                Action::make('complete')
+                    ->label(__('tasks.complete'))
+                    ->icon('heroicon-o-check-circle')
+                    ->color('success')
+                    ->action(function ($record): void {
+                        $record->markAsCompleted();
+
+                        Notification::make()
+                            ->success()
+                            ->title(__('tasks.completed_successfully'))
+                            ->send();
+                    }),
             ]);
     }
 }

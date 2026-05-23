@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Filament\Widgets;
+namespace App\Livewire;
 
 use App\Models\Lead;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Builder;use App\Filament\Resources\Leads\LeadResource;
+use Filament\Actions\Action;
 
 class PendingFollowUpsTable extends TableWidget
 {
@@ -37,6 +38,12 @@ class PendingFollowUpsTable extends TableWidget
                     ->label(__('leads.next_follow_up_at'))
                     ->dateTime()
                     ->sortable(),
+            ])
+            ->recordActions([
+                Action::make('openLead')
+                    ->label(__('leads.open_lead'))
+                    ->icon('heroicon-o-eye')
+                    ->url(fn ($record) => LeadResource::getUrl('view', ['record' => $record])),
             ])
             ->defaultSort('next_follow_up_at', 'asc');
     }
