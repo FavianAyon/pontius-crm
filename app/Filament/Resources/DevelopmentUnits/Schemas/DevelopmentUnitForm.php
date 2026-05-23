@@ -23,7 +23,8 @@ class DevelopmentUnitForm
                             ->searchable()
                             ->preload()
                             ->required()
-                            ->live(),
+                            ->live()
+                            ->hidden(fn ($livewire) => $livewire instanceof \Filament\Resources\RelationManagers\RelationManager),
 
                         TextInput::make('unit_number')
                             ->label(__('development-units.unit_number'))
