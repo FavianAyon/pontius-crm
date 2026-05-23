@@ -86,7 +86,10 @@ class DevelopmentUnitsTable
                                 'status' => __('development-units.available'),
                             ]))
                             ->send();
-                    }),
+                    })
+                    ->visible(fn ($record) =>
+                    auth()->user()?->can('changeStatus', $record)
+                    ),
 
                 Action::make('markReserved')
                     ->label(__('development-units.mark_reserved'))
@@ -103,7 +106,10 @@ class DevelopmentUnitsTable
                                 'status' => __('development-units.reserved'),
                             ]))
                             ->send();
-                    }),
+                    })
+                    ->visible(fn ($record) =>
+                    auth()->user()?->can('changeStatus', $record)
+                    ),
 
                 Action::make('markSold')
                     ->label(__('development-units.mark_sold'))
@@ -121,7 +127,10 @@ class DevelopmentUnitsTable
                                 'status' => __('development-units.sold'),
                             ]))
                             ->send();
-                    }),
+                    })
+                    ->visible(fn ($record) =>
+                    auth()->user()?->can('changeStatus', $record)
+                    ),
 
                 Action::make('markBlocked')
                     ->label(__('development-units.mark_blocked'))
@@ -138,7 +147,10 @@ class DevelopmentUnitsTable
                                 'status' => __('development-units.blocked'),
                             ]))
                             ->send();
-                    }),
+                    })
+                    ->visible(fn ($record) =>
+                    auth()->user()?->can('changeStatus', $record)
+                    ),
 
                 Action::make('markInactive')
                     ->label(__('development-units.mark_inactive'))
@@ -155,7 +167,10 @@ class DevelopmentUnitsTable
                                 'status' => __('development-units.inactive'),
                             ]))
                             ->send();
-                    }),
+                    })
+                    ->visible(fn ($record) =>
+                    auth()->user()?->can('changeStatus', $record)
+                    ),
 
                 EditAction::make(),
                 ViewAction::make(),
