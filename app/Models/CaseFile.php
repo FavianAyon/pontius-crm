@@ -63,4 +63,8 @@ class CaseFile extends Model
     {
         return $this->belongsTo(User::class, 'created_by_user_id');
     }
+    public function documents()
+    {
+        return $this->hasMany(CaseFileDocument::class)->latest();
+    }
 }
