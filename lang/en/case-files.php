@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'case_file' => 'Case file',
+    'case_files' => 'Case files',
+    'folio' => 'Folio',
+    'type' => 'Type',
+    'status' => 'Status',
+    'lead' => 'Lead',
+    'listing' => 'Listing',
+    'development_unit' => 'Development unit',
+    'assigned_to' => 'Assigned to',
+    'created_by' => 'Created by',
+    'title' => 'Title',
+    'description' => 'Description',
+    'lead_type' => 'Lead',
+    'buyer' => 'Buyer',
+    'seller' => 'Seller',
+    'listing_file' => 'Listing file',
+    'open' => 'Open',
+    'in_review' => 'In review',
+    'approved' => 'Approved',
+    'closed' => 'Closed',
+    'cancelled' => 'Cancelled',
+];

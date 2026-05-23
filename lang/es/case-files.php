@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'case_file' => 'Expediente',
+    'case_files' => 'Expedientes',
+    'folio' => 'Folio',
+    'type' => 'Tipo',
+    'status' => 'Estado',
+    'lead' => 'Lead',
+    'listing' => 'Listing',
+    'development_unit' => 'Unidad de desarrollo',
+    'assigned_to' => 'Asignado a',
+    'created_by' => 'Creado por',
+    'title' => 'Título',
+    'description' => 'Descripción',
+    'lead_type' => 'Lead',
+    'buyer' => 'Comprador',
+    'seller' => 'Vendedor',
+    'listing_file' => 'Expediente de listing',
+    'open' => 'Abierto',
+    'in_review' => 'En revisión',
+    'approved' => 'Aprobado',
+    'closed' => 'Cerrado',
+    'cancelled' => 'Cancelado',
+];
