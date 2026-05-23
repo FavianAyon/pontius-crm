@@ -127,9 +127,15 @@ class LeadsTable
                     }),
             ])
             ->toolbarActions([
+
+                Action::make('openPipeline')
+                    ->label(__('leads.open_pipeline'))
+                    ->icon('heroicon-o-view-columns')
+                    ->url(fn () => \App\Filament\Resources\Leads\LeadResource::getUrl('pipeline')),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
             ]);
+
     }
 }

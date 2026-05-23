@@ -231,4 +231,38 @@ class Lead extends Model
     {
         return $this->belongsTo(Listing::class);
     }
+
+    public function getPrimaryContactAttribute(): ?string
+    {
+        return $this->whatsapp ?: $this->phone ?: $this->email;
+    }
+
+    public function getWhatsappUrlAttribute(): ?string
+    {
+        if (! $this->whatsapp) {
+            return null;
+        }
+
+        $phone = preg_replace('/\D+/', '', $this->whatsapp);
+
+        return "https://wa.me/{$phone}";
+    }
+
+    public function getCallUrlAttribute(): ?string
+    {
+        if (! $this->phone) {
+            return null;
+        }
+
+        return "tel:{$this->phone}";
+    }
+
+    public function getEmailUrlAttribute(): ?string
+    {
+        if (! $this->email) {
+            return null;
+        }
+
+        return "mailto:{$this->email}";
+    }
 }
