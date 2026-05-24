@@ -29,4 +29,6 @@ return [
     'other' => 'Otro',
     'approve' => 'Aprobar',
     'reject' => 'Rechazar',
+    'upload_file' => 'Subir archivo',
+    'no_documents' => 'Sin documentos',
 ];

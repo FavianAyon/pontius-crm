@@ -73,6 +73,65 @@
                 grid-template-columns: 1fr;
             }
         }
+        .lead360-documents {
+            display: grid;
+            gap: 8px;
+            margin-top: 8px;
+            margin-bottom: 14px;
+        }
+
+        .lead360-document {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 10px;
+            background: #f9fafb;
+        }
+
+        .lead360-document-name {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .lead360-document-type {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 2px;
+        }
+
+        .lead360-status {
+            display: inline-block;
+            border-radius: 999px;
+            padding: 4px 8px;
+            font-size: 11px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .lead360-status-pending,
+        .lead360-status-requested {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .lead360-status-uploaded,
+        .lead360-status-in_review {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .lead360-status-approved {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .lead360-status-rejected {
+            background: #fee2e2;
+            color: #991b1b;
+        }
     </style>
 
     <div class="lead360-grid">
@@ -197,12 +256,33 @@
                     </div>
 
                     <div style="margin-top: 8px; margin-bottom: 14px;">
-                        @foreach ($caseFile->documents as $document)
-                            <div class="lead360-row">
-                                <span class="lead360-label">{{ $document->name }}</span>
-                                <span class="lead360-value">{{ __("case-file-documents.{$document->status}") }}</span>
+                        @if ($caseFile->documents->count())
+                            <div class="lead360-documents">
+                                @foreach ($caseFile->documents as $document)
+                                    <div class="lead360-document">
+                                        <div>
+                                            <div class="lead360-document-name">
+                                                {{ $document->name }}
+                                            </div>
+
+                                            <div class="lead360-document-type">
+                                                {{ __("case-file-documents.{$document->document_type}") }}
+                                            </div>
+                                        </div>
+
+                                        <div>
+                    <span class="lead360-status lead360-status-{{ $document->status }}">
+                        {{ __("case-file-documents.{$document->status}") }}
+                    </span>
+                                        </div>
+                                    </div>
+                                @endforeach
                             </div>
-                        @endforeach
+                        @else
+                            <div class="lead360-label">
+                                {{ __('case-file-documents.no_documents') }}
+                            </div>
+                        @endif
                     </div>
                 @empty
                     <div class="lead360-label">—</div>

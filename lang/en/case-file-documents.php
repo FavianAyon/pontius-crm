@@ -29,4 +29,6 @@ return [
     'other' => 'Other',
     'approve' => 'Approve',
     'reject' => 'Reject',
+    'upload_file' => 'Upload file',
+    'no_documents' => 'No documents',
 ];
