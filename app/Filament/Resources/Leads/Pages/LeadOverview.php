@@ -14,6 +14,8 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
+use App\Models\CaseFileDocument;
+use Filament\Forms\Components\FileUpload;
 
 class LeadOverview extends Page
 {
@@ -158,6 +160,119 @@ class LeadOverview extends Page
                         ->send();
 
                     $this->record->refresh();
+                    $this->record->load('caseFiles.documents');
+                }),
+            Actions\Action::make('uploadDocument')
+                ->label(__('case-file-documents.upload_file'))
+                ->icon('heroicon-o-arrow-up-tray')
+                ->schema([
+                    Select::make('document_id')
+                        ->label(__('case-file-documents.document'))
+                        ->options(fn () => $this->record->caseFiles
+                            ->flatMap(fn ($caseFile) => $caseFile->documents)
+                            ->pluck('name', 'id'))
+                        ->searchable()
+                        ->required(),
+
+                    FileUpload::make('file_path')
+                        ->label(__('case-file-documents.file'))
+                        ->disk('public')
+                        ->directory('case-file-documents')
+                        ->visibility('private')
+                        ->acceptedFileTypes([
+                            'application/pdf',
+                            'image/jpeg',
+                            'image/png',
+                            'image/webp',
+                        ])
+                        ->maxSize(10240)
+                        ->required(),
+                ])
+                ->action(function (array $data): void {
+                    $document = CaseFileDocument::findOrFail($data['document_id']);
+
+                    $document->update([
+                        'file_path' => $data['file_path'],
+                        'uploaded_by_user_id' => auth()->id(),
+                        'uploaded_at' => now(),
+                        'status' => 'uploaded',
+                    ]);
+
+                    Notification::make()
+                        ->success()
+                        ->title(__('case-file-documents.upload_file'))
+                        ->send();
+
+                    $this->record->load('caseFiles.documents');
+                }),
+
+            Actions\Action::make('approveDocument')
+                ->label(__('case-file-documents.approve'))
+                ->icon('heroicon-o-check-circle')
+                ->color('success')
+                ->visible(fn () => auth()->user()?->can('approve_case_file_document'))
+                ->schema([
+                    Select::make('document_id')
+                        ->label(__('case-file-documents.document'))
+                        ->options(fn () => $this->record->caseFiles
+                            ->flatMap(fn ($caseFile) => $caseFile->documents)
+                            ->where('status', '!=', 'approved')
+                            ->pluck('name', 'id'))
+                        ->searchable()
+                        ->required(),
+                ])
+                ->action(function (array $data): void {
+                    $document = CaseFileDocument::findOrFail($data['document_id']);
+
+                    abort_unless(auth()->user()?->can('approve', $document), 403);
+
+                    $document->update([
+                        'status' => 'approved',
+                        'validated_at' => now(),
+                    ]);
+
+                    Notification::make()
+                        ->success()
+                        ->title(__('case-file-documents.approved'))
+                        ->send();
+
+                    $this->record->load('caseFiles.documents');
+                }),
+
+            Actions\Action::make('rejectDocument')
+                ->label(__('case-file-documents.reject'))
+                ->icon('heroicon-o-x-circle')
+                ->color('danger')
+                ->visible(fn () => auth()->user()?->can('reject_case_file_document'))
+                ->schema([
+                    Select::make('document_id')
+                        ->label(__('case-file-documents.document'))
+                        ->options(fn () => $this->record->caseFiles
+                            ->flatMap(fn ($caseFile) => $caseFile->documents)
+                            ->where('status', '!=', 'rejected')
+                            ->pluck('name', 'id'))
+                        ->searchable()
+                        ->required(),
+
+                    Textarea::make('notes')
+                        ->label(__('case-file-documents.notes')),
+                ])
+                ->action(function (array $data): void {
+                    $document = CaseFileDocument::findOrFail($data['document_id']);
+
+                    abort_unless(auth()->user()?->can('reject', $document), 403);
+
+                    $document->update([
+                        'status' => 'rejected',
+                        'validated_at' => null,
+                        'notes' => $data['notes'] ?? null,
+                    ]);
+
+                    Notification::make()
+                        ->warning()
+                        ->title(__('case-file-documents.rejected'))
+                        ->send();
+
                     $this->record->load('caseFiles.documents');
                 }),
         ];
