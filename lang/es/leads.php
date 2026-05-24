@@ -93,4 +93,10 @@ return [
     'next_followup' => 'Siguiente seguimiento',
     'lead_assigned_title' => 'Nuevo lead asignado',
     'lead_assigned_body' => 'Se te asignó el lead: :name',
+    'lead_overview' => 'Vista 360 del lead',
+    'overview' => 'Resumen',
+    'contact_information' => 'Información de contacto',
+    'commercial_summary' => 'Resumen comercial',
+    'case_files_summary' => 'Expedientes',
+    'documents_summary' => 'Documentos',
 ];

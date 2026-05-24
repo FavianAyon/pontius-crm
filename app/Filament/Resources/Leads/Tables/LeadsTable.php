@@ -100,6 +100,10 @@ class LeadsTable
                     ->label('Duplicados'),
             ])
             ->recordActions([
+                Action::make('overview')
+                    ->label(__('leads.overview'))
+                    ->icon('heroicon-o-squares-2x2')
+                    ->url(fn ($record) => \App\Filament\Resources\Leads\LeadResource::getUrl('overview', ['record' => $record])),
                 ViewAction::make(),
                 EditAction::make(),
                 Action::make('mergeDuplicate')

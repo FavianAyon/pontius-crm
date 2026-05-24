@@ -92,4 +92,10 @@ return [
     'next_followup' => 'Next follow-up',
     'lead_assigned_title' => 'New lead assigned',
     'lead_assigned_body' => 'You were assigned the lead: :name',
+    'lead_overview' => 'Lead 360 view',
+    'overview' => 'Overview',
+    'contact_information' => 'Contact information',
+    'commercial_summary' => 'Commercial summary',
+    'case_files_summary' => 'Case files',
+    'documents_summary' => 'Documents',
 ];

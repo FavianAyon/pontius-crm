@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Leads;
 
 use App\Filament\Resources\Leads\Pages\CreateLead;
 use App\Filament\Resources\Leads\Pages\EditLead;
+use App\Filament\Resources\Leads\Pages\LeadOverview;
 use App\Filament\Resources\Leads\Pages\LeadPipeline;
 use App\Filament\Resources\Leads\Pages\ListLeads;
 use App\Filament\Resources\Leads\Pages\ViewLead;
@@ -82,6 +83,7 @@ class LeadResource extends Resource
             'index' => ListLeads::route('/'),
             'create' => CreateLead::route('/create'),
             'pipeline' => LeadPipeline::route('/pipeline'),
+            'overview' => LeadOverview::route('/{record}/overview'),
             'view' => ViewLead::route('/{record}'),
             'edit' => EditLead::route('/{record}/edit'),
         ];
