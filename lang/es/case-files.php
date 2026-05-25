@@ -22,8 +22,6 @@ return [
     'approved' => 'Aprobado',
     'closed' => 'Cerrado',
     'cancelled' => 'Cancelado',
-    'generate_checklist' => 'Generar checklist',
-    'checklist_generated' => 'Checklist generado',
     'progress' => 'Progreso',
     'pending_documents' => 'Documentos pendientes',
     'activity' => 'Actividad',
@@ -31,4 +29,8 @@ return [
     'event' => 'Evento',
     'user' => 'Usuario',
     'event_type' => 'Tipo',
+    'case_file_created' => 'Expediente creado',
+    'case_file_created_body' => 'El expediente y su checklist documental fueron creados automáticamente.',
+    'generate_checklist' => 'Regenerar checklist',
+    'checklist_generated' => 'Checklist regenerado',
 ];

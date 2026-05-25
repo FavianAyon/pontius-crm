@@ -22,8 +22,6 @@ return [
     'approved' => 'Approved',
     'closed' => 'Closed',
     'cancelled' => 'Cancelled',
-    'generate_checklist' => 'Generate checklist',
-    'checklist_generated' => 'Checklist generated',
     'progress' => 'Progress',
     'pending_documents' => 'Pending documents',
     'activity' => 'Activity',
@@ -31,4 +29,8 @@ return [
     'event' => 'Event',
     'user' => 'User',
     'event_type' => 'Type',
+    'generate_checklist' => 'Regenerate checklist',
+    'checklist_generated' => 'Checklist regenerated',
+    'case_file_created' => 'Case file created',
+    'case_file_created_body' => 'The case file and its document checklist were created automatically.',
 ];

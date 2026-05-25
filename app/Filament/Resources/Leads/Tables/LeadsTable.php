@@ -13,6 +13,8 @@ use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 
 class LeadsTable
 {
@@ -104,6 +106,42 @@ class LeadsTable
                     ->label(__('leads.overview'))
                     ->icon('heroicon-o-squares-2x2')
                     ->url(fn ($record) => \App\Filament\Resources\Leads\LeadResource::getUrl('overview', ['record' => $record])),
+                Action::make('createCaseFile')
+                    ->label(__('case-files.case_file'))
+                    ->icon('heroicon-o-folder-plus')
+                    ->schema([
+                        Select::make('type')
+                            ->label(__('case-files.type'))
+                            ->options([
+                                'lead' => __('case-files.lead_type'),
+                                'buyer' => __('case-files.buyer'),
+                                'seller' => __('case-files.seller'),
+                                'listing' => __('case-files.listing_file'),
+                            ])
+                            ->default('lead')
+                            ->required(),
+
+                        TextInput::make('title')
+                            ->label(__('case-files.title'))
+                            ->default(fn ($record) => $record->full_name ?: $record->phone ?: $record->email)
+                            ->required(),
+                    ])
+                    ->action(function ($record, array $data): void {
+                        \App\Models\CaseFile::create([
+                            'lead_id' => $record->id,
+                            'type' => $data['type'],
+                            'title' => $data['title'],
+                            'status' => 'open',
+                            'assigned_to_user_id' => $record->assigned_to_user_id ?? auth()->id(),
+                            'created_by_user_id' => auth()->id(),
+                        ]);
+
+                        Notification::make()
+                            ->success()
+                            ->title(__('case-files.case_file_created'))
+                            ->body(__('case-files.case_file_created_body'))
+                            ->send();
+                    }),
                 ViewAction::make(),
                 EditAction::make(),
                 Action::make('mergeDuplicate')

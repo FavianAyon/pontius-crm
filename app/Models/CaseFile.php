@@ -32,19 +32,29 @@ class CaseFile extends Model
         'metadata' => 'array',
     ];
 
-    protected static function booted(): void
+        protected static function booted(): void
     {
         static::creating(function (CaseFile $caseFile) {
             $caseFile->created_by_user_id ??= auth()->id();
             $caseFile->assigned_to_user_id ??= auth()->id();
 
             if (! $caseFile->folio) {
-                $caseFile->folio = 'EXP-' . now()->format('Ymd') . '-' . str_pad((string) (self::query()->count() + 1), 5, '0', STR_PAD_LEFT);
+                $caseFile->folio = 'EXP-' . now()->format('YmdHis') . '-' . random_int(1000, 9999);
             }
+        });
+
+        static::created(function (CaseFile $caseFile) {
             $caseFile->createDocumentChecklist();
         });
 
+        static::updated(function (CaseFile $caseFile) {
+            if ($caseFile->wasChanged('type')) {
+                $caseFile->createDocumentChecklist();
+            }
+        });
     }
+
+
 
     public function lead()
     {
@@ -76,6 +86,10 @@ class CaseFile extends Model
     }
     public function createDocumentChecklist(): void
     {
+        if (! $this->exists) {
+            return;
+        }
+
         $templates = config("crm.case_file_document_templates.{$this->type}", []);
 
         foreach ($templates as $template) {
@@ -90,6 +104,8 @@ class CaseFile extends Model
                 ]
             );
         }
+
+        $this->recalculateDocumentProgress();
     }
     public function getDocumentsProgressPercentAttribute(): int
     {

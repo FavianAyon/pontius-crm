@@ -31,4 +31,8 @@ return [
     'reject' => 'Reject',
     'upload_file' => 'Upload file',
     'no_documents' => 'No documents',
+    'view_file' => 'View file',
+    'file_required' => 'Select a file before uploading',
+    'file_required_before_approval' => 'You cannot approve a document without a file',
+    'file_required_before_rejection' => 'You cannot reject a document without a file',
 ];

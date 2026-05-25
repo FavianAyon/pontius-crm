@@ -31,4 +31,8 @@ return [
     'reject' => 'Rechazar',
     'upload_file' => 'Subir archivo',
     'no_documents' => 'Sin documentos',
+    'view_file' => 'Ver archivo',
+    'file_required' => 'Selecciona un archivo antes de subirlo',
+    'file_required_before_approval' => 'No puedes aprobar un documento sin archivo',
+    'file_required_before_rejection' => 'No puedes rechazar un documento sin archivo',
 ];

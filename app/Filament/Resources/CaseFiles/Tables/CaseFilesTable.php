@@ -85,7 +85,9 @@ class CaseFilesTable
                 Action::make('generateChecklist')
                     ->label(__('case-files.generate_checklist'))
                     ->icon('heroicon-o-document-check')
-                    ->color('info')
+                    ->color('gray')
+                    ->requiresConfirmation()
+                    ->visible(fn () => auth()->user()?->hasRole('admin'))
                     ->action(function ($record) {
                         $record->createDocumentChecklist();
 

@@ -7,17 +7,21 @@ use App\Filament\Resources\Tasks\TaskResource;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
+use UnitEnum;
 
 class MyTasks extends Page implements HasTable
 {
     use InteractsWithTable;
 
     protected string $view = 'filament.pages.my-tasks';
+    protected static string|null|\BackedEnum $navigationIcon = Heroicon::CheckCircle;
+
 
     protected static ?int $navigationSort = 4;
 

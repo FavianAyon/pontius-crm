@@ -274,6 +274,66 @@
                     <span class="lead360-status lead360-status-{{ $document->status }}">
                         {{ __("case-file-documents.{$document->status}") }}
                     </span>
+                                            <!--- Agregad--->
+                                            <div class="lead360-actions" style="margin-top: 8px;">
+                                                @if ($document->file_url)
+                                                    <a
+                                                        href="{{ $document->file_url }}"
+                                                        target="_blank"
+                                                        class="lead360-action"
+                                                    >
+                                                        {{ __('case-file-documents.view_file') }}
+                                                    </a>
+                                                @endif
+
+                                                @if (! $document->file_path || $document->status === 'rejected')
+                                                    <div style="width: 100%; margin-top: 8px;">
+                                                        <input
+                                                            type="file"
+                                                            wire:model.live="documentUploads.{{ $document->id }}"
+                                                            accept="application/pdf,image/jpeg,image/png,image/webp"
+                                                        >
+                                                        <div wire:loading wire:target="documentUploads.{{ $document->id }}" style="font-size: 12px; color: #6b7280; margin-top: 4px;">
+
+                                                            Uploading...
+
+                                                        </div>
+
+                                                        <button
+                                                            type="button"
+                                                            wire:click="uploadDocumentInline({{ $document->id }})"
+                                                            wire:loading.attr="disabled"
+                                                            wire:target="documentUploads.{{ $document->id }}"
+                                                            class="lead360-action"
+                                                        >
+                                                            {{ __('case-file-documents.upload_file') }}
+                                                        </button>
+                                                    </div>
+                                                @endif
+
+                                                @if ($document->file_path && ! in_array($document->status, ['approved'], true))
+                                                    @can('approve', $document)
+                                                        <button
+                                                            type="button"
+                                                            wire:click="approveDocumentInline({{ $document->id }})"
+                                                            class="lead360-action"
+                                                        >
+                                                            {{ __('case-file-documents.approve') }}
+                                                        </button>
+                                                    @endcan
+
+                                                    @can('reject', $document)
+                                                        <button
+                                                            type="button"
+                                                            wire:click="rejectDocumentInline({{ $document->id }})"
+                                                            class="lead360-action"
+                                                        >
+                                                            {{ __('case-file-documents.reject') }}
+                                                        </button>
+                                                    @endcan
+                                                @endif
+                                            </div>
+                                            <!--- Fin Agregad --->
                                         </div>
                                     </div>
                                 @endforeach

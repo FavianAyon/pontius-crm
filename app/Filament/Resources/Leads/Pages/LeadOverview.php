@@ -16,10 +16,16 @@ use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use App\Models\CaseFileDocument;
 use Filament\Forms\Components\FileUpload;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Illuminate\Support\Facades\Storage;
+use Livewire\WithFileUploads;
 
 class LeadOverview extends Page
 {
-    use InteractsWithRecord;
+    use InteractsWithRecord, WithFileUploads;
+    public ?int $selectedDocumentId = null;
+    public array $documentUploads = [];
+
 
     protected static string $resource = LeadResource::class;
 
@@ -170,7 +176,10 @@ class LeadOverview extends Page
                         ->label(__('case-file-documents.document'))
                         ->options(fn () => $this->record->caseFiles
                             ->flatMap(fn ($caseFile) => $caseFile->documents)
-                            ->pluck('name', 'id'))
+                            ->filter(fn ($document) => ! $document->file_path || $document->status === 'rejected')
+                            ->mapWithKeys(fn ($document) => [
+                                $document->id => "{$document->caseFile->folio} - {$document->name}",
+                            ]))
                         ->searchable()
                         ->required(),
 
@@ -191,6 +200,8 @@ class LeadOverview extends Page
                 ->action(function (array $data): void {
                     $document = CaseFileDocument::findOrFail($data['document_id']);
 
+                    abort_unless(auth()->user()?->can('update', $document), 403);
+
                     $document->update([
                         'file_path' => $data['file_path'],
                         'uploaded_by_user_id' => auth()->id(),
@@ -200,7 +211,7 @@ class LeadOverview extends Page
 
                     Notification::make()
                         ->success()
-                        ->title(__('case-file-documents.upload_file'))
+                        ->title(__('case-file-documents.uploaded'))
                         ->send();
 
                     $this->record->load('caseFiles.documents');
@@ -276,5 +287,103 @@ class LeadOverview extends Page
                     $this->record->load('caseFiles.documents');
                 }),
         ];
+    }
+    public function selectDocument(int $documentId): void
+    {
+        $this->selectedDocumentId = $documentId;
+    }
+
+    public function approveDocumentInline(int $documentId): void
+    {
+        $document = CaseFileDocument::findOrFail($documentId);
+
+        abort_unless(auth()->user()?->can('approve', $document), 403);
+
+        if (! $document->file_path) {
+            Notification::make()
+                ->danger()
+                ->title(__('case-file-documents.file_required_before_approval'))
+                ->send();
+
+            return;
+        }
+
+        $document->update([
+            'status' => 'approved',
+            'validated_at' => now(),
+        ]);
+
+        $this->record->load('caseFiles.documents');
+
+        Notification::make()
+            ->success()
+            ->title(__('case-file-documents.approved'))
+            ->send();
+    }
+
+    public function rejectDocumentInline(int $documentId): void
+    {
+        $document = CaseFileDocument::findOrFail($documentId);
+
+        abort_unless(auth()->user()?->can('reject', $document), 403);
+
+        if (! $document->file_path) {
+            Notification::make()
+                ->danger()
+                ->title(__('case-file-documents.file_required_before_rejection'))
+                ->send();
+
+            return;
+        }
+
+        $document->update([
+            'status' => 'rejected',
+            'validated_at' => null,
+        ]);
+
+        $this->record->load('caseFiles.documents');
+
+        Notification::make()
+            ->warning()
+            ->title(__('case-file-documents.rejected'))
+            ->send();
+    }
+    public function uploadDocumentInline(int $documentId): void
+    {
+        $document = CaseFileDocument::findOrFail($documentId);
+
+        abort_unless(auth()->user()?->can('update', $document), 403);
+
+        $file = $this->documentUploads[$documentId] ?? null;
+
+        if (! $file instanceof TemporaryUploadedFile) {
+            Notification::make()
+                ->danger()
+                ->title(__('case-file-documents.file_required'))
+                ->send();
+
+            return;
+        }
+
+        $path = $file->store('case-file-documents', 'public');
+
+        $document->update([
+            'file_path' => $path,
+            'original_filename' => $file->getClientOriginalName(),
+            'mime_type' => $file->getMimeType(),
+            'file_size' => $file->getSize(),
+            'uploaded_by_user_id' => auth()->id(),
+            'uploaded_at' => now(),
+            'status' => 'uploaded',
+        ]);
+
+        unset($this->documentUploads[$documentId]);
+
+        $this->record->load('caseFiles.documents');
+
+        Notification::make()
+            ->success()
+            ->title(__('case-file-documents.uploaded'))
+            ->send();
     }
 }
