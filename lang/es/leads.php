@@ -99,4 +99,7 @@ return [
     'commercial_summary' => 'Resumen comercial',
     'case_files_summary' => 'Expedientes',
     'documents_summary' => 'Documentos',
+    'convert_to_buyer' => 'Convertir a comprador',
+    'convert_to_seller' => 'Convertir a vendedor',
+    'converted_successfully' => 'Lead convertido correctamente',
 ];

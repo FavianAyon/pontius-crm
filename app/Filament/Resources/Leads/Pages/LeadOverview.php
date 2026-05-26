@@ -286,6 +286,19 @@ class LeadOverview extends Page
 
                     $this->record->load('caseFiles.documents');
                 }),
+            Actions\Action::make('convertToBuyer')
+                ->label(__('leads.convert_to_buyer'))
+                ->icon('heroicon-o-user-plus')
+                ->color('success')
+                ->requiresConfirmation()
+                ->action(fn () => $this->createCaseFileFromLead('buyer')),
+
+            Actions\Action::make('convertToSeller')
+                ->label(__('leads.convert_to_seller'))
+                ->icon('heroicon-o-home')
+                ->color('warning')
+                ->requiresConfirmation()
+                ->action(fn () => $this->createCaseFileFromLead('seller')),
         ];
     }
     public function selectDocument(int $documentId): void
@@ -384,6 +397,28 @@ class LeadOverview extends Page
         Notification::make()
             ->success()
             ->title(__('case-file-documents.uploaded'))
+            ->send();
+    }
+    protected function createCaseFileFromLead(string $type): void
+    {
+        \App\Models\CaseFile::firstOrCreate(
+            [
+                'lead_id' => $this->record->id,
+                'type' => $type,
+            ],
+            [
+                'title' => $this->record->full_name ?: $this->record->phone ?: $this->record->email,
+                'status' => 'open',
+                'assigned_to_user_id' => $this->record->assigned_to_user_id ?? auth()->id(),
+                'created_by_user_id' => auth()->id(),
+            ]
+        );
+
+        $this->record->load('caseFiles.documents');
+
+        \Filament\Notifications\Notification::make()
+            ->success()
+            ->title(__('leads.converted_successfully'))
             ->send();
     }
 }

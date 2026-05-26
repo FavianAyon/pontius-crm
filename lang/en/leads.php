@@ -98,4 +98,7 @@ return [
     'commercial_summary' => 'Commercial summary',
     'case_files_summary' => 'Case files',
     'documents_summary' => 'Documents',
+    'convert_to_buyer' => 'Convert to buyer',
+    'convert_to_seller' => 'Convert to seller',
+    'converted_successfully' => 'Lead converted successfully',
 ];
