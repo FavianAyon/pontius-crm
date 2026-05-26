@@ -93,6 +93,7 @@ class Lead extends Model
         });
         static::saved(function (Lead $lead) {
             $lead->createIncompleteLeadTaskIfNeeded();
+            $lead->closeIncompleteLeadTaskIfCompleted();
         });
     }
 
@@ -374,5 +375,19 @@ class Lead extends Model
             'priority' => 'normal',
             'due_at' => now()->addDay(),
         ]);
+    }
+    public function closeIncompleteLeadTaskIfCompleted(): void
+    {
+        if ($this->completeness_percent < 80) {
+            return;
+        }
+
+        $this->tasks()
+            ->where('type', 'complete_lead_info')
+            ->whereNotIn('status', ['completed', 'cancelled'])
+            ->update([
+                'status' => 'completed',
+                'completed_at' => now(),
+            ]);
     }
 }
