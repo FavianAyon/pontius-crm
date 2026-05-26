@@ -427,5 +427,9 @@ class Lead extends Model
             'due_at' => now()->addHours(2),
         ]);
     }
+    public function assignments()
+    {
+        return $this->hasMany(LeadAssignment::class)->latest();
+    }
 
 }

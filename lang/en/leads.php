@@ -117,4 +117,5 @@ return [
     'contact_required' => 'Enter at least one phone, WhatsApp, or email.',
     'reassign_lead' => 'Reassign lead',
     'lead_reassigned' => 'Lead reassigned',
+    'reassignment_reason' => 'Reassignment reason',
 ];

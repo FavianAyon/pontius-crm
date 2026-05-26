@@ -6,6 +6,7 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -195,8 +196,11 @@ class LeadsTable
                                 ->pluck('name', 'id'))
                             ->searchable()
                             ->required(),
+                        Textarea::make('reason')
+                            ->label(__('leads.reassignment_reason')),
                     ])
                     ->action(function ($record, array $data): void {
+                        $oldAssignedUserId = $record->assigned_to_user_id;
                         $record->update([
                             'assigned_to_user_id' => $data['assigned_to_user_id'],
                         ]);
@@ -211,6 +215,12 @@ class LeadsTable
                                 ->success()
                                 ->sendToDatabase($record->assignedTo);
                         }
+                        $record->assignments()->create([
+                            'from_user_id' => $oldAssignedUserId,
+                            'to_user_id' => $data['assigned_to_user_id'],
+                            'changed_by_user_id' => auth()->id(),
+                            'reason' => $data['reason'] ?? null,
+                        ]);
 
 
                         Notification::make()

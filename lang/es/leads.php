@@ -118,4 +118,5 @@ return [
     'contact_required' => 'Ingresa al menos un teléfono, WhatsApp o correo.',
     'reassign_lead' => 'Reasignar lead',
     'lead_reassigned' => 'Lead reasignado',
+    'reassignment_reason' => 'Motivo de reasignación',
 ];
