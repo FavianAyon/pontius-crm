@@ -115,4 +115,6 @@ return [
     'public_lead_created' => 'Thank you. We received your information and will contact you soon.',
     'send' => 'Send',
     'contact_required' => 'Enter at least one phone, WhatsApp, or email.',
+    'reassign_lead' => 'Reassign lead',
+    'lead_reassigned' => 'Lead reassigned',
 ];

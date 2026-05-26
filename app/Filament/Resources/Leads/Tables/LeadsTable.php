@@ -14,7 +14,7 @@ use Filament\Tables\Table;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\TextInput;use App\Models\User;
 
 class LeadsTable
 {
@@ -182,6 +182,39 @@ class LeadsTable
                     }),
                 ViewAction::make(),
                 EditAction::make(),
+                Action::make('reassignLead')
+                    ->label(__('leads.reassign_lead'))
+                    ->icon('heroicon-o-user-plus')
+                    ->visible(fn () => auth()->user()?->can('assign_lead'))
+                    ->schema([
+                        Select::make('assigned_to_user_id')
+                            ->label(__('leads.assigned_to'))
+                            ->options(fn () => User::role('agent')
+                                ->where('is_active', true)
+                                ->orderBy('name')
+                                ->pluck('name', 'id'))
+                            ->searchable()
+                            ->required(),
+                    ])
+                    ->action(function ($record, array $data): void {
+                        $record->update([
+                            'assigned_to_user_id' => $data['assigned_to_user_id'],
+                        ]);
+                        if ($record->assignedTo) {
+                            Notification::make()
+                                ->title(__('leads.lead_assigned_title'))
+                                ->body(__('leads.lead_assigned_body', [
+                                    'name' => $record->full_name ?: $record->phone ?: $record->email,
+                                ]))
+                                ->success()
+                                ->sendToDatabase($record->assignedTo);
+                        }
+
+                        Notification::make()
+                            ->success()
+                            ->title(__('leads.lead_reassigned'))
+                            ->send();
+                    }),
                 Action::make('mergeDuplicate')
                     ->label(__('leads.merge_duplicate'))
                     ->icon('heroicon-o-arrows-right-left')
@@ -192,11 +225,9 @@ class LeadsTable
                     ->visible(fn ($record) => $record->is_duplicate && $record->duplicate_of_lead_id)
                     ->action(function ($record) {
                         $mainLead = $record->duplicateOf;
-
                         if (! $mainLead) {
                             return;
                         }
-
                         $record->mergeInto($mainLead);
 
                         Notification::make()
@@ -204,7 +235,9 @@ class LeadsTable
                             ->title(__('leads.merge_success_title'))
                             ->body(__('leads.merge_success_body'))
                             ->send();
+
                     }),
+
             ])
             ->toolbarActions([
 
