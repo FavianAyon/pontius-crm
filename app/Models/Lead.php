@@ -406,6 +406,16 @@ class Lead extends Model
             return;
         }
 
+        $exists = $this->tasks()
+            ->where('type', 'reassignment_review')
+            ->where('assigned_to_user_id', $this->assigned_to_user_id)
+            ->whereNotIn('status', ['completed', 'cancelled'])
+            ->exists();
+
+        if ($exists) {
+            return;
+        }
+
         $this->tasks()->create([
             'assigned_to_user_id' => $this->assigned_to_user_id,
             'created_by_user_id' => auth()->id(),
@@ -417,4 +427,5 @@ class Lead extends Model
             'due_at' => now()->addHours(2),
         ]);
     }
+
 }
