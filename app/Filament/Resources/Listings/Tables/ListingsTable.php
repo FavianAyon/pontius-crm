@@ -8,7 +8,9 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
-use Filament\Tables\Table;
+use Filament\Tables\Table;use App\Models\CaseFile;
+use Filament\Actions\Action;
+use Filament\Notifications\Notification;
 
 class ListingsTable
 {
@@ -80,6 +82,32 @@ class ListingsTable
                     ->relationship('development', 'name'),
             ])
             ->recordActions([
+                Action::make('createListingCaseFile')
+                    ->label(__('case-files.case_file'))
+                    ->icon('heroicon-o-folder-plus')
+                    ->color('info')
+                    ->requiresConfirmation()
+                    ->action(function ($record): void {
+                        CaseFile::firstOrCreate(
+                            [
+                                'listing_id' => $record->id,
+                                'type' => 'listing',
+                            ],
+                            [
+                                'title' => $record->title,
+                                'status' => 'open',
+                                'assigned_to_user_id' => auth()->id(),
+                                'created_by_user_id' => auth()->id(),
+                            ]
+                        );
+
+                        Notification::make()
+                            ->success()
+                            ->title(__('case-files.case_file_created'))
+                            ->body(__('case-files.case_file_created_body'))
+                            ->send();
+                    })
+                    ->visible(fn ($record) => ! $record->caseFiles()->where('type', 'listing')->exists()),
                 ViewAction::make(),
                 EditAction::make(),
             ])

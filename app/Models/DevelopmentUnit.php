@@ -95,4 +95,11 @@ class DevelopmentUnit extends Model
     {
         return $this->morphMany(Activity::class, 'subject')->latest();
     }
+    public function caseFiles()
+
+    {
+
+        return $this->hasMany(CaseFile::class);
+
+    }
 }

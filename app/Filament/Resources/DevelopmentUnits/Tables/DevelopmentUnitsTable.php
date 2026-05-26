@@ -9,7 +9,7 @@ use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;use Filament\Actions\Action;
-use Filament\Notifications\Notification;
+use Filament\Notifications\Notification;use App\Models\CaseFile;
 
 class DevelopmentUnitsTable
 {
@@ -69,6 +69,32 @@ class DevelopmentUnitsTable
                     ]),
             ])
             ->recordActions([
+                Action::make('createUnitCaseFile')
+                    ->label(__('case-files.case_file'))
+                    ->icon('heroicon-o-folder-plus')
+                    ->color('info')
+                    ->requiresConfirmation()
+                    ->action(function ($record): void {
+                        CaseFile::firstOrCreate(
+                            [
+                                'development_unit_id' => $record->id,
+                                'type' => 'listing',
+                            ],
+                            [
+                                'title' => $record->development?->name . ' - ' . $record->unit_number,
+                                'status' => 'open',
+                                'assigned_to_user_id' => auth()->id(),
+                                'created_by_user_id' => auth()->id(),
+                            ]
+                        );
+
+                        Notification::make()
+                            ->success()
+                            ->title(__('case-files.case_file_created'))
+                            ->body(__('case-files.case_file_created_body'))
+                            ->send();
+                    })
+                    ->visible(fn ($record) => ! $record->caseFiles()->where('type', 'listing')->exists()),
                 ViewAction::make(),
                 EditAction::make(),
                 Action::make('markAvailable')

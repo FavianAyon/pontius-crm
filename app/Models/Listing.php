@@ -66,4 +66,8 @@ class Listing extends Model
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs();
     }
+    public function caseFiles()
+    {
+        return $this->hasMany(CaseFile::class);
+    }
 }
