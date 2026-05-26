@@ -121,4 +121,5 @@ return [
     'reassignment_reason' => 'Motivo de reasignación',
     'activity' => 'Actividad',
     'timeline' => 'Timeline',
+    'open' => 'Abrir',
 ];

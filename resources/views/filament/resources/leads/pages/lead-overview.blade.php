@@ -451,6 +451,13 @@
                         @if ($item['description'])
                             <div class="lead360-timeline-description">
                                 {{ $item['description'] }}
+                                @if (! empty($item['url']))
+                                    <div style="margin-top: 6px;">
+                                        <a href="{{ $item['url'] }}" target="_blank" class="lead360-action">
+                                            {{ __('leads.open') }}
+                                        </a>
+                                    </div>
+                                @endif
                             </div>
                         @endif
                     </div>

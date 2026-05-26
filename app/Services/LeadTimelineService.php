@@ -47,6 +47,9 @@ class LeadTimelineService
                 'type' => 'case_file',
                 'title' => __('case-files.case_file') . ': ' . $caseFile->folio,
                 'description' => $caseFile->title . ' · ' . __("case-files.{$caseFile->status}"),
+                'url' => \App\Filament\Resources\CaseFiles\CaseFileResource::getUrl('view', [
+                    'record' => $caseFile,
+                ]),
             ];
 
             foreach ($caseFile->documents as $document) {
@@ -55,6 +58,7 @@ class LeadTimelineService
                     'type' => 'document',
                     'title' => __('case-file-documents.document') . ': ' . $document->name,
                     'description' => __("case-file-documents.{$document->status}"),
+                    'url' => $document->file_url,
                 ];
             }
         }

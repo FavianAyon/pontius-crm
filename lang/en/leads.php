@@ -120,4 +120,5 @@ return [
     'reassignment_reason' => 'Reassignment reason',
     'activity' => 'Activity',
     'timeline' => 'Timeline',
+    'open' => 'Open',
 ];
