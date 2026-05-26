@@ -132,6 +132,51 @@
             background: #fee2e2;
             color: #991b1b;
         }
+        .lead360-timeline-item {
+            border-left: 3px solid #d1d5db;
+            padding: 10px 0 10px 12px;
+            margin-bottom: 8px;
+        }
+
+        .lead360-timeline-header {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .lead360-timeline-description {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+
+        .lead360-timeline-date {
+            font-size: 11px;
+            color: #6b7280;
+            white-space: nowrap;
+        }
+
+        .lead360-timeline-activity {
+            border-left-color: #6366f1;
+        }
+
+        .lead360-timeline-task {
+            border-left-color: #f59e0b;
+        }
+
+        .lead360-timeline-assignment {
+            border-left-color: #06b6d4;
+        }
+
+        .lead360-timeline-case_file {
+            border-left-color: #22c55e;
+        }
+
+        .lead360-timeline-document {
+            border-left-color: #8b5cf6;
+        }
     </style>
 
     <div class="lead360-grid">
@@ -391,24 +436,27 @@
 
             <div class="lead360-card">
                 <div class="lead360-title">
-                    {{ __('leads.timeline') }}php artisan optimize:clear
+                    {{ __('leads.timeline') }}
                 </div>
 
-                @foreach ($timeline as $item)
-                    <div class="lead360-row">
-                        <div>
-                            <strong>{{ $item['title'] }}</strong>
+                @forelse ($timeline as $item)
+                    <div class="lead360-timeline-item lead360-timeline-{{ $item['type'] }}">
+                        <div class="lead360-timeline-header">
+                            <span>{{ $item['title'] }}</span>
+                            <span class="lead360-timeline-date">
+                    {{ $item['date']->format('d/m/Y H:i') }}
+                </span>
+                        </div>
 
-                            <div class="lead360-label">
+                        @if ($item['description'])
+                            <div class="lead360-timeline-description">
                                 {{ $item['description'] }}
                             </div>
-                        </div>
-
-                        <div class="lead360-value">
-                            {{ $item['date']->format('d/m/Y H:i') }}
-                        </div>
+                        @endif
                     </div>
-                @endforeach
+                @empty
+                    <div class="lead360-label">—</div>
+                @endforelse
             </div>
         </div>
     </div>
