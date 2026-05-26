@@ -46,4 +46,6 @@ return [
     'due_soon_task_body' => 'La tarea está próxima a vencer: :title',
     'complete_lead_info_title' => 'Completar información del lead',
     'complete_lead_info_description' => 'Faltan datos importantes del lead. Revisa y completa la información.',
+    'review_reassigned_lead_title' => 'Revisar lead reasignado',
+    'review_reassigned_lead_description' => 'Este lead fue reasignado. Revisa historial, datos de contacto y próximos pasos.',
 ];

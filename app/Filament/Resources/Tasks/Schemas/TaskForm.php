@@ -53,6 +53,7 @@ class TaskForm
                                 'contract' => __('tasks.contract'),
                                 'initial_contact' => __('tasks.initial_contact'),
                                 'complete_lead_info' => __('tasks.complete_lead_info_title'),
+                                'reassignment_review' => __('tasks.review_reassigned_lead_title'),
                             ])
                             ->default('general')
                             ->required(),

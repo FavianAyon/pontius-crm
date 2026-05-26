@@ -46,4 +46,6 @@ return [
     'due_soon_task_body' => 'The task is due soon: :title',
     'complete_lead_info_title' => 'Complete lead information',
     'complete_lead_info_description' => 'Important lead information is missing. Review and complete the details.',
+    'review_reassigned_lead_title' => 'Review reassigned lead',
+    'review_reassigned_lead_description' => 'This lead was reassigned. Review history, contact details, and next steps.',
 ];

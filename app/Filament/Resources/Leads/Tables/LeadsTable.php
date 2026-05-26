@@ -200,6 +200,8 @@ class LeadsTable
                         $record->update([
                             'assigned_to_user_id' => $data['assigned_to_user_id'],
                         ]);
+                        $record->refresh();
+                        $record->createReassignmentReviewTask();
                         if ($record->assignedTo) {
                             Notification::make()
                                 ->title(__('leads.lead_assigned_title'))
@@ -209,6 +211,7 @@ class LeadsTable
                                 ->success()
                                 ->sendToDatabase($record->assignedTo);
                         }
+
 
                         Notification::make()
                             ->success()

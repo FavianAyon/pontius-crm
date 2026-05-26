@@ -400,4 +400,21 @@ class Lead extends Model
             ->orderBy('assigned_leads_count')
             ->value('id');
     }
+    public function createReassignmentReviewTask(): void
+    {
+        if (! $this->assigned_to_user_id) {
+            return;
+        }
+
+        $this->tasks()->create([
+            'assigned_to_user_id' => $this->assigned_to_user_id,
+            'created_by_user_id' => auth()->id(),
+            'title' => __('tasks.review_reassigned_lead_title'),
+            'description' => __('tasks.review_reassigned_lead_description'),
+            'type' => 'reassignment_review',
+            'status' => 'open',
+            'priority' => 'normal',
+            'due_at' => now()->addHours(2),
+        ]);
+    }
 }
