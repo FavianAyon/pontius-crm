@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\CaseFiles\Schemas;
 
+use App\Support\CrmOptions;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -28,24 +29,13 @@ class CaseFileForm
 
                         Select::make('type')
                             ->label(__('case-files.type'))
-                            ->options([
-                                'lead' => __('case-files.lead_type'),
-                                'buyer' => __('case-files.buyer'),
-                                'seller' => __('case-files.seller'),
-                                'listing' => __('case-files.listing_file'),
-                            ])
+                            ->options(CrmOptions::caseFileTypes())
                             ->default('lead')
                             ->required(),
 
                         Select::make('status')
                             ->label(__('case-files.status'))
-                            ->options([
-                                'open' => __('case-files.open'),
-                                'in_review' => __('case-files.in_review'),
-                                'approved' => __('case-files.approved'),
-                                'closed' => __('case-files.closed'),
-                                'cancelled' => __('case-files.cancelled'),
-                            ])
+                            ->options(CrmOptions::caseFileStatuses())
                             ->default('open')
                             ->required(),
 

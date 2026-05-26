@@ -11,7 +11,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
-use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\Placeholder;use App\Support\CrmOptions;
 
 class LeadForm
 {
@@ -66,12 +66,7 @@ class LeadForm
 
                             Select::make('interest_target_type')
                                 ->label(__('leads.interest_target_type'))
-                                ->options([
-                                    'general' => __('leads.general'),
-                                    'development' => __('leads.development'),
-                                    'development_unit' => __('leads.development_unit'),
-                                    'listing' => __('leads.listing'),
-                                ])
+                                ->options(CrmOptions::interestTargetTypes())
                                 ->default('general')
                                 ->live()
                                 ->afterStateUpdated(function ($state, $set) {
@@ -144,27 +139,13 @@ class LeadForm
                         Grid::make(3)->schema([
                             Select::make('status')
                                 ->label(__('leads.status'))
-                                ->options([
-                                    'new' => __('leads.status_new'),
-                                    'contacted' => __('leads.status_contacted'),
-                                    'qualified' => __('leads.status_qualified'),
-                                    'proposal' => __('leads.status_proposal'),
-                                    'negotiation' => __('leads.status_negotiation'),
-                                    'won' => __('leads.status_won'),
-                                    'lost' => __('leads.status_lost'),
-                                    'converted' => __('leads.status_converted'),
-                                ])
+                                ->options(CrmOptions::leadStatuses())
                                 ->default('new')
                                 ->required(),
 
                             Select::make('priority')
                                 ->label(__('leads.priority'))
-                                ->options([
-                                    'low' => __('leads.priority_low'),
-                                    'normal' => __('leads.priority_normal'),
-                                    'high' => __('leads.priority_high'),
-                                    'urgent' => __('leads.priority_urgent'),
-                                ])
+                                ->options(CrmOptions::priorities())
                                 ->default('normal')
                                 ->required(),
 

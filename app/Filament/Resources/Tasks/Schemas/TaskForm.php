@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Tasks\Schemas;
 
+use App\Support\CrmOptions;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
@@ -68,12 +69,7 @@ class TaskForm
 
                         Select::make('priority')
                             ->label(__('tasks.priority'))
-                            ->options([
-                                'low' => __('tasks.low'),
-                                'normal' => __('tasks.normal'),
-                                'high' => __('tasks.high'),
-                                'urgent' => __('tasks.urgent'),
-                            ])
+                            ->options(CrmOptions::priorities())
                             ->default('normal')
                             ->required(),
 

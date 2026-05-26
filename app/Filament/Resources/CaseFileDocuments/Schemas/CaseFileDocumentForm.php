@@ -9,7 +9,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
-use Filament\Schemas\Schema;
+use Filament\Schemas\Schema;use App\Support\CrmOptions;
 
 class CaseFileDocumentForm
 {
@@ -36,26 +36,12 @@ class CaseFileDocumentForm
 
                         Select::make('document_type')
                             ->label(__('case-file-documents.document_type'))
-                            ->options([
-                                'id' => __('case-file-documents.id'),
-                                'proof_of_address' => __('case-file-documents.proof_of_address'),
-                                'tax_document' => __('case-file-documents.tax_document'),
-                                'property_deed' => __('case-file-documents.property_deed'),
-                                'bank_statement' => __('case-file-documents.bank_statement'),
-                                'other' => __('case-file-documents.other'),
-                            ])
+                            ->options(CrmOptions::documentTypes())
                             ->required(),
 
                         Select::make('status')
                             ->label(__('case-file-documents.status'))
-                            ->options([
-                                'pending' => __('case-file-documents.pending'),
-                                'requested' => __('case-file-documents.requested'),
-                                'uploaded' => __('case-file-documents.uploaded'),
-                                'in_review' => __('case-file-documents.in_review'),
-                                'approved' => __('case-file-documents.approved'),
-                                'rejected' => __('case-file-documents.rejected'),
-                            ])
+                            ->options(CrmOptions::documentStatuses())
                             ->default('pending')
                             ->required(),
 

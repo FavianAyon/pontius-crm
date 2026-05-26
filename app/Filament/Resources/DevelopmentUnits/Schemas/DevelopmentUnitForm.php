@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\DevelopmentUnits\Schemas;
 
+use App\Support\CrmOptions;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -43,13 +44,7 @@ class DevelopmentUnitForm
 
                         Select::make('status')
                             ->label(__('development-units.status'))
-                            ->options([
-                                'available' => __('development-units.available'),
-                                'reserved' => __('development-units.reserved'),
-                                'sold' => __('development-units.sold'),
-                                'blocked' => __('development-units.blocked'),
-                                'inactive' => __('development-units.inactive'),
-                            ])
+                            ->options(CrmOptions::unitStatuses())
                             ->default('available')
                             ->required(),
 
