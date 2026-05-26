@@ -35,4 +35,5 @@ return [
     'case_file_created_body' => 'The case file and its document checklist were created automatically.',
     'active_clients' => 'Active clients',
     'client_type' => 'Client type',
+    'active_listing_files' => 'Listing files',
 ];

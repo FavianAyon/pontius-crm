@@ -35,4 +35,5 @@ return [
     'checklist_generated' => 'Checklist regenerado',
     'active_clients' => 'Clientes activos',
     'client_type' => 'Tipo de cliente',
+    'active_listing_files' => 'Expedientes de listings',
 ];
