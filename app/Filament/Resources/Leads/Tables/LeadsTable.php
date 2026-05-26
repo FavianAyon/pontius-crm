@@ -76,6 +76,15 @@ class LeadsTable
                     ->label(__('leads.development_unit'))
                     ->searchable()
                     ->toggleable(),
+                TextColumn::make('source')
+                    ->label(__('leads.source'))
+                    ->badge()
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('campaign')
+                    ->label(__('leads.campaign'))
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->searchable(),
             ])
             ->filters([
                 SelectFilter::make('intent')

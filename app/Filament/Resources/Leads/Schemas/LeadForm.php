@@ -13,6 +13,7 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Forms\Components\Placeholder;use App\Support\CrmOptions;
 
+
 class LeadForm
 {
     public static function configure(Schema $schema): Schema
@@ -54,13 +55,24 @@ class LeadForm
                 Section::make(__('leads.commercial_interest'))
                     ->schema([
                         Grid::make(3)->schema([
+                            Select::make('source')
+                                ->label(__('leads.source'))
+                                ->options(CrmOptions::leadSources())
+                                ->searchable()
+                                ->required(),
+
+                            TextInput::make('campaign')
+                                ->label(__('leads.campaign'))
+                                ->maxLength(255),
+
+                            TextInput::make('medium')
+                                ->label(__('leads.medium'))
+                                ->maxLength(255),
+                        ]),
+                        Grid::make(3)->schema([
                             Select::make('intent')
                                 ->label(__('leads.intent'))
-                                ->options([
-                                    'buy' => __('leads.buy'),
-                                    'sell' => __('leads.sell'),
-                                    'both' => __('leads.both'),
-                                ])
+                                ->options(CrmOptions::leadIntents())
                                 ->default('buy')
                                 ->required(),
 

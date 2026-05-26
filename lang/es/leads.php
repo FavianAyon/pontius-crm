@@ -109,4 +109,6 @@ return [
     'active_leads' => 'Leads activos',
     'converted_leads' => 'Clientes / convertidos',
     'lost_leads' => 'Leads perdidos',
+    'campaign' => 'Campaña',
+    'medium' => 'Medio',
 ];
