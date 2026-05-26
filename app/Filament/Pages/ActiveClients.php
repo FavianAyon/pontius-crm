@@ -19,6 +19,10 @@ class ActiveClients extends Page implements HasTable
     use InteractsWithTable;
 
     protected string $view = 'filament.pages.active-clients';
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->can('view_any_case_file') ?? false;
+    }
 
     protected static ?int $navigationSort = 5;
 

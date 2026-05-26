@@ -22,6 +22,10 @@ class DevelopmentResource extends Resource
     protected static ?string $model = Development::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    public static function shouldRegisterNavigation(): bool
+    {
+        return auth()->user()?->can('view_any_development') ?? false;
+    }
     public static function getNavigationGroup(): string
     {
         return __('navigation.inventory');

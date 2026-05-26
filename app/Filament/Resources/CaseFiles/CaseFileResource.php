@@ -21,6 +21,10 @@ class CaseFileResource extends Resource
     protected static ?string $model = CaseFile::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    public static function shouldRegisterNavigation(): bool
+    {
+        return auth()->user()?->can('view_any_case_file') ?? false;
+    }
     public static function getNavigationGroup(): string
     {
         return __('navigation.files');

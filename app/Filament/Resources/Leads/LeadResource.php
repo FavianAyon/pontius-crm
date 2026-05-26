@@ -27,6 +27,10 @@ class LeadResource extends Resource
     protected static ?string $model = Lead::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::UserGroup;
+    public static function shouldRegisterNavigation(): bool
+    {
+        return auth()->user()?->can('view_any_lead') ?? false;
+    }
 
 
     protected static ?int $navigationSort = 1;

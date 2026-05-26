@@ -21,6 +21,10 @@ class TaskResource extends Resource
     protected static ?string $model = Task::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    public static function shouldRegisterNavigation(): bool
+    {
+        return auth()->user()?->can('view_any_lead') ?? false;
+    }
 
     public static function form(Schema $schema): Schema
     {
