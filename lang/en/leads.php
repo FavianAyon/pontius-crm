@@ -112,4 +112,6 @@ return [
     'medium' => 'Medium',
     'completeness' => 'Completeness',
     'missing_fields' => 'Missing fields',
+    'public_lead_created' => 'Thank you. We received your information and will contact you soon.',
+    'send' => 'Send',
 ];

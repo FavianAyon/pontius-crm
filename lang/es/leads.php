@@ -113,4 +113,6 @@ return [
     'medium' => 'Medio',
     'completeness' => 'Completitud',
     'missing_fields' => 'Campos faltantes',
+    'public_lead_created' => 'Gracias. Recibimos tu información y pronto te contactaremos.',
+    'send' => 'Enviar',
 ];
