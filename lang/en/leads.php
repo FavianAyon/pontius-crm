@@ -105,4 +105,7 @@ return [
     'already_seller' => 'Already has seller case file',
     'conversion_status' => 'Conversion status',
     'status_converted' => 'Converted',
+    'active_leads' => 'Active leads',
+    'converted_leads' => 'Clients / converted',
+    'lost_leads' => 'Lost leads',
 ];

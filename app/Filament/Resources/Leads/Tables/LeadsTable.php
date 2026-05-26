@@ -99,8 +99,31 @@ class LeadsTable
                         'converted' => __('leads.status_converted'),
                     ]),
                 TernaryFilter::make('is_duplicate')
-
                     ->label('Duplicados'),
+                SelectFilter::make('lead_group')
+                    ->label(__('leads.status'))
+                    ->options([
+                        'active' => __('leads.active_leads'),
+                        'converted' => __('leads.converted_leads'),
+                        'lost' => __('leads.lost_leads'),
+                    ])
+                    ->query(function ($query, array $data) {
+                        return match ($data['value'] ?? null) {
+                            'active' => $query->whereIn('status', [
+                                'new',
+                                'contacted',
+                                'qualified',
+                                'proposal',
+                                'negotiation',
+                            ]),
+                            'converted' => $query->whereIn('status', [
+                                'converted',
+                                'won',
+                            ]),
+                            'lost' => $query->where('status', 'lost'),
+                            default => $query,
+                        };
+                    }),
             ])
             ->recordActions([
                 Action::make('overview')

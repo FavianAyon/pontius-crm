@@ -106,4 +106,7 @@ return [
     'already_seller' => 'Ya tiene expediente de vendedor',
     'conversion_status' => 'Estado de conversión',
     'status_converted' => 'Convertido',
+    'active_leads' => 'Leads activos',
+    'converted_leads' => 'Clientes / convertidos',
+    'lost_leads' => 'Leads perdidos',
 ];
