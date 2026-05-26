@@ -24,6 +24,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'is_active',
     ];
 
     /**
@@ -46,6 +47,11 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_active' => 'boolean',
         ];
+    }
+    public function assignedLeads()
+    {
+        return $this->hasMany(\App\Models\Lead::class, 'assigned_to_user_id');
     }
 }

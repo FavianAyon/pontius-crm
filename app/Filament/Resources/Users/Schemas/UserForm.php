@@ -6,7 +6,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Hash;use Filament\Forms\Components\Toggle;
 
 class UserForm
 {
@@ -33,6 +33,10 @@ class UserForm
                         ->dehydrateStateUsing(fn ($state) => filled($state) ? Hash::make($state) : null)
                         ->dehydrated(fn ($state) => filled($state))
                         ->required(fn ($record) => blank($record)),
+
+                    Toggle::make('is_active')
+                        ->label(__('users.is_active'))
+                        ->default(true),
 
                     Select::make('roles')
                         ->label(__('users.roles'))

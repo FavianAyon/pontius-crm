@@ -11,4 +11,5 @@ return [
     'admin' => 'Admin',
     'supervisor' => 'Supervisor',
     'agent' => 'Agent',
+    'is_active' => 'Active',
 ];

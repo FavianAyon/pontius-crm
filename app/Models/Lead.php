@@ -75,6 +75,7 @@ class Lead extends Model
                 $lead->registered_by_user_id ??= auth()->id();
                 $lead->assigned_to_user_id ??= auth()->id();
             }
+            $lead->assigned_to_user_id ??= self::getNextAvailableAgentId() ?? auth()->id();
 
         });
 
@@ -389,5 +390,14 @@ class Lead extends Model
                 'status' => 'completed',
                 'completed_at' => now(),
             ]);
+    }
+
+    protected static function getNextAvailableAgentId(): ?int
+    {
+        return User::role('agent')
+            ->where('is_active', true)
+            ->withCount(['assignedLeads'])
+            ->orderBy('assigned_leads_count')
+            ->value('id');
     }
 }
