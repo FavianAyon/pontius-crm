@@ -21,6 +21,10 @@ class DevelopmentUnitResource extends Resource
     protected static ?string $model = DevelopmentUnit::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    public static function getNavigationGroup(): string
+    {
+        return __('navigation.inventory');
+    }
 
     public static function form(Schema $schema): Schema
     {

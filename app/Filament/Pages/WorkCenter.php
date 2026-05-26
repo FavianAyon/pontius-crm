@@ -9,6 +9,10 @@ class WorkCenter extends Page
     protected string $view = 'filament.pages.work-center';
 
     protected static ?int $navigationSort = 1;
+    public static function getNavigationGroup(): string
+    {
+        return __('navigation.work');
+    }
 
     public static function getNavigationLabel(): string
     {

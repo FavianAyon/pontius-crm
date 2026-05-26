@@ -21,6 +21,10 @@ class CaseFileDocumentResource extends Resource
     protected static ?string $model = CaseFileDocument::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    public static function getNavigationGroup(): string
+    {
+        return __('navigation.files');
+    }
 
     public static function form(Schema $schema): Schema
     {

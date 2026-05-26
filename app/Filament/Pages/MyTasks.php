@@ -21,6 +21,10 @@ class MyTasks extends Page implements HasTable
 
     protected string $view = 'filament.pages.my-tasks';
     protected static string|null|\BackedEnum $navigationIcon = Heroicon::CheckCircle;
+    public static function getNavigationGroup(): string
+    {
+        return __('navigation.work');
+    }
 
 
     protected static ?int $navigationSort = 4;

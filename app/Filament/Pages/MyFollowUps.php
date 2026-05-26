@@ -23,7 +23,10 @@ class MyFollowUps extends Page implements HasTable
     protected string $view = 'filament.pages.my-follow-ups';
     protected static string|null|\BackedEnum $navigationIcon = Heroicon::Forward;
 
-
+    public static function getNavigationGroup(): string
+    {
+        return __('navigation.work');
+    }
     protected static ?int $navigationSort = 3;
 
     public static function getNavigationLabel(): string
