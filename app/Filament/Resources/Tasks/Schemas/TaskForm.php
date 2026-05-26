@@ -52,6 +52,7 @@ class TaskForm
                                 'listing' => __('tasks.listing'),
                                 'contract' => __('tasks.contract'),
                                 'initial_contact' => __('tasks.initial_contact'),
+                                'complete_lead_info' => __('tasks.complete_lead_info_title'),
                             ])
                             ->default('general')
                             ->required(),

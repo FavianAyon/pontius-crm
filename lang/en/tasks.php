@@ -44,4 +44,6 @@ return [
     'overdue_task_body' => 'The task is overdue: :title',
     'due_soon_task_title' => 'Task due soon',
     'due_soon_task_body' => 'The task is due soon: :title',
+    'complete_lead_info_title' => 'Complete lead information',
+    'complete_lead_info_description' => 'Important lead information is missing. Review and complete the details.',
 ];

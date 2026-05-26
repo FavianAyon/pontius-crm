@@ -44,4 +44,6 @@ return [
     'overdue_task_body' => 'La tarea está vencida: :title',
     'due_soon_task_title' => 'Tarea próxima a vencer',
     'due_soon_task_body' => 'La tarea está próxima a vencer: :title',
+    'complete_lead_info_title' => 'Completar información del lead',
+    'complete_lead_info_description' => 'Faltan datos importantes del lead. Revisa y completa la información.',
 ];

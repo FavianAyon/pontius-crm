@@ -91,6 +91,9 @@ class Lead extends Model
                     ->sendToDatabase($lead->assignedTo);
             }
         });
+        static::saved(function (Lead $lead) {
+            $lead->createIncompleteLeadTaskIfNeeded();
+        });
     }
 
     public function getActivitylogOptions(): LogOptions
@@ -350,5 +353,26 @@ class Lead extends Model
             ->filter(fn ($label, $field) => blank($this->{$field}))
             ->values()
             ->toArray();
+    }
+    public function createIncompleteLeadTaskIfNeeded(): void
+    {
+        if ($this->completeness_percent >= 80) {
+            return;
+        }
+
+        if ($this->tasks()->where('type', 'complete_lead_info')->whereNotIn('status', ['completed', 'cancelled'])->exists()) {
+            return;
+        }
+
+        $this->tasks()->create([
+            'assigned_to_user_id' => $this->assigned_to_user_id ?? auth()->id(),
+            'created_by_user_id' => auth()->id(),
+            'title' => __('tasks.complete_lead_info_title'),
+            'description' => __('tasks.complete_lead_info_description'),
+            'type' => 'complete_lead_info',
+            'status' => 'open',
+            'priority' => 'normal',
+            'due_at' => now()->addDay(),
+        ]);
     }
 }
