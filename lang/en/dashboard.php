@@ -14,4 +14,6 @@ return [
     'today_tasks' => 'Today tasks',
     'work_center' => 'Work center',
     'new_assigned_leads' => 'New assigned leads',
+    'leads_by_source' => 'Leads by source',
+    'converted_leads' => 'Converted',
 ];

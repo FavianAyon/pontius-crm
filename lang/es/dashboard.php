@@ -14,4 +14,6 @@ return [
     'today_tasks' => 'Tareas de hoy',
     'work_center' => 'Centro de trabajo',
     'new_assigned_leads' => 'Leads nuevos asignados',
+    'leads_by_source' => 'Leads por fuente',
+    'converted_leads' => 'Convertidos',
 ];
