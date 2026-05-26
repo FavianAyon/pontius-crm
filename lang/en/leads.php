@@ -111,4 +111,5 @@ return [
     'campaign' => 'Campaign',
     'medium' => 'Medium',
     'completeness' => 'Completeness',
+    'missing_fields' => 'Missing fields',
 ];

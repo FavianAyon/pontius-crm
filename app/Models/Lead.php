@@ -332,4 +332,23 @@ class Lead extends Model
 
         return (int) round(($completed / count($fields)) * 100);
     }
+    public function getMissingFieldsAttribute(): array
+    {
+        $fields = [
+            'first_name' => __('leads.first_name'),
+            'phone' => __('leads.phone'),
+            'whatsapp' => __('leads.whatsapp'),
+            'email' => __('leads.email'),
+            'source' => __('leads.source'),
+            'intent' => __('leads.intent'),
+            'interest_target_type' => __('leads.interest_target_type'),
+            'priority' => __('leads.priority'),
+            'status' => __('leads.status'),
+        ];
+
+        return collect($fields)
+            ->filter(fn ($label, $field) => blank($this->{$field}))
+            ->values()
+            ->toArray();
+    }
 }

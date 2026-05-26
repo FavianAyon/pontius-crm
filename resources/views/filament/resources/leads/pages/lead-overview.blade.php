@@ -218,19 +218,33 @@
                 <div class="lead360-row">
                     <span class="lead360-label">{{ __('leads.conversion_status') }}</span>
                     <span class="lead360-value">
-        @if ($record->caseFiles->where('type', 'buyer')->count())
-                            <span class="lead360-pill">{{ __('leads.already_buyer') }}</span>
-                        @endif
+                        @if ($record->caseFiles->where('type', 'buyer')->count())
+                                            <span class="lead360-pill">{{ __('leads.already_buyer') }}</span>
+                                        @endif
 
-                        @if ($record->caseFiles->where('type', 'seller')->count())
-                            <span class="lead360-pill">{{ __('leads.already_seller') }}</span>
-                        @endif
+                                        @if ($record->caseFiles->where('type', 'seller')->count())
+                                            <span class="lead360-pill">{{ __('leads.already_seller') }}</span>
+                                        @endif
 
-                        @if (! $record->caseFiles->whereIn('type', ['buyer', 'seller'])->count())
-                            —
-                        @endif
-    </span>
+                                        @if (! $record->caseFiles->whereIn('type', ['buyer', 'seller'])->count())
+                                            —
+                                        @endif
+                    </span>
                 </div>
+                <div class="lead360-row">
+                    <span class="lead360-label">{{ __('leads.completeness') }}</span>
+                    <span class="lead360-value">{{ $record->completeness_percent }}%</span>
+                </div>
+
+                @if (count($record->missing_fields))
+                    <div style="margin-top: 10px;">
+                        <div class="lead360-label">{{ __('leads.missing_fields') }}</div>
+
+                        @foreach ($record->missing_fields as $field)
+                            <span class="lead360-pill">{{ $field }}</span>
+                        @endforeach
+                    </div>
+                @endif
             </div>
 
             <div class="lead360-card">

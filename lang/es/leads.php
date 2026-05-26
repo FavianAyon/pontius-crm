@@ -112,4 +112,5 @@ return [
     'campaign' => 'Campaña',
     'medium' => 'Medio',
     'completeness' => 'Completitud',
+    'missing_fields' => 'Campos faltantes',
 ];
