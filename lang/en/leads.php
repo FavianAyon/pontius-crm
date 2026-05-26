@@ -101,4 +101,7 @@ return [
     'convert_to_buyer' => 'Convert to buyer',
     'convert_to_seller' => 'Convert to seller',
     'converted_successfully' => 'Lead converted successfully',
+    'already_buyer' => 'Already has buyer case file',
+    'already_seller' => 'Already has seller case file',
+    'conversion_status' => 'Conversion status',
 ];

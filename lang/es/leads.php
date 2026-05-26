@@ -102,4 +102,7 @@ return [
     'convert_to_buyer' => 'Convertir a comprador',
     'convert_to_seller' => 'Convertir a vendedor',
     'converted_successfully' => 'Lead convertido correctamente',
+    'already_buyer' => 'Ya tiene expediente de comprador',
+    'already_seller' => 'Ya tiene expediente de vendedor',
+    'conversion_status' => 'Estado de conversión',
 ];

@@ -290,6 +290,7 @@ class LeadOverview extends Page
                 ->label(__('leads.convert_to_buyer'))
                 ->icon('heroicon-o-user-plus')
                 ->color('success')
+                ->visible(fn () => ! $this->record->caseFiles->where('type', 'buyer')->count())
                 ->requiresConfirmation()
                 ->action(fn () => $this->createCaseFileFromLead('buyer')),
 
@@ -297,6 +298,7 @@ class LeadOverview extends Page
                 ->label(__('leads.convert_to_seller'))
                 ->icon('heroicon-o-home')
                 ->color('warning')
+                ->visible(fn () => ! $this->record->caseFiles->where('type', 'seller')->count())
                 ->requiresConfirmation()
                 ->action(fn () => $this->createCaseFileFromLead('seller')),
         ];

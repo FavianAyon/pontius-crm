@@ -215,6 +215,22 @@
                     <span class="lead360-label">{{ __('leads.assigned_to') }}</span>
                     <span class="lead360-value">{{ $record->assignedTo?->name ?: '—' }}</span>
                 </div>
+                <div class="lead360-row">
+                    <span class="lead360-label">{{ __('leads.conversion_status') }}</span>
+                    <span class="lead360-value">
+        @if ($record->caseFiles->where('type', 'buyer')->count())
+                            <span class="lead360-pill">{{ __('leads.already_buyer') }}</span>
+                        @endif
+
+                        @if ($record->caseFiles->where('type', 'seller')->count())
+                            <span class="lead360-pill">{{ __('leads.already_seller') }}</span>
+                        @endif
+
+                        @if (! $record->caseFiles->whereIn('type', ['buyer', 'seller'])->count())
+                            —
+                        @endif
+    </span>
+                </div>
             </div>
 
             <div class="lead360-card">
