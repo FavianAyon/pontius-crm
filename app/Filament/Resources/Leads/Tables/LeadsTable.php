@@ -26,6 +26,10 @@ class LeadsTable
 
                     ->label(__('leads.is_duplicate'))
                     ->boolean(),
+                TextColumn::make('completeness_percent')
+                    ->label(__('leads.completeness'))
+                    ->suffix('%')
+                    ->sortable(),
                 TextColumn::make('full_name')
                     ->label(__('leads.full_name'))
                     ->searchable()
@@ -85,6 +89,7 @@ class LeadsTable
                     ->label(__('leads.campaign'))
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
+
             ])
             ->filters([
                 SelectFilter::make('intent')

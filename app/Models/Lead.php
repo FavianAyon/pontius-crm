@@ -46,6 +46,7 @@ class Lead extends Model
         'duplicate_of_lead_id',
         'duplicate_match_fields',
         'development_unit_id',
+        'completeness_percent',
     ];
     protected $casts = [
         'budget_min' => 'decimal:2',
@@ -64,6 +65,7 @@ class Lead extends Model
                     ->filter()
                     ->implode(' ')
             );
+            $lead->completeness_percent = $lead->calculateCompletenessPercent();
 
             $lead->refreshDuplicateStatus();
         });
@@ -309,5 +311,25 @@ class Lead extends Model
     public function caseFiles()
     {
         return $this->hasMany(CaseFile::class)->latest();
+    }
+    public function calculateCompletenessPercent(): int
+    {
+        $fields = [
+            'first_name',
+            'phone',
+            'whatsapp',
+            'email',
+            'source',
+            'intent',
+            'interest_target_type',
+            'priority',
+            'status',
+        ];
+
+        $completed = collect($fields)
+            ->filter(fn ($field) => filled($this->{$field}))
+            ->count();
+
+        return (int) round(($completed / count($fields)) * 100);
     }
 }

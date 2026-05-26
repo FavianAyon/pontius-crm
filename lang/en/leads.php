@@ -110,4 +110,5 @@ return [
     'lost_leads' => 'Lost leads',
     'campaign' => 'Campaign',
     'medium' => 'Medium',
+    'completeness' => 'Completeness',
 ];

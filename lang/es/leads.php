@@ -111,4 +111,5 @@ return [
     'lost_leads' => 'Leads perdidos',
     'campaign' => 'Campaña',
     'medium' => 'Medio',
+    'completeness' => 'Completitud',
 ];
