@@ -33,4 +33,6 @@ return [
     'case_file_created_body' => 'El expediente y su checklist documental fueron creados automáticamente.',
     'generate_checklist' => 'Regenerar checklist',
     'checklist_generated' => 'Checklist regenerado',
+    'active_clients' => 'Clientes activos',
+    'client_type' => 'Tipo de cliente',
 ];
