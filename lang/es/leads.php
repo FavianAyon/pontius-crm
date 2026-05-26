@@ -115,4 +115,5 @@ return [
     'missing_fields' => 'Campos faltantes',
     'public_lead_created' => 'Gracias. Recibimos tu información y pronto te contactaremos.',
     'send' => 'Enviar',
+    'contact_required' => 'Ingresa al menos un teléfono, WhatsApp o correo.',
 ];

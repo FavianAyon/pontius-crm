@@ -14,7 +14,13 @@ class PublicLeadController extends Controller
 
     public function store(Request $request)
     {
+        if ($request->filled('website_url')) {
+            return redirect()->route('public.leads.create');
+        }
         $data = $request->validate([
+            'campaign' => ['nullable', 'string', 'max:255'],
+            'medium' => ['nullable', 'string', 'max:255'],
+            'metadata' => ['nullable', 'array'],
             'first_name' => ['required', 'string', 'max:255'],
             'phone' => ['nullable', 'string', 'max:255'],
             'whatsapp' => ['nullable', 'string', 'max:255'],
@@ -23,8 +29,13 @@ class PublicLeadController extends Controller
             'source' => ['nullable', 'string', 'max:255'],
             'notes' => ['nullable', 'string'],
         ]);
+        if (blank($data['phone'] ?? null) && blank($data['whatsapp'] ?? null) && blank($data['email'] ?? null)) {
+            return back()
+                ->withErrors(['contact' => __('leads.contact_required')])
+                ->withInput();
+        }
 
-        $data['source'] ??= 'website';
+        $data['source'] = $request->input('metadata.utm_source') ?: ($data['source'] ?? 'website');
         $data['status'] = 'new';
         $data['priority'] = 'normal';
         $data['preferred_language'] = app()->getLocale();
