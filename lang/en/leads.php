@@ -118,4 +118,6 @@ return [
     'reassign_lead' => 'Reassign lead',
     'lead_reassigned' => 'Lead reassigned',
     'reassignment_reason' => 'Reassignment reason',
+    'activity' => 'Activity',
+    'timeline' => 'Timeline',
 ];

@@ -25,8 +25,6 @@ class LeadOverview extends Page
     use InteractsWithRecord, WithFileUploads;
     public ?int $selectedDocumentId = null;
     public array $documentUploads = [];
-
-
     protected static string $resource = LeadResource::class;
 
     protected string $view = 'filament.resources.leads.pages.lead-overview';
@@ -35,16 +33,14 @@ class LeadOverview extends Page
     {
         $this->record = $this->resolveRecord($record);
 
-        $this->record->load([
-            'tasks',
-            'leadActivities',
-            'caseFiles.documents',
-            'assignedTo',
-            'development',
-            'developmentUnit',
-            'listing',
-        ]);
+        $this->record = $this->resolveRecord($record);
+        $this->refreshLeadOverview();
+        $this->timeline = \App\Services\LeadTimelineService::build(
+            $this->record
+        );
+
     }
+    public array $timeline = [];
 
     public function getTitle(): string
     {
@@ -91,7 +87,7 @@ class LeadOverview extends Page
                         ->title(__('tasks.task'))
                         ->send();
 
-                    $this->record->refresh();
+                    $this->refreshLeadOverview();
                 }),
 
             Actions\Action::make('addFollowUp')
@@ -125,7 +121,7 @@ class LeadOverview extends Page
                         ->title(__('leads.followup_completed'))
                         ->send();
 
-                    $this->record->refresh();
+                    $this->refreshLeadOverview();
                 }),
 
             Actions\Action::make('createCaseFile')
@@ -165,8 +161,7 @@ class LeadOverview extends Page
                         ->title(__('case-files.case_file'))
                         ->send();
 
-                    $this->record->refresh();
-                    $this->record->load('caseFiles.documents');
+                    $this->refreshLeadOverview();
                 }),
             Actions\Action::make('uploadDocument')
                 ->label(__('case-file-documents.upload_file'))
@@ -214,21 +209,23 @@ class LeadOverview extends Page
                         ->title(__('case-file-documents.uploaded'))
                         ->send();
 
-                    $this->record->load('caseFiles.documents');
+                    $this->refreshLeadOverview();
                 }),
 
             Actions\Action::make('approveDocument')
                 ->label(__('case-file-documents.approve'))
                 ->icon('heroicon-o-check-circle')
                 ->color('success')
-                ->visible(fn () => auth()->user()?->can('approve_case_file_document'))
+                ->visible(fn () => auth()->user()?->can('approve_case_file_document') && $this->record->caseFiles->flatMap->documents->whereNotNull('file_path')->where('status', '!=', 'approved')->count())
                 ->schema([
                     Select::make('document_id')
                         ->label(__('case-file-documents.document'))
                         ->options(fn () => $this->record->caseFiles
                             ->flatMap(fn ($caseFile) => $caseFile->documents)
-                            ->where('status', '!=', 'approved')
-                            ->pluck('name', 'id'))
+                            ->filter(fn ($document) => $document->file_path && $document->status !== 'approved')
+                            ->mapWithKeys(fn ($document) => [
+                                $document->id => "{$document->caseFile->folio} - {$document->name}",
+                            ]))
                         ->searchable()
                         ->required(),
                 ])
@@ -247,21 +244,23 @@ class LeadOverview extends Page
                         ->title(__('case-file-documents.approved'))
                         ->send();
 
-                    $this->record->load('caseFiles.documents');
+                    $this->refreshLeadOverview();
                 }),
 
             Actions\Action::make('rejectDocument')
                 ->label(__('case-file-documents.reject'))
                 ->icon('heroicon-o-x-circle')
                 ->color('danger')
-                ->visible(fn () => auth()->user()?->can('reject_case_file_document'))
+                ->visible(fn () => auth()->user()?->can('reject_case_file_document') && $this->record->caseFiles->flatMap->documents->whereNotNull('file_path')->where('status', '!=', 'rejected')->count())
                 ->schema([
                     Select::make('document_id')
                         ->label(__('case-file-documents.document'))
                         ->options(fn () => $this->record->caseFiles
                             ->flatMap(fn ($caseFile) => $caseFile->documents)
-                            ->where('status', '!=', 'rejected')
-                            ->pluck('name', 'id'))
+                            ->filter(fn ($document) => $document->file_path && $document->status !== 'approved')
+                            ->mapWithKeys(fn ($document) => [
+                                $document->id => "{$document->caseFile->folio} - {$document->name}",
+                            ]))
                         ->searchable()
                         ->required(),
 
@@ -284,7 +283,7 @@ class LeadOverview extends Page
                         ->title(__('case-file-documents.rejected'))
                         ->send();
 
-                    $this->record->load('caseFiles.documents');
+                    $this->refreshLeadOverview();
                 }),
             Actions\Action::make('convertToBuyer')
                 ->label(__('leads.convert_to_buyer'))
@@ -427,5 +426,24 @@ class LeadOverview extends Page
             ->success()
             ->title(__('leads.converted_successfully'))
             ->send();
+    }
+    protected function refreshLeadOverview(): void
+    {
+        $this->record->refresh();
+
+        $this->record->load([
+            'tasks',
+            'leadActivities',
+            'caseFiles.documents',
+            'assignedTo',
+            'development',
+            'developmentUnit',
+            'listing',
+            'assignments.fromUser',
+            'assignments.toUser',
+            'assignments.changedBy',
+        ]);
+
+        $this->timeline = \App\Services\LeadTimelineService::build($this->record);
     }
 }

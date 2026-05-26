@@ -388,6 +388,28 @@
                     {{ $record->notes ?: '—' }}
                 </div>
             </div>
+
+            <div class="lead360-card">
+                <div class="lead360-title">
+                    {{ __('leads.timeline') }}php artisan optimize:clear
+                </div>
+
+                @foreach ($timeline as $item)
+                    <div class="lead360-row">
+                        <div>
+                            <strong>{{ $item['title'] }}</strong>
+
+                            <div class="lead360-label">
+                                {{ $item['description'] }}
+                            </div>
+                        </div>
+
+                        <div class="lead360-value">
+                            {{ $item['date']->format('d/m/Y H:i') }}
+                        </div>
+                    </div>
+                @endforeach
+            </div>
         </div>
     </div>
 </x-filament-panels::page>
