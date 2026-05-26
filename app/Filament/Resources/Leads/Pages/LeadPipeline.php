@@ -36,6 +36,7 @@ class LeadPipeline extends Page
         'negotiation',
         'won',
         'lost',
+        'converted',
     ];
 
     public function getTitle(): string

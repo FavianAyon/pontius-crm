@@ -416,6 +416,11 @@ class LeadOverview extends Page
             ]
         );
 
+        $this->record->update([
+            'status' => 'converted',
+        ]);
+
+        $this->record->refresh();
         $this->record->load('caseFiles.documents');
 
         \Filament\Notifications\Notification::make()

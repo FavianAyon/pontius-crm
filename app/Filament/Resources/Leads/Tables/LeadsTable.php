@@ -96,6 +96,7 @@ class LeadsTable
                         'negotiation' => __('leads.status_negotiation'),
                         'won' => __('leads.status_won'),
                         'lost' => __('leads.status_lost'),
+                        'converted' => __('leads.status_converted'),
                     ]),
                 TernaryFilter::make('is_duplicate')
 

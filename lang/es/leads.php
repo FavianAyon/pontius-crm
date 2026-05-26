@@ -105,4 +105,5 @@ return [
     'already_buyer' => 'Ya tiene expediente de comprador',
     'already_seller' => 'Ya tiene expediente de vendedor',
     'conversion_status' => 'Estado de conversión',
+    'status_converted' => 'Convertido',
 ];
