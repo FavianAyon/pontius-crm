@@ -15,4 +15,6 @@ return [
     'api_payload' => 'API payload',
     'content_score' => 'Content score',
     'generated_at' => 'Generated at',
+    'generate' => 'Generate profile',
+    'generated' => 'Publish profile generated',
 ];

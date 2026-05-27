@@ -15,4 +15,6 @@ return [
     'api_payload' => 'Payload API',
     'content_score' => 'Puntaje de contenido',
     'generated_at' => 'Generado en',
+    'generate' => 'Generar perfil',
+    'generated' => 'Perfil de publicación generado',
 ];

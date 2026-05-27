@@ -2,10 +2,13 @@
 
 namespace App\Filament\Resources\Developments\Tables;
 
+use App\Services\PublishProfileGenerator;
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Notifications\Notification;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -60,6 +63,19 @@ class DevelopmentsTable
                     ]),
             ])
             ->recordActions([
+                Action::make('generatePublishProfiles')
+                    ->label(__('publish-profiles.generate'))
+                    ->icon('heroicon-o-sparkles')
+                    ->color('info')
+                    ->action(function ($record): void {
+                        PublishProfileGenerator::generate($record, 'es');
+                        PublishProfileGenerator::generate($record, 'en');
+
+                        Notification::make()
+                            ->success()
+                            ->title(__('publish-profiles.generated'))
+                            ->send();
+                    }),
                 ViewAction::make(),
                 EditAction::make(),
             ])

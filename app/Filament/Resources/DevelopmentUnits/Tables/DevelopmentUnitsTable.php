@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\DevelopmentUnits\Tables;
 
+use App\Services\PublishProfileGenerator;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -69,6 +70,19 @@ class DevelopmentUnitsTable
                     ]),
             ])
             ->recordActions([
+                Action::make('generatePublishProfiles')
+                    ->label(__('publish-profiles.generate'))
+                    ->icon('heroicon-o-sparkles')
+                    ->color('info')
+                    ->action(function ($record): void {
+                        PublishProfileGenerator::generate($record, 'es');
+                        PublishProfileGenerator::generate($record, 'en');
+
+                        Notification::make()
+                            ->success()
+                            ->title(__('publish-profiles.generated'))
+                            ->send();
+                    }),
                 Action::make('createUnitCaseFile')
                     ->label(__('case-files.case_file'))
                     ->icon('heroicon-o-folder-plus')

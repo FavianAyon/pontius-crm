@@ -26,6 +26,16 @@ class Listing extends Model
         'area_m2',
         'description',
         'metadata',
+        'is_public',
+        'public_status',
+        'description_es',
+        'description_en',
+        'seo_title_es',
+        'seo_title_en',
+        'seo_description_es',
+        'seo_description_en',
+        'latitude',
+        'longitude'
     ];
 
     protected $casts = [

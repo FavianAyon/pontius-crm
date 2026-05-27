@@ -21,6 +21,17 @@ class Development extends Model
         'total_units',
         'available_units',
         'metadata',
+        'is_public',
+        'public_status',
+        'description_es',
+        'description_en',
+        'seo_title_es',
+        'seo_title_en',
+        'seo_description_es',
+        'seo_description_en',
+        'developer_name',
+        'delivery_date',
+        'construction_status'
     ];
 
     protected $casts = [

@@ -11,7 +11,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;use App\Models\CaseFile;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
-
+use App\Services\PublishProfileGenerator;
 class ListingsTable
 {
     public static function configure(Table $table): Table
@@ -82,6 +82,19 @@ class ListingsTable
                     ->relationship('development', 'name'),
             ])
             ->recordActions([
+                Action::make('generatePublishProfiles')
+                    ->label(__('publish-profiles.generate'))
+                    ->icon('heroicon-o-sparkles')
+                    ->color('info')
+                    ->action(function ($record): void {
+                        PublishProfileGenerator::generate($record, 'es');
+                        PublishProfileGenerator::generate($record, 'en');
+
+                        Notification::make()
+                            ->success()
+                            ->title(__('publish-profiles.generated'))
+                            ->send();
+                    }),
                 Action::make('createListingCaseFile')
                     ->label(__('case-files.case_file'))
                     ->icon('heroicon-o-folder-plus')
