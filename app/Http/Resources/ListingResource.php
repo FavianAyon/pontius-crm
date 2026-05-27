@@ -40,6 +40,13 @@ class ListingResource extends JsonResource
                 'alt' => $media->alt_text,
                 'featured' => $media->is_featured,
             ]),
+            'open_graph' => [
+                'title' => $profile?->og_title,
+                'description' => $profile?->og_description,
+                'image' => $this->featuredImage?->url,
+            ],
+
+            'api_payload' => $profile?->api_payload,
         ];
     }
 }

@@ -40,6 +40,19 @@ class DevelopmentUnitResource extends JsonResource
                 'alt' => $media->alt_text,
                 'featured' => $media->is_featured,
             ]),
+            'development' => [
+                'id' => $this->development?->id,
+                'name' => $this->development?->name,
+                'slug' => $this->development?->slug,
+            ],
+
+            'open_graph' => [
+                'title' => $profile?->og_title,
+                'description' => $profile?->og_description,
+                'image' => $this->featuredImage?->url,
+            ],
+
+            'api_payload' => $profile?->api_payload,
         ];
     }
 }
