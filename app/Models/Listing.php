@@ -70,4 +70,15 @@ class Listing extends Model
     {
         return $this->hasMany(CaseFile::class);
     }
+    public function mediaAssets()
+    {
+        return $this->morphMany(MediaAsset::class, 'mediable')->orderBy('sort_order');
+    }
+
+    public function featuredImage()
+    {
+        return $this->morphOne(MediaAsset::class, 'mediable')
+            ->where('collection', 'gallery')
+            ->where('is_featured', true);
+    }
 }

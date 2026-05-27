@@ -76,4 +76,15 @@ class Development extends Model
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs();
     }
+    public function mediaAssets()
+    {
+        return $this->morphMany(MediaAsset::class, 'mediable')->orderBy('sort_order');
+    }
+
+    public function featuredImage()
+    {
+        return $this->morphOne(MediaAsset::class, 'mediable')
+            ->where('collection', 'gallery')
+            ->where('is_featured', true);
+    }
 }
