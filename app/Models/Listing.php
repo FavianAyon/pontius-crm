@@ -81,4 +81,20 @@ class Listing extends Model
             ->where('collection', 'gallery')
             ->where('is_featured', true);
     }
+    public function publishProfiles()
+    {
+        return $this->morphMany(PublishProfile::class, 'publishable');
+    }
+
+    public function publishProfileEs()
+    {
+        return $this->morphOne(PublishProfile::class, 'publishable')
+            ->where('language', 'es');
+    }
+
+    public function publishProfileEn()
+    {
+        return $this->morphOne(PublishProfile::class, 'publishable')
+            ->where('language', 'en');
+    }
 }
