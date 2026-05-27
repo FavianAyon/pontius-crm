@@ -52,6 +52,7 @@ class DevelopmentResource extends Resource
             RelationManagers\UnitsRelationManager::class,
             RelationManagers\ActivitiesRelationManager::class,
             RelationManagers\MediaAssetsRelationManager::class,
+            RelationManagers\PublishProfilesRelationManager::class,
         ];
     }
 
