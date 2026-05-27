@@ -14,3 +14,4 @@ Route::middleware('throttle:60,1')->group(function () {
 
 Route::get('/public/manifest', [PublicInventoryController::class, 'manifest']);
 Route::get('/public/sitemap', [PublicInventoryController::class, 'sitemap']);
+Route::get('/public/ai-context', [PublicInventoryController::class, 'aiContext']);

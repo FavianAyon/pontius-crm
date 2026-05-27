@@ -232,4 +232,72 @@ class PublicInventoryController extends Controller
                 ]),
         ]);
     }
+    public function aiContext()
+    {
+        $lang = request('lang', 'es');
+
+        return response()->json([
+            'generated_at' => now()->toIso8601String(),
+
+            'listings' => Listing::query()
+                ->where('is_public', true)
+                ->where('public_status', 'published')
+                ->with(['publishProfileEs', 'publishProfileEn'])
+                ->get()
+                ->map(function ($listing) use ($lang) {
+                    $profile = $lang === 'en'
+                        ? $listing->publishProfileEn
+                        : $listing->publishProfileEs;
+
+                    return [
+                        'type' => 'listing',
+                        'slug' => $listing->slug,
+                        'title' => $listing->title,
+                        'summary' => $profile?->ai_summary,
+                        'keywords' => $profile?->keywords,
+                        'payload' => $profile?->api_payload,
+                    ];
+                }),
+
+            'developments' => Development::query()
+                ->where('is_public', true)
+                ->where('public_status', 'published')
+                ->with(['publishProfileEs', 'publishProfileEn'])
+                ->get()
+                ->map(function ($development) use ($lang) {
+                    $profile = $lang === 'en'
+                        ? $development->publishProfileEn
+                        : $development->publishProfileEs;
+
+                    return [
+                        'type' => 'development',
+                        'slug' => $development->slug,
+                        'title' => $development->name,
+                        'summary' => $profile?->ai_summary,
+                        'keywords' => $profile?->keywords,
+                        'payload' => $profile?->api_payload,
+                    ];
+                }),
+
+            'development_units' => DevelopmentUnit::query()
+                ->where('is_public', true)
+                ->where('public_status', 'published')
+                ->with(['publishProfileEs', 'publishProfileEn', 'development'])
+                ->get()
+                ->map(function ($unit) use ($lang) {
+                    $profile = $lang === 'en'
+                        ? $unit->publishProfileEn
+                        : $unit->publishProfileEs;
+
+                    return [
+                        'type' => 'development_unit',
+                        'slug' => $unit->slug,
+                        'title' => $unit->development?->name . ' - ' . $unit->unit_number,
+                        'summary' => $profile?->ai_summary,
+                        'keywords' => $profile?->keywords,
+                        'payload' => $profile?->api_payload,
+                    ];
+                }),
+        ]);
+    }
 }
