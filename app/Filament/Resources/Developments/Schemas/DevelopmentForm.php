@@ -2,9 +2,11 @@
 
 namespace App\Filament\Resources\Developments\Schemas;
 
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
@@ -70,6 +72,39 @@ class DevelopmentForm
                         ->label(__('developments.description'))
                         ->rows(4)
                         ->columnSpanFull(),
+                ]),
+            Section::make('Web / SEO')
+                ->schema([
+                    Grid::make(2)->schema([
+                        Toggle::make('is_public')
+                            ->label(__('developments.is_public')),
+
+                        Select::make('public_status')
+                            ->label(__('developments.public_status'))
+                            ->options([
+                                'draft' => __('developments.draft'),
+                                'published' => __('developments.published'),
+                                'hidden' => __('developments.hidden'),
+                            ])
+                            ->default('draft'),
+
+                        TextInput::make('developer_name')
+                            ->label(__('developments.developer_name')),
+
+                        DatePicker::make('delivery_date')
+                            ->label(__('developments.delivery_date')),
+
+                        TextInput::make('construction_status')
+                            ->label(__('developments.construction_status')),
+
+                        Textarea::make('description_es')
+                            ->label(__('developments.description_es'))
+                            ->rows(4),
+
+                        Textarea::make('description_en')
+                            ->label(__('developments.description_en'))
+                            ->rows(4),
+                    ]),
                 ]),
         ]);
     }

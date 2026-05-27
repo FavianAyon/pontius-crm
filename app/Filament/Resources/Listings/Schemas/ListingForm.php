@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Listings\Schemas;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
@@ -102,6 +103,52 @@ class ListingForm
                         ->label(__('listings.description'))
                         ->rows(4)
                         ->columnSpanFull(),
+                ]),
+            Section::make('Web / SEO')
+                ->schema([
+                    Grid::make(2)->schema([
+                        Toggle::make('is_public')
+                            ->label(__('listings.is_public')),
+
+                        Select::make('public_status')
+                            ->label(__('listings.public_status'))
+                            ->options([
+                                'draft' => __('listings.draft'),
+                                'published' => __('listings.published'),
+                                'hidden' => __('listings.hidden'),
+                            ])
+                            ->default('draft'),
+
+                        Textarea::make('description_es')
+                            ->label(__('listings.description_es'))
+                            ->rows(4),
+
+                        Textarea::make('description_en')
+                            ->label(__('listings.description_en'))
+                            ->rows(4),
+
+                        TextInput::make('seo_title_es')
+                            ->label(__('listings.seo_title_es')),
+
+                        TextInput::make('seo_title_en')
+                            ->label(__('listings.seo_title_en')),
+
+                        Textarea::make('seo_description_es')
+                            ->label(__('listings.seo_description_es'))
+                            ->rows(3),
+
+                        Textarea::make('seo_description_en')
+                            ->label(__('listings.seo_description_en'))
+                            ->rows(3),
+
+                        TextInput::make('latitude')
+                            ->label('Latitude')
+                            ->numeric(),
+
+                        TextInput::make('longitude')
+                            ->label('Longitude')
+                            ->numeric(),
+                    ]),
                 ]),
         ]);
     }

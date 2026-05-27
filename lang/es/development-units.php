@@ -45,4 +45,6 @@ return [
     'draft' => 'Borrador',
     'published' => 'Publicado',
     'hidden' => 'Oculto',
+    'unit_type' => 'Tipo de unidad',
+    'orientation' => 'Orientación',
 ];

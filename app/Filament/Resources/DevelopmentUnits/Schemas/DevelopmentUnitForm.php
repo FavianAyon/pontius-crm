@@ -3,9 +3,11 @@
 namespace App\Filament\Resources\DevelopmentUnits\Schemas;
 
 use App\Support\CrmOptions;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
@@ -84,6 +86,36 @@ class DevelopmentUnitForm
                         ->label(__('development-units.description'))
                         ->rows(4)
                         ->columnSpanFull(),
+                ]),
+            Section::make('Web / SEO')
+                ->schema([
+                    Grid::make(2)->schema([
+                        Toggle::make('is_public')
+                            ->label(__('development-units.is_public')),
+
+                        Select::make('public_status')
+                            ->label(__('development-units.public_status'))
+                            ->options([
+                                'draft' => __('development-units.draft'),
+                                'published' => __('development-units.published'),
+                                'hidden' => __('development-units.hidden'),
+                            ])
+                            ->default('draft'),
+
+                        TextInput::make('unit_type')
+                            ->label(__('development-units.unit_type')),
+
+                        TextInput::make('orientation')
+                            ->label(__('development-units.orientation')),
+
+                        Textarea::make('description_es')
+                            ->label(__('development-units.description_es'))
+                            ->rows(4),
+
+                        Textarea::make('description_en')
+                            ->label(__('development-units.description_en'))
+                            ->rows(4),
+                    ]),
                 ]),
         ]);
     }

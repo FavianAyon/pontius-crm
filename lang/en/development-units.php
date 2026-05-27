@@ -45,4 +45,6 @@ return [
     'draft' => 'Draft',
     'published' => 'Published',
     'hidden' => 'Hidden',
+    'unit_type' => 'Unit type',
+    'orientation' => 'Orientation',
 ];

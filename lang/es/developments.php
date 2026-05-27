@@ -32,4 +32,7 @@ return [
     'draft' => 'Borrador',
     'published' => 'Publicado',
     'hidden' => 'Oculto',
+    'developer_name' => 'Desarrollador',
+    'delivery_date' => 'Fecha de entrega',
+    'construction_status' => 'Estatus de construcción',
 ];
