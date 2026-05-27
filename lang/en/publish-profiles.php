@@ -17,4 +17,6 @@ return [
     'generated_at' => 'Generated at',
     'generate' => 'Generate profile',
     'generated' => 'Publish profile generated',
+    'clear_public_cache' => 'Clear public cache',
+    'public_cache_cleared' => 'Public cache cleared',
 ];

@@ -11,10 +11,12 @@ use App\Filament\Resources\DevelopmentUnits\Schemas\DevelopmentUnitInfolist;
 use App\Filament\Resources\DevelopmentUnits\Tables\DevelopmentUnitsTable;
 use App\Models\DevelopmentUnit;
 use BackedEnum;
+use Filament\Actions\Action;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;use App\Filament\Resources\DevelopmentUnits\RelationManagers;
+use Illuminate\Support\Facades\Artisan;
 
 class DevelopmentUnitResource extends Resource
 {
@@ -61,6 +63,24 @@ class DevelopmentUnitResource extends Resource
             'create' => CreateDevelopmentUnit::route('/create'),
             'view' => ViewDevelopmentUnit::route('/{record}'),
             'edit' => EditDevelopmentUnit::route('/{record}/edit'),
+        ];
+    }
+    public static function toolbarActions(): array
+    {
+        return [
+            Action::make('clearPublicCache')
+                ->label(__('publish-profiles.clear_public_cache'))
+                ->icon('heroicon-o-arrow-path')
+                ->color('gray')
+                ->visible(fn () => auth()->user()?->hasRole('admin'))
+                ->action(function () {
+                    Artisan::call('crm:clear-public-inventory-cache');
+
+                    \Filament\Notifications\Notification::make()
+                        ->success()
+                        ->title(__('publish-profiles.public_cache_cleared'))
+                        ->send();
+                }),
         ];
     }
 }

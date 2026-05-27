@@ -17,4 +17,6 @@ return [
     'generated_at' => 'Generado en',
     'generate' => 'Generar perfil',
     'generated' => 'Perfil de publicación generado',
+    'clear_public_cache' => 'Limpiar caché pública',
+    'public_cache_cleared' => 'Caché pública limpiada',
 ];
