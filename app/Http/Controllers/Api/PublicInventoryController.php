@@ -8,7 +8,7 @@ use App\Http\Resources\DevelopmentUnitResource;
 use App\Http\Resources\ListingResource;
 use App\Models\Development;
 use App\Models\DevelopmentUnit;
-use App\Models\Listing;
+use App\Models\Listing;use Illuminate\Support\Facades\Cache;
 
 class PublicInventoryController extends Controller
 {
@@ -179,125 +179,154 @@ class PublicInventoryController extends Controller
     }
     public function manifest()
     {
-        return response()->json([
-            'listings' => Listing::query()
-                ->where('is_public', true)
-                ->where('public_status', 'published')
-                ->select('id', 'slug', 'updated_at')
-                ->get(),
+        $data = Cache::remember(
+            'public_inventory_manifest',
+            now()->addMinutes(config('crm.public_api_cache_minutes', 10)),
+            fn () => [
+                'listings' => Listing::query()
+                    ->where('is_public', true)
+                    ->where('public_status', 'published')
+                    ->select('id', 'slug', 'updated_at')
+                    ->get(),
 
-            'developments' => Development::query()
-                ->where('is_public', true)
-                ->where('public_status', 'published')
-                ->select('id', 'slug', 'updated_at')
-                ->get(),
+                'developments' => Development::query()
+                    ->where('is_public', true)
+                    ->where('public_status', 'published')
+                    ->select('id', 'slug', 'updated_at')
+                    ->get(),
 
-            'development_units' => DevelopmentUnit::query()
-                ->where('is_public', true)
-                ->where('public_status', 'published')
-                ->select('id', 'slug', 'development_id', 'updated_at')
-                ->get(),
-        ]);
+                'development_units' => DevelopmentUnit::query()
+                    ->where('is_public', true)
+                    ->where('public_status', 'published')
+                    ->select('id', 'slug', 'development_id', 'updated_at')
+                    ->get(),
+            ]
+        );
+
+        return response()->json($data);
     }
+
     public function sitemap()
     {
         $baseUrl = rtrim(config('app.frontend_url', config('app.url')), '/');
 
-        return response()->json([
-            'listings' => Listing::query()
-                ->where('is_public', true)
-                ->where('public_status', 'published')
-                ->get()
-                ->map(fn ($listing) => [
-                    'url' => "{$baseUrl}/listings/{$listing->slug}",
-                    'lastmod' => $listing->updated_at?->toDateString(),
-                ]),
+        $data = Cache::remember(
+            'public_inventory_sitemap',
+            now()->addMinutes(config('crm.public_api_cache_minutes', 10)),
+            function () use ($baseUrl) {
+                return [
+                    'listings' => Listing::query()
+                        ->where('is_public', true)
+                        ->where('public_status', 'published')
+                        ->get()
+                        ->map(fn ($listing) => [
+                            'url' => "{$baseUrl}/listings/{$listing->slug}",
+                            'lastmod' => $listing->updated_at?->toDateString(),
+                        ]),
 
-            'developments' => Development::query()
-                ->where('is_public', true)
-                ->where('public_status', 'published')
-                ->get()
-                ->map(fn ($development) => [
-                    'url' => "{$baseUrl}/developments/{$development->slug}",
-                    'lastmod' => $development->updated_at?->toDateString(),
-                ]),
+                    'developments' => Development::query()
+                        ->where('is_public', true)
+                        ->where('public_status', 'published')
+                        ->get()
+                        ->map(fn ($development) => [
+                            'url' => "{$baseUrl}/developments/{$development->slug}",
+                            'lastmod' => $development->updated_at?->toDateString(),
+                        ]),
 
-            'development_units' => DevelopmentUnit::query()
-                ->where('is_public', true)
-                ->where('public_status', 'published')
-                ->get()
-                ->map(fn ($unit) => [
-                    'url' => "{$baseUrl}/development-units/{$unit->slug}",
-                    'lastmod' => $unit->updated_at?->toDateString(),
-                ]),
-        ]);
+                    'development_units' => DevelopmentUnit::query()
+                        ->where('is_public', true)
+                        ->where('public_status', 'published')
+                        ->get()
+                        ->map(fn ($unit) => [
+                            'url' => "{$baseUrl}/development-units/{$unit->slug}",
+                            'lastmod' => $unit->updated_at?->toDateString(),
+                        ]),
+                ];
+            }
+        );
+
+        return response()->json($data);
     }
     public function aiContext()
     {
         $lang = request('lang', 'es');
 
-        return response()->json([
-            'generated_at' => now()->toIso8601String(),
+        $cacheKey = $lang === 'en'
+            ? 'public_inventory_ai_context_en'
+            : 'public_inventory_ai_context_es';
 
-            'listings' => Listing::query()
-                ->where('is_public', true)
-                ->where('public_status', 'published')
-                ->with(['publishProfileEs', 'publishProfileEn'])
-                ->get()
-                ->map(function ($listing) use ($lang) {
-                    $profile = $lang === 'en'
-                        ? $listing->publishProfileEn
-                        : $listing->publishProfileEs;
+        $data = Cache::remember(
+            $cacheKey,
+            now()->addMinutes(config('crm.public_api_cache_minutes', 10)),
+            function () use ($lang) {
+                return [
+                    'generated_at' => now()->toIso8601String(),
 
-                    return [
-                        'type' => 'listing',
-                        'slug' => $listing->slug,
-                        'title' => $listing->title,
-                        'summary' => $profile?->ai_summary,
-                        'keywords' => $profile?->keywords,
-                        'payload' => $profile?->api_payload,
-                    ];
-                }),
+                    'listings' => Listing::query()
+                        ->where('is_public', true)
+                        ->where('public_status', 'published')
+                        ->with(['publishProfileEs', 'publishProfileEn'])
+                        ->get()
+                        ->map(function ($listing) use ($lang) {
+                            $profile = $lang === 'en'
+                                ? $listing->publishProfileEn
+                                : $listing->publishProfileEs;
 
-            'developments' => Development::query()
-                ->where('is_public', true)
-                ->where('public_status', 'published')
-                ->with(['publishProfileEs', 'publishProfileEn'])
-                ->get()
-                ->map(function ($development) use ($lang) {
-                    $profile = $lang === 'en'
-                        ? $development->publishProfileEn
-                        : $development->publishProfileEs;
+                            return [
+                                'type' => 'listing',
+                                'slug' => $listing->slug,
+                                'title' => $listing->title,
+                                'summary' => $profile?->ai_summary,
+                                'keywords' => $profile?->keywords,
+                                'payload' => $profile?->api_payload,
+                            ];
+                        }),
 
-                    return [
-                        'type' => 'development',
-                        'slug' => $development->slug,
-                        'title' => $development->name,
-                        'summary' => $profile?->ai_summary,
-                        'keywords' => $profile?->keywords,
-                        'payload' => $profile?->api_payload,
-                    ];
-                }),
+                    'developments' => Development::query()
+                        ->where('is_public', true)
+                        ->where('public_status', 'published')
+                        ->with(['publishProfileEs', 'publishProfileEn'])
+                        ->get()
+                        ->map(function ($development) use ($lang) {
+                            $profile = $lang === 'en'
+                                ? $development->publishProfileEn
+                                : $development->publishProfileEs;
 
-            'development_units' => DevelopmentUnit::query()
-                ->where('is_public', true)
-                ->where('public_status', 'published')
-                ->with(['publishProfileEs', 'publishProfileEn', 'development'])
-                ->get()
-                ->map(function ($unit) use ($lang) {
-                    $profile = $lang === 'en'
-                        ? $unit->publishProfileEn
-                        : $unit->publishProfileEs;
+                            return [
+                                'type' => 'development',
+                                'slug' => $development->slug,
+                                'title' => $development->name,
+                                'summary' => $profile?->ai_summary,
+                                'keywords' => $profile?->keywords,
+                                'payload' => $profile?->api_payload,
+                            ];
+                        }),
 
-                    return [
-                        'type' => 'development_unit',
-                        'slug' => $unit->slug,
-                        'title' => $unit->development?->name . ' - ' . $unit->unit_number,
-                        'summary' => $profile?->ai_summary,
-                        'keywords' => $profile?->keywords,
-                        'payload' => $profile?->api_payload,
-                    ];
-                }),
-        ]);
+                    'development_units' => DevelopmentUnit::query()
+                        ->where('is_public', true)
+                        ->where('public_status', 'published')
+                        ->with(['publishProfileEs', 'publishProfileEn', 'development'])
+                        ->get()
+                        ->map(function ($unit) use ($lang) {
+                            $profile = $lang === 'en'
+                                ? $unit->publishProfileEn
+                                : $unit->publishProfileEs;
+
+                            return [
+                                'type' => 'development_unit',
+                                'slug' => $unit->slug,
+                                'title' => ($unit->development?->name ?? '')
+                                    . ' - ' .
+                                    $unit->unit_number,
+                                'summary' => $profile?->ai_summary,
+                                'keywords' => $profile?->keywords,
+                                'payload' => $profile?->api_payload,
+                            ];
+                        }),
+                ];
+            }
+        );
+
+        return response()->json($data);
     }
 }

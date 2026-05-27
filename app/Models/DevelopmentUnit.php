@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
@@ -62,6 +63,7 @@ class DevelopmentUnit extends Model
                 \App\Services\PublishProfileGenerator::generate($unit, 'es');
                 \App\Services\PublishProfileGenerator::generate($unit, 'en');
             }
+            self::clearPublicApiCache();
         });
     }
 
@@ -158,5 +160,12 @@ class DevelopmentUnit extends Model
             'is_public',
             'public_status',
         ]);
+    }
+    protected static function clearPublicApiCache(): void
+    {
+        Cache::forget('public_inventory_manifest');
+        Cache::forget('public_inventory_sitemap');
+        Cache::forget('public_inventory_ai_context_es');
+        Cache::forget('public_inventory_ai_context_en');
     }
 }
