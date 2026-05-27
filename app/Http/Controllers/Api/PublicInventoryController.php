@@ -20,7 +20,11 @@ class PublicInventoryController extends Controller
                 ->with(['publishProfileEs', 'publishProfileEn', 'mediaAssets'])
                 ->latest()
                 ->paginate(12)
-        );
+        )->additional([
+            'meta' => [
+                'cached' => false,
+            ],
+        ]);
     }
 
     public function listing(string $slug)
@@ -44,7 +48,11 @@ class PublicInventoryController extends Controller
                 ->with(['publishProfileEs', 'publishProfileEn', 'mediaAssets'])
                 ->latest()
                 ->paginate(12)
-        );
+        )->additional([
+            'meta' => [
+                'cached' => false,
+            ],
+        ]);;
     }
 
     public function development(string $slug)
