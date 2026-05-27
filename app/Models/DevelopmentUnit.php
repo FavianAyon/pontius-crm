@@ -57,6 +57,12 @@ class DevelopmentUnit extends Model
         static::restored(function (DevelopmentUnit $unit) {
             $unit->development?->recalculateInventory();
         });
+        static::saved(function (DevelopmentUnit $unit) {
+            if ($unit->shouldRegeneratePublishProfiles()) {
+                \App\Services\PublishProfileGenerator::generate($unit, 'es');
+                \App\Services\PublishProfileGenerator::generate($unit, 'en');
+            }
+        });
     }
 
     public function development()
@@ -128,5 +134,29 @@ class DevelopmentUnit extends Model
     {
         return $this->morphOne(PublishProfile::class, 'publishable')
             ->where('language', 'en');
+    }
+    public function shouldRegeneratePublishProfiles(): bool
+    {
+        return $this->wasChanged([
+            'development_id',
+            'unit_number',
+            'slug',
+            'flexmls_id',
+            'status',
+            'price',
+            'currency',
+            'bedrooms',
+            'bathrooms',
+            'area_m2',
+            'floor',
+            'view_type',
+            'unit_type',
+            'orientation',
+            'description',
+            'description_es',
+            'description_en',
+            'is_public',
+            'public_status',
+        ]);
     }
 }

@@ -44,6 +44,16 @@ class Listing extends Model
         'metadata' => 'array',
     ];
 
+    public static function booted(): void
+    {
+        static::saved(function (Listing $listing) {
+            if ($listing->shouldRegeneratePublishProfiles()) {
+                \App\Services\PublishProfileGenerator::generate($listing, 'es');
+                \App\Services\PublishProfileGenerator::generate($listing, 'en');
+            }
+        });
+    }
+
     public function development()
     {
         return $this->belongsTo(Development::class);
@@ -106,5 +116,26 @@ class Listing extends Model
     {
         return $this->morphOne(PublishProfile::class, 'publishable')
             ->where('language', 'en');
+    }
+    public function shouldRegeneratePublishProfiles(): bool
+    {
+        return $this->wasChanged([
+            'title',
+            'slug',
+            'status',
+            'listing_type',
+            'property_type',
+            'price',
+            'currency',
+            'location',
+            'bedrooms',
+            'bathrooms',
+            'area_m2',
+            'description',
+            'description_es',
+            'description_en',
+            'is_public',
+            'public_status',
+        ]);
     }
 }

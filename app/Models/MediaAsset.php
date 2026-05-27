@@ -32,6 +32,17 @@ class MediaAsset extends Model
         'is_public' => 'boolean',
         'metadata' => 'array',
     ];
+    protected static function booted(): void
+    {
+        static::saved(function (MediaAsset $media) {
+            $media->mediable?->publishProfiles()?->delete();
+
+            if (method_exists($media->mediable, 'publishProfiles')) {
+                \App\Services\PublishProfileGenerator::generate($media->mediable, 'es');
+                \App\Services\PublishProfileGenerator::generate($media->mediable, 'en');
+            }
+        });
+    }
 
     public function mediable()
     {

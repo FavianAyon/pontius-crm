@@ -53,6 +53,12 @@ class Development extends Model
         static::saving(function (Development $development) {
             $development->slug = Str::slug($development->name);
         });
+        static::saved(function (Development $development) {
+            if ($development->shouldRegeneratePublishProfiles()) {
+                \App\Services\PublishProfileGenerator::generate($development, 'es');
+                \App\Services\PublishProfileGenerator::generate($development, 'en');
+            }
+        });
     }
 
     public function recalculateInventory(): void
@@ -113,5 +119,25 @@ class Development extends Model
     {
         return $this->morphOne(PublishProfile::class, 'publishable')
             ->where('language', 'en');
+    }
+    public function shouldRegeneratePublishProfiles(): bool
+    {
+        return $this->wasChanged([
+            'name',
+            'slug',
+            'status',
+            'sales_status',
+            'location',
+            'description',
+            'description_es',
+            'description_en',
+            'total_units',
+            'available_units',
+            'developer_name',
+            'delivery_date',
+            'construction_status',
+            'is_public',
+            'public_status',
+        ]);
     }
 }
