@@ -3,7 +3,7 @@
 return [
     'initial_contact_due_minutes' => 60,
     'due_soon_minutes' => 30,
-    'public_api_cache_minutes' => 10,
+    'public_api_cache_minutes' => env('PUBLIC_API_CACHE_MINUTES', 10),
     'case_file_document_templates' => [
         'lead' => [
             ['name' => 'ID', 'document_type' => 'id'],
