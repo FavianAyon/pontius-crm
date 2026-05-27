@@ -51,6 +51,7 @@ class DevelopmentResource extends Resource
         return [
             RelationManagers\UnitsRelationManager::class,
             RelationManagers\ActivitiesRelationManager::class,
+            RelationManagers\MediaAssetsRelationManager::class,
         ];
     }
 

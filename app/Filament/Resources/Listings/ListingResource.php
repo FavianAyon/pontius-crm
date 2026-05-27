@@ -49,6 +49,7 @@ class ListingResource extends Resource
     {
         return [
             RelationManagers\ActivitiesRelationManager::class,
+            RelationManagers\MediaAssetsRelationManager::class,
         ];
     }
 
