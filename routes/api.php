@@ -11,3 +11,5 @@ Route::middleware('throttle:60,1')->group(function () {
     Route::get('/public/development-units', [PublicInventoryController::class, 'developmentUnits']);
     Route::get('/public/development-units/{slug}', [PublicInventoryController::class, 'developmentUnit']);
 });
+
+Route::get('/public/manifest', [PublicInventoryController::class, 'manifest']);

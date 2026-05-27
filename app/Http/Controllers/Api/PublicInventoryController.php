@@ -177,4 +177,26 @@ class PublicInventoryController extends Controller
                 ->firstOrFail()
         );
     }
+    public function manifest()
+    {
+        return response()->json([
+            'listings' => Listing::query()
+                ->where('is_public', true)
+                ->where('public_status', 'published')
+                ->select('id', 'slug', 'updated_at')
+                ->get(),
+
+            'developments' => Development::query()
+                ->where('is_public', true)
+                ->where('public_status', 'published')
+                ->select('id', 'slug', 'updated_at')
+                ->get(),
+
+            'development_units' => DevelopmentUnit::query()
+                ->where('is_public', true)
+                ->where('public_status', 'published')
+                ->select('id', 'slug', 'development_id', 'updated_at')
+                ->get(),
+        ]);
+    }
 }
