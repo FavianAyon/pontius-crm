@@ -199,4 +199,37 @@ class PublicInventoryController extends Controller
                 ->get(),
         ]);
     }
+    public function sitemap()
+    {
+        $baseUrl = rtrim(config('app.frontend_url', config('app.url')), '/');
+
+        return response()->json([
+            'listings' => Listing::query()
+                ->where('is_public', true)
+                ->where('public_status', 'published')
+                ->get()
+                ->map(fn ($listing) => [
+                    'url' => "{$baseUrl}/listings/{$listing->slug}",
+                    'lastmod' => $listing->updated_at?->toDateString(),
+                ]),
+
+            'developments' => Development::query()
+                ->where('is_public', true)
+                ->where('public_status', 'published')
+                ->get()
+                ->map(fn ($development) => [
+                    'url' => "{$baseUrl}/developments/{$development->slug}",
+                    'lastmod' => $development->updated_at?->toDateString(),
+                ]),
+
+            'development_units' => DevelopmentUnit::query()
+                ->where('is_public', true)
+                ->where('public_status', 'published')
+                ->get()
+                ->map(fn ($unit) => [
+                    'url' => "{$baseUrl}/development-units/{$unit->slug}",
+                    'lastmod' => $unit->updated_at?->toDateString(),
+                ]),
+        ]);
+    }
 }
