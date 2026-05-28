@@ -37,6 +37,7 @@ class Development extends Model
 
     protected $casts = [
         'metadata' => 'array',
+        'delivery_date' => 'date',
     ];
 
     public function listings()

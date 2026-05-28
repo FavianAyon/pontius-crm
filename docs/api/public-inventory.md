@@ -8,6 +8,11 @@ https://your-domain.com/api
 GET /public/listings?lang=es
 GET /public/listings?lang=en
 GET /public/listings/{slug}?lang=es
+GET /public/listings/{slug}?lang=en
+```
+Filtros
+
+```txt
 search
 property_type
 listing_type
@@ -18,6 +23,7 @@ bathrooms
 location
 per_page
 ```
+
 En `.env.example` agrega:
 
 ```env

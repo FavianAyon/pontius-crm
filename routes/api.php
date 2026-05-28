@@ -1,5 +1,6 @@
 <?php
 use App\Http\Controllers\Api\PublicInventoryController;
+use App\Http\Controllers\PublicLeadController;
 
 Route::middleware('throttle:60,1')->group(function () {
     Route::get('/public/listings', [PublicInventoryController::class, 'listings']);
@@ -15,3 +16,5 @@ Route::middleware('throttle:60,1')->group(function () {
 Route::get('/public/manifest', [PublicInventoryController::class, 'manifest']);
 Route::get('/public/sitemap', [PublicInventoryController::class, 'sitemap']);
 Route::get('/public/ai-context', [PublicInventoryController::class, 'aiContext']);
+
+Route::post('/public/leads', [PublicLeadController::class, 'store']);
