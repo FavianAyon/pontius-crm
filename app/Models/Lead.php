@@ -292,6 +292,12 @@ class Lead extends Model
     {
         return $this->hasMany(Task::class)->latest();
     }
+
+    public function followUps()
+    {
+        return $this->hasMany(FollowUp::class)->latest();
+    }
+
     public function createInitialContactTask(): void
     {
         if (! $this->email && ! $this->phone && ! $this->whatsapp) {

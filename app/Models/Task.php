@@ -38,6 +38,13 @@ class Task extends Model
         'due_soon_notified_at' => 'datetime',
     ];
 
+    protected $appends = ['due_date'];
+
+    public function getDueDateAttribute()
+    {
+        return $this->due_at;
+    }
+
     protected static function booted(): void
     {
         static::creating(function (Task $task) {

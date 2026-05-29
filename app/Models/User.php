@@ -54,4 +54,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(\App\Models\Lead::class, 'assigned_to_user_id');
     }
+
+    public function apiTokens()
+    {
+        return $this->hasMany(ApiToken::class);
+    }
 }
