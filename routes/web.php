@@ -3,10 +3,6 @@
 use App\Http\Controllers\PublicLeadController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 
 Route::get('/lead-capture', [PublicLeadController::class, 'create'])->name('public.leads.create');
 
