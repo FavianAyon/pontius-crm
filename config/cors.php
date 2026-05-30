@@ -20,8 +20,9 @@ return [
     'allowed_methods' => ['*'],
 
     'allowed_origins' => [
+        'https://crm.pontiusrealty.com',      // Tu frontend
+        'https://www.crm.pontiusrealty.com',
         'http://localhost:3000',
-        'https://tusitio.com',
     ],
 
     'allowed_origins_patterns' => [],
@@ -32,6 +33,6 @@ return [
 
     'max_age' => 0,
 
-    'supports_credentials' => false,
+    'supports_credentials' => true,
 
 ];
