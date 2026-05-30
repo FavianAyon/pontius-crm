@@ -33,6 +33,9 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->databaseNotifications()
             ->login()
+            ->brandLogo(asset('img/logo-blue.svg'))
+            ->darkModeBrandLogo(asset('img/logo-white.svg'))
+            ->favicon(asset('img/logo-blue.svg'))
             ->colors([
                 'primary' => Color::Amber,
             ])
