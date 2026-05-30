@@ -30,7 +30,7 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('admin')
-            ->path('admin')
+            ->path('/')
             ->databaseNotifications()
             ->login()
             ->brandLogo(asset('img/logo-blue.svg'))
